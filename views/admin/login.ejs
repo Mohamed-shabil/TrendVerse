@@ -1,0 +1,59 @@
+<%- include('./partials/_header.ejs') %>
+<%- include('partials/_header.ejs') %>
+<div class="d-flex  justify-content-center align-items-center w-100 h-100">
+  <div class="col-md-4 text-center ">
+    <div class="container login_part p-5">
+      <h3 class="py-5">Welcome to Trendverse Admin Panel</h3>
+      <p>Enter your Credintials</p>
+      <%if(successMessage[0]){%>
+        <div class="alert alert-info" role="alert">
+            <%=successMessage[0]%>
+        </div>
+      <%}else if(errorMessage[0]){%>
+        <div class="alert alert-danger" role="alert">
+            <%=errorMessage[0]%>
+        </div>
+      <%}%>
+    <form action="/login" class="login__form" method="post">
+        <div
+          class="flex-column d-flex align-items-center justify-content-center"
+          >
+
+
+        </div>
+
+        <div class="login__inputs mb-4">
+          <input
+            name="email"
+            type="email"
+            class="form-control"
+            required
+            placeholder="Email"
+          />
+
+        </div>
+
+        <div class="login__inputs mb-4">
+          <input
+            name="password"
+            type="password"
+            class="form-control"
+            required
+            placeholder="Password"
+          />
+        </div>
+        
+        <div class="login__inputs">
+            <button class=" login__inputs btn btn-primary w-100" type="submit">Login</button>
+        </div>
+      
+    </form>
+    </div>
+  </div>
+  
+</div>
+
+<%- include('./partials/_footer.ejs') %>
+
+
+<%- include('./partials/_footer.ejs') %>

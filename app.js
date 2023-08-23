@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const session = require('express-session');
 const flash = require('connect-flash');
 const userRoute = require('./routes/userRoute');
+const adminRoute = require('./routes/adminRoute');
 
 dotenv.config({path:'./config.env'});
 const db = process.env.DATABASE
@@ -43,6 +44,7 @@ const port = process.env.PORT || 3000;
 
 
 app.use('/',userRoute);
+app.use('/admin',adminRoute);
 
 app.listen(port,()=>{
     console.log('listening on port')
