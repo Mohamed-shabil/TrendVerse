@@ -1,21 +1,14 @@
 const nodemailer = require('nodemailer');
 
-const sendMail = async (req,res)=>{
+const sendMail = async (options)=>{
     const transporter = nodemailer.createTransport({
         service: 'Gmail', 
         auth: {
             user: process.env.EMAIL, 
-            pass: process.env.PASS 
+            pass: process.env.PASSWORD 
         }
     });
-    // For testing
-    const mailOptions = {
-        from: process.env.EMAIL,
-        to: process.env.USERMAIL, 
-        subject: 'Test Email', 
-        text: 'This is a test email sent using Nodemailer.' 
-    };
-    transporter.sendMail(mailOptions, (error, info) => {
+    transporter.sendMail(options, (error, info) => {
         if (error) {
             console.error('Error:', error);
         } else {

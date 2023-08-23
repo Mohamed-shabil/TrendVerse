@@ -5,13 +5,24 @@
       <div class="container login_part">
         <h3>Welcome to Trendverse</h3>
         <p>Enter your Credintials</p>
+
+        <%if(successMessage[0]){%>
+          <div class="alert alert-info" role="alert">
+              <%=successMessage[0]%>
+          </div>
+        <%}else if(errorMessage[0]){%>
+          <div class="alert alert-danger" role="alert">
+              <%=errorMessage[0]%>
+          </div>
+        <%}%>
+        
         <div class="login__btn">
-          <img src="/img/icon/GoogleLogin.png" alt="Google logo"  />Login with
+          <img src="users/img/icon/GoogleLogin.png" alt="Google logo"  />Login with
           Google
         </div>
   
         <div class="login__btn">
-          <img src="/img/icon/fbLogin.png" alt="Facebook Logo"  />Login with
+          <img src="users/img/icon/fbLogin.png" alt="Facebook Logo"  />Login with
           Facebook
         </div>
   

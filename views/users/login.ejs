@@ -4,16 +4,23 @@
     <div class="container login_part">
       <h3>Welcome to Trendverse</h3>
       <p>Enter your Credintials</p>
+      <%if(successMessage[0]){%>
+        <div class="alert alert-info" role="alert">
+            <%=successMessage[0]%>
+        </div>
+      <%}else if(errorMessage[0]){%>
+        <div class="alert alert-danger" role="alert">
+            <%=errorMessage[0]%>
+        </div>
+      <%}%>
       <div class="login__btn">
-        <img src="/img/icon/GoogleLogin.png" alt="Google logo"  />Login with
+        <img src="users/img/icon/GoogleLogin.png" alt="Google logo"  />Login with
         Google
       </div>
-
       <div class="login__btn">
-        <img src="/img/icon/fbLogin.png" alt="Facebook Logo"  />Login with
+        <img src="users/img/icon/fbLogin.png" alt="Facebook Logo"  />Login with
         Facebook
       </div>
-
       <div class="or"><p>or</p></div>
     <form action="/login" class="login__form" method="post">
         <div
@@ -28,6 +35,7 @@
             name="email"
             type="email"
             class="form-control"
+            required
             placeholder="Email"
           />
 
@@ -38,19 +46,20 @@
             name="password"
             type="password"
             class="form-control"
+            required
             placeholder="Password"
           />
         </div>
         
         <div class="login__inputs login_submit">
-            <button class="btn w-100">Login</button>
+            <button class="btn w-100" type="submit">Login</button>
         </div>
       
     </form>
     </div>
   </div>
   <div class="col-md-6">
-    <img src="/img/hero/heroLogin.png" alt="" srcset="" />
+    <img src="users/img/hero/heroLogin.png" alt="" srcset="" />
   </div>
 </div>
 

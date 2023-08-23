@@ -1,0 +1,35 @@
+<%- include('../partials/_header.ejs') %>
+
+<div class="container w-100 h-100 d-flex align-items-center justify-content-center">
+    <div class="col-md-4 rounded-4 shadow-lg">
+        <div class="title text-center p-3  ">
+            <form action="/varifyOtp" method="post">
+                <h3 class="mb-3">Enter your OTP</h3>
+                <%if(successMessage[0]){%>
+                    <div class="alert alert-info" role="alert">
+                        <%=successMessage[0]%>
+                    </div>
+                <%}else if(errorMessage[0]){%>
+                    <div class="alert alert-danger" role="alert">
+                        <%=errorMessage[0]%>
+                    </div>
+                <%}%>
+                <p>we sended an OTP to your email address</p>
+                <div class="d-flex align-items-center justify-content-center mb-4">
+                    <input type="text" oninput="restrictToNumbers(event)" maxlength="4" class="text-center otp_input" name="otp">
+                </div>
+                <button class="btn w-100 login_submit">submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function restrictToNumbers(event) {
+            const input = event.target;
+            const currentValue = input.value;
+            const newValue = currentValue.replace(/[^0-9]/g, '');
+            input.value = newValue;
+        }
+</script>
+<%- include('../partials/_footer.ejs') %>

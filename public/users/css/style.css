@@ -145,6 +145,20 @@ ol {
 .btn{
 	color: #fff!important;
 }
+
+/* OTP */
+.otp_input{
+	width: 100%;
+	height: 40px;
+	margin: 0 10px;
+	border: 1px solid #999;
+	letter-spacing: 30px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 .section-title {
 	margin-bottom: 45px;
 	text-align: center;

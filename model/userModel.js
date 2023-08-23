@@ -23,7 +23,14 @@ const userSchema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
-    otp:Number
+    otp:{
+        type:Number,
+        createdAt:{type:Date,expires:'5m',default:Date.now}
+    },
+    varified: {
+        type:Boolean,
+        default:false
+    }
 })
 
 
