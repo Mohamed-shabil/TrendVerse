@@ -13,13 +13,14 @@ mongoose.connect(db,{
     console.log('db Connected')
 })
 
-const seedAdmin = catchAsync(async ()=>{
+const seedAdmin = catchAsync( async ()=>{
     const admin = process.env.ADMINUSERNAME
     const password = process.env.ADMINPASSWORD
 
+    const hashedPassword = await bcrypt.hash(password,10);
     await Admin.create({
         name : admin,
-        password
+        password : hashedPassword
     }).then(()=>{
         console.log('Admin created successfully');
         process.exit();
