@@ -1,0 +1,78 @@
+<%- include('partials/_header.ejs') %>
+<body>
+  <div class="container-scroller">
+    <!-- partial:../../partials/_sidebar.html -->
+    <%- include('partials/_sidebar.ejs') %>                       
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <%- include('partials/_navbar.ejs') %>
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+              <div class="page-header">
+                <h3 class="page-title">Add Category</h3>
+              </div>
+              <%if(successMessage[0]){%>
+                <div id="error-message" class="alert alert-info col-8" role="alert">
+                    <%=successMessage[0]%>
+                </div>
+              <%}else if(errorMessage[0]){%>
+                <div id="error-message" class="alert alert-danger col-8" role="alert">
+                    <%=errorMessage[0]%>
+                </div>
+              <%}%> 
+              <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <button type="button" class="btn btn-secondary btn-fw"><a href="/admin/category/addCategory">Add New Products</a></button>
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Image</th>
+                              <th>Edit</th>
+                              <th>Delete</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <%category.forEach((category) => { %>
+                              <tr>
+                                <td><%=category.name%></td>
+                                <td><img src="/category/<%=category.image%>"  alt="<%=category.name%>" ></td>
+                                <td>
+                                    <span class="edit_btn_icon"><a href="/admin/products/editCategory/<%=category._id%>"><i class="mdi mdi-border-color"></i></a></span>
+                                </td>
+                                <td>
+                                  <form action="/admin/category/editCategory/<%=category._id%>?_method=DELETE" method="post">
+                                    <button class="edit_btn_icon"><i class="mdi mdi-delete"></i></button>
+                                  </form>
+                                </td>
+                              </tr>
+                            <%})%> 
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+      function hideErrorMessage() {
+        var errorMessageElement = document.getElementById('error-message');
+        if (errorMessageElement) {
+          setTimeout(()=>{
+            errorMessageElement.style.display = 'none';
+          }, 4000);
+          
+        }
+      }
+      hideErrorMessage();
+    </script>
+<%- include('partials/_footer.ejs') %>

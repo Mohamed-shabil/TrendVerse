@@ -1,13 +1,17 @@
 const catchAsync = require('../utils/catchAsync');
 const User = require('../model/userModel');
+const Products = require('../model/productModel'); 
 const bcrypt = require('bcrypt');
 const randomString = require('randomstring');
 const sendMail = require('../utils/email');
 
 
-exports.getHome = (req,res)=>{
-    res.render('./users/home');
-}
+exports.getHome = catchAsync(async(req,res)=>{
+    const products = await Products.find();
+    res.render('./users/home',{
+        products
+    });
+})
 
 
 exports.getLogin = (req,res)=>{
@@ -52,7 +56,7 @@ exports.signup = catchAsync( async (req,res)=>{
     if(oldUser){
         req.flash('error','User already exists, please login')
         res.locals.errorMessage = req.flash('error');
-        return res.render('./users/login');
+        return res.redirect('/login');
     }
 
     const pass = await bcrypt.hash(req.body.password,10);
@@ -97,8 +101,16 @@ exports.varifyOtp = catchAsync(async(req,res)=>{
             res.redirect('/')
         }else{
             req.flash('error','invalid')
-            res.locals.errorMessage = req.flash('error');
             res.redirect('/varifyOtp')
         }
     }
 })
+
+exports.getProducts = catchAsync(async(req,res)=>{
+    const product = await Products.findOne({_id:req.params.id});
+    console.log(product);
+    res.render('./users/productsDetails',{
+        product
+    });
+})
+

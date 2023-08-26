@@ -987,6 +987,7 @@ input::-webkit-inner-spin-button {
 .product__item {
 	overflow: hidden;
 	margin-bottom: 40px;
+	cursor: pointer;
 }
 
 .product__item.sale .product__item__pic .label {

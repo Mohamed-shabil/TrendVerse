@@ -7,16 +7,17 @@ const morgan = require('morgan');
 const session = require('express-session');
 const flash = require('connect-flash');
 const userRoute = require('./routes/userRoute');
+const methodOverride = require('method-override');
 const adminRoute = require('./routes/adminRoute');
 
 dotenv.config({path:'./config.env'});
 const db = process.env.DATABASE
 
 mongoose.connect(db,{
-    useNewUrlParser:true,
-    useUnifiedTopology: true
-  }).then(()=>{
-    console.log('Db Connected Successfully')
+  useNewUrlParser:true,
+  useUnifiedTopology: true
+}).then(()=>{
+  console.log('Db Connected Successfully')
 })
 
 
@@ -30,6 +31,7 @@ app.use(session({
   resave: true
 }));
 
+app.use(methodOverride('_method'));
 app.use(flash());
 app.use(function(req, res, next){
   res.locals.successMessage = req.flash('success');
@@ -38,14 +40,11 @@ app.use(function(req, res, next){
 });
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('dev'));
-
 app.use(express.urlencoded({extended:true}))
-const port = process.env.PORT || 3000;
-
-
 app.use('/',userRoute);
 app.use('/admin',adminRoute);
 
+const port = process.env.PORT || 3000;
 app.listen(port,()=>{
     console.log('listening on port')
 })

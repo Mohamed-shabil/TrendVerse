@@ -1,4 +1,4 @@
-<%- include('./partials/_header.ejs') %>
+
 <%- include('partials/_header.ejs') %>
 <div class="d-flex  justify-content-center align-items-center w-100 h-100">
   <div class="col-md-4 text-center ">
@@ -14,7 +14,7 @@
             <%=errorMessage[0]%>
         </div>
       <%}%>
-    <form action="/login" class="login__form" method="post">
+    <form action="/admin/login" class="login__form" method="post">
         <div
           class="flex-column d-flex align-items-center justify-content-center"
           >
@@ -24,8 +24,8 @@
 
         <div class="login__inputs mb-4">
           <input
-            name="email"
-            type="email"
+            name="name"
+            type="text"
             class="form-control"
             required
             placeholder="Email"
@@ -52,8 +52,5 @@
   </div>
   
 </div>
-
-<%- include('./partials/_footer.ejs') %>
-
 
 <%- include('./partials/_footer.ejs') %>

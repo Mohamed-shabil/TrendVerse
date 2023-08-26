@@ -1,0 +1,107 @@
+<%- include('partials/_header.ejs') %>
+<body>
+  <div class="container-scroller">
+    <!-- partial:../../partials/_sidebar.html -->
+    <%- include('partials/_sidebar.ejs') %>                       
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <%- include('partials/_navbar.ejs') %>
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+              <div class="page-header">
+                <h3 class="page-title"> Basic Tables </h3>
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+                  </ol>
+                </nav>
+              </div>
+              <%if(successMessage[0]){%>
+                <div id="error-message" class="alert alert-info col-8" role="alert">
+                    <%=successMessage[0]%>
+                </div>
+              <%}else if(errorMessage[0]){%>
+                <div id="error-message" class="alert alert-danger col-8" role="alert">
+                    <%=errorMessage[0]%>
+                </div>
+              <%}%> 
+              <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Add Products</h4>
+                      <button type="button" class="btn btn-secondary btn-fw"><a href="/admin/products/addProducts">Add New Products</a></button>
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Image</th>
+                              <th>Category</th>
+                              <th>Price</th>
+                              <th>Stock</th>
+                              <th>Edit</th>
+                              <th>Delete</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <%products.forEach((product) => { %>
+                              <tr>
+                                <td><%=product.name%></td>
+                                <td><img src="/products/<%=product.images[0]%>"  alt="<%=product.name%>" srcset="" ></td>
+                                <td><%=product.category%></td>
+                                <td>₹<%=product.price%></td>
+                                <td><%=product.stock%></td>
+                                <td>
+                                    <span class="edit_btn_icon"><a href="/admin/products/editProduct/<%=product._id%>"><i class="mdi mdi-border-color"></i></a></span>
+                                </td>
+                                <td>
+                                  <form action="/admin/products/editProduct/<%=product._id%>?_method=DELETE" method="post">
+                                    <button class="edit_btn_icon"><i class="mdi mdi-delete"></i></button>
+                                  </form>
+                                </td>
+                              </tr>
+                            <%})%> 
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                
+              </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+      function hideErrorMessage() {
+        var errorMessageElement = document.getElementById('error-message');
+        if (errorMessageElement) {
+          setTimeout(()=>{
+            errorMessageElement.style.display = 'none';
+          }, 4000);
+          
+        }
+      }
+      hideErrorMessage();
+
+
+      const previewImages = (event) => {
+        const imageFiles = event.target.files;
+        const imageFilesLength = imageFiles.length;
+        if (imageFilesLength > 0) {
+          const imageSrc = URL.createObjectURL(imageFiles[0]);
+          const imagePreviewElement = document.querySelector("#preview");
+          imagePreviewElement.src = imageSrc;
+          imagePreviewElement.style.display = "block";
+          imagePreviewElement.style.height = "100%";
+          imagePreviewElement.style.width = "100%";
+        }
+      }
+    </script>
+<%- include('partials/_footer.ejs') %>

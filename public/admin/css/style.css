@@ -17905,9 +17905,11 @@ div.tagsinput {
     .table th img, .jsgrid .jsgrid-table th img,
     .table td img,
     .jsgrid .jsgrid-table td img {
-      width: 30px;
-      height: 30px;
-      border-radius: 100%; }
+      width: 50px;
+      height: 50px;
+      
+      /* border-radius: 100%; */
+     }
     .table th .badge, .jsgrid .jsgrid-table th .badge,
     .table td .badge,
     .jsgrid .jsgrid-table td .badge {
@@ -20233,7 +20235,7 @@ div.tagsinput {
     .auth .auth-form-dark .jsgrid .jsgrid-table .jsgrid-filter-row select:-ms-input-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-dark select:-ms-input-placeholder, .auth .auth-form-dark .jsgrid .jsgrid-table .jsgrid-filter-row input:-ms-input-placeholder[type=number], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-dark input:-ms-input-placeholder[type=number], .auth .auth-form-dark .select2-container--default .select2-selection--single:-ms-input-placeholder, .select2-container--default .auth .auth-form-dark .select2-selection--single:-ms-input-placeholder, .auth .auth-form-dark .select2-container--default .select2-selection--single .select2-search__field:-ms-input-placeholder, .select2-container--default .select2-selection--single .auth .auth-form-dark .select2-search__field:-ms-input-placeholder, .auth .auth-form-dark .typeahead:-ms-input-placeholder,
     .auth .auth-form-dark .tt-query:-ms-input-placeholder,
     .auth .auth-form-dark .tt-hint:-ms-input-placeholder {
-      color: #ffffff; }
+      color: #ffffff!important; }
     .auth .auth-form-dark .form-control:-moz-placeholder, .auth .auth-form-dark .asColorPicker-input:-moz-placeholder, .auth .auth-form-dark .dataTables_wrapper select:-moz-placeholder, .dataTables_wrapper .auth .auth-form-dark select:-moz-placeholder, .auth .auth-form-dark .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=text], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-dark input:-moz-placeholder[type=text],
     .auth .auth-form-dark .jsgrid .jsgrid-table .jsgrid-filter-row select:-moz-placeholder, .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-dark select:-moz-placeholder, .auth .auth-form-dark .jsgrid .jsgrid-table .jsgrid-filter-row input:-moz-placeholder[type=number], .jsgrid .jsgrid-table .jsgrid-filter-row .auth .auth-form-dark input:-moz-placeholder[type=number], .auth .auth-form-dark .select2-container--default .select2-selection--single:-moz-placeholder, .select2-container--default .auth .auth-form-dark .select2-selection--single:-moz-placeholder, .auth .auth-form-dark .select2-container--default .select2-selection--single .select2-search__field:-moz-placeholder, .select2-container--default .select2-selection--single .auth .auth-form-dark .select2-search__field:-moz-placeholder, .auth .auth-form-dark .typeahead:-moz-placeholder,
     .auth .auth-form-dark .tt-query:-moz-placeholder,
@@ -21136,5 +21138,34 @@ div.tagsinput {
   width: 100%;
   -webkit-flex-grow: 1;
   flex-grow: 1; }
+
+
+.edit_btn_icon{
+  border: none;
+  outline: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: transparent;
+}
+
+.edit_btn_icon i{
+  font-size: 25px;
+  line-height: 40px;
+  cursor: pointer;
+  color: #6c7293;
+}
+input{
+  color: #fff!important;
+}
+.edit-product-images{
+  width: 100px;
+  height: 100px;
+  display: flex;
+}
+.edit-product-images img{
+  width: 100%;
+  height: 100%;
+}
 
 /*# sourceMappingURL=maps/style.css.map */
