@@ -4,10 +4,13 @@ const Product = require('../model/productModel');
 const Category = require('../model/categoryModel');
 const User = require('../model/userModel')
 const bcrypt = require('bcrypt');
+const token = require('../utils/token');
 
 exports.getLogin = (req,res) =>{
     res.render('./admin/login')
 }
+
+
 
 exports.login = catchAsync(async (req,res)=>{
     const { password , name} = req.body
@@ -18,15 +21,24 @@ exports.login = catchAsync(async (req,res)=>{
         res.render('./admin/login');
     }
     const isAdmin = await bcrypt.compare(password,admin.password);
-    
     if(!isAdmin){
         req.flash('error','invalid password or email')
         res.locals.errorMessage = req.flash('error');
         res.render('./admin/login');
     }else{
-        res.redirect('/admin');
+        token.createSendToken(admin,res);
+        res.redirect('/admin')
     }
 }) 
+exports.logout = catchAsync(async (req, res, next )=>{
+    res.cookie('jwt','loggedout',{
+      expires : new Date(Date.now() + 10 * 10000),
+      httpOnly:true
+    });
+    res.redirect('/');
+})
+
+
 exports.getDashboard = (req,res) =>{
     res.render('./admin/dashboard');
 }

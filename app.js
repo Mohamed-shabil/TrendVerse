@@ -9,6 +9,9 @@ const flash = require('connect-flash');
 const userRoute = require('./routes/userRoute');
 const methodOverride = require('method-override');
 const adminRoute = require('./routes/adminRoute');
+const cookieParser = require('cookie-parser')
+const nocache = require('nocache');
+const middleware = require('./middleware/middleware');
 
 dotenv.config({path:'./config.env'});
 const db = process.env.DATABASE
@@ -31,8 +34,10 @@ app.use(session({
   resave: true
 }));
 
+app.use(cookieParser());
 app.use(methodOverride('_method'));
 app.use(flash());
+app.use(nocache());
 app.use(function(req, res, next){
   res.locals.successMessage = req.flash('success');
   res.locals.errorMessage = req.flash('error');

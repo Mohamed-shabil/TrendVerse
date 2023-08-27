@@ -6,6 +6,8 @@ const middleware = require('../middleware/middleware')
 router.get('/login',adminController.getLogin)
       .post('/login',adminController.login);
 
+router.use(middleware.isAdminLoggedIn);
+
 router.get('/',adminController.getDashboard);
 
 router.get('/products',adminController.getProducts)
@@ -33,5 +35,8 @@ router.route('/category/editCategory/:id')
 router.route('/users').get(adminController.getUsers)
 
 router.route('/users/:id').put(adminController.blockUsers)
+
+router.route('/logout')
+      .get(adminController.logout)
 
 module.exports = router
