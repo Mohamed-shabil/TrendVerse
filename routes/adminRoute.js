@@ -4,7 +4,7 @@ const adminController = require('../controller/adminController');
 const middleware = require('../middleware/middleware')
 
 
-router.get('/login',adminController.getLogin)
+router.get('/login',middleware.checkAdmin,adminController.getLogin)
 .post('/login',adminController.login);
 
 router.use(middleware.isAdminLoggedIn);
@@ -18,8 +18,15 @@ router.route('/products/addProducts')
 
 router.route('/products/editProduct/:id')
       .get(adminController.getEditProduct)
-      .put(middleware.uploadProductImages,middleware.resizeProductImages,adminController.editProduct)
+      .put(adminController.editProduct)
       .delete(adminController.deleteProduct);
+
+
+router.route('/products/editProduct/:id/uploadImage')
+      .put(middleware.uploadProductImages,middleware.resizeProductImages,adminController.addProductImage)
+
+router.route('/products/editProduct/:id/:image')
+      .delete(adminController.deleteProductImage)
 
 router.route('/category')
       .get(adminController.getCategory);

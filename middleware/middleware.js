@@ -90,7 +90,7 @@ exports.checkAdmin = async(req,res,next)=>{
       const decoded = await promisify(jwt.verify)(req.cookies.jwt,process.env.JWTSECRET);
       const admin = await Admin.findById({_id:decoded.id});
       if(admin){
-        res.redirect('/admin')
+        return res.redirect('/admin')
       }
   }
   next();

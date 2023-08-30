@@ -80,16 +80,34 @@ exports.getEditProduct = catchAsync(async(req,res)=>{
 })
 
 exports.editProduct = catchAsync(async(req,res)=>{
+    // console.log(req.body.images)
     const data = {
         name:req.body.name,
         description:req.body.description,
         category: req.body.category,
         price: req.body.price,
-        images:req.body.images
     } 
-    const product = await Product.findOneAndUpdate({_id:req.params.id},data,{new:true})
+    await Product.findOneAndUpdate({_id:req.params.id},data,{new:true})
     req.flash('success','Product updated successfully')
     res.redirect('/admin/products');
+})
+exports.deleteProductImage = catchAsync(async (req,res)=>{
+    console.log('params works')
+    console.log(req.params.image);
+    const deleteImage = await Product.findOneAndUpdate({_id:req.params.id},{$pull:{images:req.params.image}},{new:true});
+    if(deleteImage){
+        req.flash('success','Image deleted successfully')
+        res.redirect(`/admin/products/editProduct/${req.params.id}`);
+    }
+})
+exports.addProductImage = catchAsync(async (req,res)=>{
+    console.log(req.body.images);
+    
+    const addImage = await Product.findOneAndUpdate({_id:req.params.id},{$push:{images:{$each:req.body.images}}},{new:true});
+    if(addImage){
+        req.flash('success','Image deleted successfully')
+        res.redirect(`/admin/products/editProduct/${req.params.id}`);
+    }
 })
 
 exports.deleteProduct = catchAsync(async(req,res)=>{
