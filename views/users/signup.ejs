@@ -16,28 +16,22 @@
           </div>
         <%}%>
         
-        <div class="login__btn">
+        <!-- <div class="login__btn">
           <img src="users/img/icon/GoogleLogin.png" alt="Google logo"  />Login with
           Google
         </div>
-  
 
-  
-        <div class="or"><p>or</p></div>
+        <div class="or"><p>or</p></div> -->
       <form action="/signup" class="login__form" method="post">
-          <div
-            class="flex-column d-flex align-items-center justify-content-center"
-            >
-  
-  
-          </div>
-  
+          <div class="flex-column d-flex align-items-center justify-content-center"></div>
+    
           <div class="login__inputs">
             <input
               name="name"
               type="text"
-              class="form-control "
+              class="form-control"
               placeholder="Username"
+              value="<%=userData[0] ? userData[0].name:''%>"
               required
             />
   
@@ -48,6 +42,7 @@
               type="email"
               class="form-control "
               placeholder="Email"
+              value="<%= userData[0]?userData[0].email:''%>"
               required
             />
   
@@ -55,15 +50,15 @@
           <div class="login__inputs">
             <input
               name="phone"
-              type="tel"
+              type="text"
               class="form-control "
               minlength="10"
               placeholder="Phone Number"
+              oninput="restrictToNumbers(event)"
+              value="<%=userData[0] ? userData[0].phone :''%>"
               required
             />
-  
           </div>
-  
           <div class="login__inputs">
             <input
               name="password"
@@ -71,6 +66,7 @@
               class="form-control "
               minlength="6"
               placeholder="Password"
+              value="<%=userData[0]?userData[0].password:''%>"
               required
             />
           </div>
@@ -94,4 +90,14 @@
     </div>
   </div>
 
+  <script>
+    function restrictToNumbers(event) {
+      const input = event.target;
+      const currentValue = input.value;
+      const newValue = currentValue.replace(/[^0-9]/g, '');
+      input.value = newValue;
+    }
+    
+    
+  </script>
 <%- include('./partials/_footer.ejs') %>

@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const catchAsync = require('../utils/catchAsync');
 const Admin = require('../model/adminModel');
 const {promisify}  = require('util');
+const { log } = require('console');
 
 const multerStorage = multer.memoryStorage();
 
@@ -49,6 +50,7 @@ exports.resizeProductImages = catchAsync(async(req, res, next)=>{
 
 exports.uploadCategoryImage = upload.single('photo');
 
+
 exports.resizeCategoryImage = catchAsync(async(req, res, next)=>{
 
   if(!req.file) return next();
@@ -65,9 +67,10 @@ exports.resizeCategoryImage = catchAsync(async(req, res, next)=>{
 exports.isAdminLoggedIn = async(req,res,next)=>{
   if(req.cookies.jwt){
     try{
-      // the second parenthesis is to initialise the jwt.verify method 
+      // the second parenthesis is to initialise the jwt.verify method
       const decoded = await promisify(jwt.verify)(req.cookies.jwt,process.env.JWTSECRET);
       const admin = await Admin.findById({_id:decoded.id});
+      console.log(req.path);
       if(admin){
         return next();
       }else{
@@ -82,3 +85,13 @@ exports.isAdminLoggedIn = async(req,res,next)=>{
   }
 }
 
+exports.checkAdmin = async(req,res,next)=>{
+  if(req.cookies.jwt){
+      const decoded = await promisify(jwt.verify)(req.cookies.jwt,process.env.JWTSECRET);
+      const admin = await Admin.findById({_id:decoded.id});
+      if(admin){
+        res.redirect('/admin')
+      }
+  }
+  next();
+}

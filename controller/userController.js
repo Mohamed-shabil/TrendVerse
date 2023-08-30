@@ -52,14 +52,21 @@ exports.getSignUp = (req,res)=>{
 
 exports.signup = catchAsync( async (req,res)=>{
     const oldUser = await User.findOne({email:req.body.email});
-    
+    const userdata = {
+        name : req.body.name,
+        email: req.body.email,
+        phone: req.body.phone,
+        password : req.body.password
+    }
     if(oldUser){
         req.flash('error','User already exists, please login')
-        return res.redirect('/login');
+        req.flash('data',userdata)
+        return res.redirect('/signup');
     }
     if(req.body.password !== req.body.ConfirmPassword){
         console.log('Working')
         req.flash('error','Your Passwords are not matching, please try again');
+        req.flash('data',userdata);
         return res.redirect('/signup');
     }
     const pass = await bcrypt.hash(req.body.password,10);
@@ -109,11 +116,17 @@ exports.varifyOtp = catchAsync(async(req,res)=>{
     }
 })
 
-exports.getProducts = catchAsync(async(req,res)=>{
+exports.getProduct = catchAsync(async(req,res)=>{
     const product = await Products.findOne({_id:req.params.id});
     console.log(product);
     res.render('./users/productsDetails',{
         product
+    });
+})
+exports.getProducts = catchAsync(async(req,res)=>{
+    const products = await Products.find();
+    res.render('./users/products',{
+        products
     });
 })
 

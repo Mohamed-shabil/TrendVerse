@@ -50,7 +50,6 @@ exports.getProducts = catchAsync( async (req,res) =>{
 
 exports.getAddProducts = catchAsync(async (req,res) =>{
     const categories = await Category.find();
-    console.log(categories);
     res.render('./admin/addProducts',{
         categories
     });
@@ -66,7 +65,7 @@ exports.addProducts = catchAsync(async(req,res) =>{
         category
     }).then(async ()=>{
         req.flash('success','Product Added successfully')
-        return res.redirect('/admin/products/addProducts');
+        return res.redirect('/admin/products');
         
     }).catch((e)=>{
         req.flash('error','Something went Wrong try again')
@@ -94,7 +93,6 @@ exports.editProduct = catchAsync(async(req,res)=>{
 })
 
 exports.deleteProduct = catchAsync(async(req,res)=>{
-    console.log('delete products works')
     await Product.deleteOne({_id:req.params.id}).then(()=>{
         req.flash('success','Product deleted successfully')
         return res.redirect('/admin/products');
@@ -110,7 +108,6 @@ exports.getAddCategory = (req,res)=>{
 }
 exports.addCategory = catchAsync(async(req,res)=>{
     const {name,photo} = req.body;
-    console.log(name,photo)
     await Category.create({
         name:name,
         image:photo
@@ -130,8 +127,7 @@ exports.getEditCategory = catchAsync(async(req,res)=>{
 
 exports.editCategory = catchAsync(async(req,res)=>{
     const {name,photo} = req.body;
-    console.log(name,photo)
-    await Category.updateOne({_id:req.params.id},{name,photo});
+    await Category.updateOne({_id:req.params.id},{name,image:photo});
     req.flash('success','Category Added successfully')
     res.redirect("/admin/category");
 })
@@ -150,7 +146,6 @@ exports.getUsers = catchAsync(async(req,res)=>{
 })
 exports.blockUsers = catchAsync(async(req,res)=>{
     const userStatus = /^true$/i.test(req.body.isBlocked);
-    const user =await User.findByIdAndUpdate({_id:req.params.id},{$set:{blocked:userStatus}},{new:true})
-    console.log(user);
+    const user = await User.findByIdAndUpdate({_id:req.params.id},{$set:{blocked:userStatus}},{new:true})
     res.redirect('/admin/users');
 })

@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    profile:{
+        type:String,
+        default:'user.png'
+    },
     cart: Array,
     address:Array,
     blocked :{

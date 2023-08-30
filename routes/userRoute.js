@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const userController = require('../controller/userController');
+const middleware = require('../middleware/middleware');
 
 
 router.get('/',userController.getHome);
@@ -12,7 +13,8 @@ router.route('/login')
     .get(userController.getLogin)
     .post(userController.userLogin);
 
-router.get('/shop/:id',userController.getProducts)
+router.get('/shop/',userController.getProducts)
+router.get('/shop/:id',userController.getProduct)
 
 
 

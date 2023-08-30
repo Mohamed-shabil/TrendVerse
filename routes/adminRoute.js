@@ -3,8 +3,9 @@ const router = express.Router();
 const adminController = require('../controller/adminController');
 const middleware = require('../middleware/middleware')
 
+
 router.get('/login',adminController.getLogin)
-      .post('/login',adminController.login);
+.post('/login',adminController.login);
 
 router.use(middleware.isAdminLoggedIn);
 

@@ -42,7 +42,9 @@
                                 <td><%=category.name%></td>
                                 <td><img src="/category/<%=category.image%>"  alt="<%=category.name%>" ></td>
                                 <td>
-                                    <span class="edit_btn_icon"><a href="/admin/products/editCategory/<%=category._id%>"><i class="mdi mdi-border-color"></i></a></span>
+                                    <span class="edit_btn_icon">
+                                      <a href="/admin/category/editCategory/<%=category._id%>"><i class="mdi mdi-border-color"></i></a>
+                                    </span>
                                 </td>
                                 <td>
                                   <form action="/admin/category/editCategory/<%=category._id%>?_method=DELETE" method="post">
