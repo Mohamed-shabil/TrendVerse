@@ -53,11 +53,21 @@
                                 <td><%=user.email%></td>
                                 <td><%=user.phone%></td>
                                 <td><h6><%=user.varified%></h6></td>
-                                <td>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" data-toggle="toggle"> 
-                                    </label>
-                                </td>
+                                <%if(!user.blocked){%>
+                                  <td>
+                                    <form action="/admin/users/<%=user._id%>?_method=PUT" method="post">
+                                      <input type="hidden" value='true' name="isBlocked" >
+                                      <button class="btn btn-primary" type="submit">Block</button>
+                                    </form>
+                                  </td>
+                                <%}else{%>
+                                  <td>
+                                    <form action="/admin/users/<%=user._id%>?_method=PUT" method="post">
+                                      <input type="hidden" value='false' name="isBlocked">
+                                      <button class="btn btn-primary" type="submit">Unblock</button>
+                                    </form>
+                                  </td>
+                                <%}%>
                               </tr>
                             <%})%> 
                           </tbody>
@@ -99,5 +109,10 @@
           imagePreviewElement.style.width = "100%";
         }
       }
+
+     const toggleValue = ()=>{
+      let toggleBtn = document.getElementById('togglebtn').value;
+      
+     }
     </script>
 <%- include('partials/_footer.ejs') %>

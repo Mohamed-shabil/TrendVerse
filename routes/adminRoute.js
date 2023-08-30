@@ -32,9 +32,11 @@ router.route('/category/editCategory/:id')
       .put(middleware.uploadCategoryImage,middleware.resizeCategoryImage,adminController.editCategory)
       .delete(adminController.deleteCategory)
 
-router.route('/users').get(adminController.getUsers)
+router.route('/users')
+      .get(adminController.getUsers)
 
-router.route('/users/:id').put(adminController.blockUsers)
+router.route('/users/:id')
+      .put(adminController.blockUsers)
 
 router.route('/logout')
       .get(adminController.logout)

@@ -55,10 +55,13 @@ exports.signup = catchAsync( async (req,res)=>{
     
     if(oldUser){
         req.flash('error','User already exists, please login')
-        res.locals.errorMessage = req.flash('error');
         return res.redirect('/login');
     }
-
+    if(req.body.password !== req.body.ConfirmPassword){
+        console.log('Working')
+        req.flash('error','Your Passwords are not matching, please try again');
+        return res.redirect('/signup');
+    }
     const pass = await bcrypt.hash(req.body.password,10);
     const otp = randomString.generate({
         length:4,

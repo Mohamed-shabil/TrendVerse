@@ -21,10 +21,7 @@
           Google
         </div>
   
-        <div class="login__btn">
-          <img src="users/img/icon/fbLogin.png" alt="Facebook Logo"  />Login with
-          Facebook
-        </div>
+
   
         <div class="or"><p>or</p></div>
       <form action="/signup" class="login__form" method="post">
@@ -41,6 +38,7 @@
               type="text"
               class="form-control "
               placeholder="Username"
+              required
             />
   
           </div>
@@ -50,6 +48,7 @@
               type="email"
               class="form-control "
               placeholder="Email"
+              required
             />
   
           </div>
@@ -58,7 +57,9 @@
               name="phone"
               type="tel"
               class="form-control "
+              minlength="10"
               placeholder="Phone Number"
+              required
             />
   
           </div>
@@ -68,15 +69,19 @@
               name="password"
               type="password"
               class="form-control "
+              minlength="6"
               placeholder="Password"
+              required
             />
           </div>
           <div class="login__inputs">
             <input
-              name="Confirmpassword"
+              name="ConfirmPassword"
               type="password"
+              minlength="6"
               class="form-control "
               placeholder="Confirm password"
+              required
             />
           </div>
           

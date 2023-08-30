@@ -149,5 +149,8 @@ exports.getUsers = catchAsync(async(req,res)=>{
     res.render('./admin/users',{users});
 })
 exports.blockUsers = catchAsync(async(req,res)=>{
-    const user = await User.findByIdAndUpdate({_id:req.params.id},{},{})
+    const userStatus = /^true$/i.test(req.body.isBlocked);
+    const user =await User.findByIdAndUpdate({_id:req.params.id},{$set:{blocked:userStatus}},{new:true})
+    console.log(user);
+    res.redirect('/admin/users');
 })
