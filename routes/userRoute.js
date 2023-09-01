@@ -14,8 +14,8 @@ router.get('/varifyOtp',userController.getVarifyOtp);
 router.post('/varifyOtp',userController.varifyOtp);
 
 router.route('/login')
-.get(userController.getLogin)
-.post(userController.userLogin);
+    .get(userController.getLogin)
+    .post(userController.userLogin);
 
 
 router.get('/shop',userController.getProducts)
@@ -24,8 +24,10 @@ router.route('/shop/:id')
     .get(userController.getProduct)
     .put(middleware.authChecker,userController.addToCart);
 
-
-router.get('/cart',middleware.authChecker,userController.getCart);
+router.route('/cart')
+    .get(middleware.authChecker,userController.getCart)
+    .patch(middleware.authChecker,userController.addToCart)
+    .delete(middleware.authChecker,userController.removeCartItem)
 
 
 

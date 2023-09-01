@@ -138,9 +138,7 @@ exports.getProducts = catchAsync(async(req,res)=>{
 })
 
 exports.addToCart = catchAsync(async (req,res)=>{
-    console.log(req.user);
-    console.log(req.body.quantity);
-    const quantity = parseInt(req.body.quantity);
+    const quantity = parseInt(req.body.quantity) || 1;
     const product = await Products.findById(req.body.id);
     const user = await User.findById({_id: req.user._id});
     
@@ -166,4 +164,15 @@ exports.getCart = catchAsync(async (req,res)=>{
     });
 })
 
+exports.removeCartItem = catchAsync (async (req,res) => {
+    const cartItemId = req.body.id
+    const user = await User.findById(req.user._id);
+    const cartItemIndex = user.cart.findIndex(item => item._id.equals(cartItemId));
+    console.log(cartItemIndex);
+    if (cartItemIndex !== -1) {
+      user.cart.splice(cartItemIndex, 1);
+      await user.save();
+    }
+    res.redirect('/cart');
+})
 
