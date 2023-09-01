@@ -616,6 +616,14 @@ input::-webkit-inner-spin-button {
   Hero
 -----------------------*/
 
+
+.remove_cart{
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	background-color: transparent;
+}
+
 .hero__slider.owl-carousel .owl-item.active .hero__text h6 {
 	top: 0;
 	opacity: 1;

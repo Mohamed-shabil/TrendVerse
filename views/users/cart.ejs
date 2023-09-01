@@ -22,31 +22,31 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <%cart.forEach((product)=>{%>
+                                        <%cart.forEach((item)=>{%>
                                                 <tr>
                                                     <td class="product__cart__item">
                                                         <div class="product__cart__item__pic">
-                                                            <img src="/products/<%=product.product.images[0]%>" alt="">
+                                                            <img src="/products/<%=item.product.images[0]%>" alt="">
                                                         </div>
                                                         <div class="product__cart__item__text">
-                                                            <h6><%=product.product.name%></h6>
-                                                            <h5>₹ <%=product.product.price%></h5>
+                                                            <h6><%=item.product.name%></h6>
+                                                            <h5>₹ <%=item.product.price%></h5>
                                                         </div>
                                                     </td>
                                                     <td class="quantity__item">
                                                         <div class="quantity">
                                                             <div class="pro-qty-2">
                             
-                                                                <input type="text" value="<%=product.quantity%>">
+                                                                <input type="text" value="<%=item.quantity%>">
                                                                 
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="cart__price">₹<%=product.product.price%></td>
+                                                    <td class="cart__price">₹<%=item.totalAmount%></td>
                                                     <td class="cart__close">
                                                         <form action="/cart?_method=DELETE" method="post">
-                                                            <input type="hidden" name="id" value="<%=product._id%>">
-                                                            <button type="submit"><i class="fa fa-close"></i></button>
+                                                            <input type="hidden" name="id" value="<%=item._id%>">
+                                                            <button type="submit" class="remove_cart"><i class="fa fa-close"></i></button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -58,12 +58,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="continue__btn">
-                                    <a href="#">Continue Shopping</a>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="continue__btn update__btn">
-                                    <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                                    <a href="/shop">Continue Shopping</a>
                                 </div>
                             </div>
                         </div>

@@ -123,4 +123,7 @@ exports.authChecker = async(req,res,next)=>{
   req.user = currentUser;
   next();
 }
-
+exports.previousRouteTracker =catchAsync(async (req,res,next)=>{
+  req.previousUrl = req.header('Referer') || '/';
+  next();
+})

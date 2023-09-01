@@ -80,7 +80,7 @@ exports.getEditProduct = catchAsync(async(req,res)=>{
 })
 
 exports.editProduct = catchAsync(async(req,res)=>{
-    // console.log(req.body.images)
+    console.log(req.body.name);
     const data = {
         name:req.body.name,
         description:req.body.description,

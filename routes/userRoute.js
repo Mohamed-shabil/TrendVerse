@@ -4,14 +4,14 @@ const middleware = require('../middleware/middleware');
 
 
 
-
+router.use(middleware.previousRouteTracker);
 router.get('/',userController.getHome);
-
 
 router.get('/signup',userController.getSignUp)
 router.post('/signup',userController.signup)
 router.get('/varifyOtp',userController.getVarifyOtp);
 router.post('/varifyOtp',userController.varifyOtp);
+
 
 router.route('/login')
     .get(userController.getLogin)

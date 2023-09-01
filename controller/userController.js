@@ -138,21 +138,30 @@ exports.getProducts = catchAsync(async(req,res)=>{
 })
 
 exports.addToCart = catchAsync(async (req,res)=>{
+    const previousPath = req.previousUrl;
+    console.log(previousPath);
     const quantity = parseInt(req.body.quantity) || 1;
     const product = await Products.findById(req.body.id);
     const user = await User.findById({_id: req.user._id});
+    const totalAmount = product.price * quantity;
     
-    console.log('User is : ',user);
     
     const existingCartItemIndex = user.cart.filter( item => item.product.equals(product._id));
+    let totalCartValue = 0;
+    user.cart.forEach(item => {
+      totalCartValue += item.product.price * item.quantity;
+    })
     
     if(!existingCartItemIndex){
-        user.cart[existingCartItemIndex].quantity += quantity; 
+        user.cart[existingCartItemIndex].quantity += quantity;
+        user.cart[existingCartItemIndex].totalAmount += totalAmount; 
+        user.totalCartValue = totalCartValue; 
     }else{
-        user.cart.push({product:product._id,quantity});
+        user.cart.push({product:product._id,quantity,totalAmount});
+        user.totalCartValue = totalCartValue;
     }
     await user.save();
-    return res.redirect(`/shop/${req.body.id}`);
+    return res.redirect(previousPath);
 })
 
 exports.getCart = catchAsync(async (req,res)=>{

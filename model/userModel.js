@@ -26,8 +26,13 @@ const userSchema = new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:'Product'
         },
-        quantity:Number
+        quantity:Number,
+        totalAmount: Number
     }],
+    totalCartValue:{
+        type:Number,
+        default:0
+    },
     address:Array,
     blocked :{
         type:Boolean,

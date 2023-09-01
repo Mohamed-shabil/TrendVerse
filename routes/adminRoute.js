@@ -18,7 +18,7 @@ router.route('/products/addProducts')
 
 router.route('/products/editProduct/:id')
       .get(adminController.getEditProduct)
-      .put(adminController.editProduct)
+      .patch(adminController.editProduct)
       .delete(adminController.deleteProduct);
 
 
