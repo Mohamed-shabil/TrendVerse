@@ -23,7 +23,7 @@ router.route('/products/editProduct/:id')
 
 
 router.route('/products/editProduct/:id/uploadImage')
-      .put(middleware.uploadProductImages,middleware.resizeProductImages,adminController.addProductImage)
+      .patch(middleware.uploadProductImages,middleware.resizeProductImages,adminController.addProductImage)
 
 router.route('/products/editProduct/:id/:image')
       .delete(adminController.deleteProductImage)

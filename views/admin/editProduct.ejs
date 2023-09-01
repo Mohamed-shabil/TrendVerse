@@ -89,8 +89,10 @@
                       <input type="file" class="file-upload-default">
                       <div class="input-group col-xs-12">
                         <span class="input-group-append">
-                          <form action="/admin/products/editProduct/<%=product._id%>/uploadImage?_method=PUT" method="post">
+                          <form action="/admin/products/editProduct/<%=product._id%>/uploadImage?_method=PATCH" enctype="multipart/form-data" method="post">
+
                             <input type="file" accept="image/*" multiple name="images" onchange="previewImages(event);" class="form-control file-upload-info" placeholder="Upload Image">
+                            
                             <button class="file-upload-browse btn btn-primary" type="submit">Upload</button>
                           </form>
                         </span>

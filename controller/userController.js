@@ -3,6 +3,7 @@ const User = require('../model/userModel');
 const Products = require('../model/productModel'); 
 const bcrypt = require('bcrypt');
 const randomString = require('randomstring');
+const token = require('../utils/token')
 const sendMail = require('../utils/email');
 
 
@@ -15,31 +16,36 @@ exports.getHome = catchAsync(async(req,res)=>{
 
 
 exports.getLogin = (req,res)=>{
-    res.render('./users/Login');
+
+    console.log(res.locals.errorMessage)
+    return res.render('./users/Login');
 }
 
 
 exports.userLogin = catchAsync( async (req,res)=>{
     const {password, email} = req.body;
 
-    const user = await User.findOne({email});
-    if(!user){
+    const currentUser = await User.findOne({email});
+    if(!currentUser){
         req.flash('error','invalid password or email')
         res.locals.errorMessage = req.flash('error');
         res.render('./users/login');
     }else{
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password, currentUser.password);
 
         if(!isMatch){
             req.flash('error','invalid password or email')
             res.locals.errorMessage = req.flash('error');
             return res.render('./users/login');
         }
-        if(!user.varified){
+        if(!currentUser.varified){
             req.flash('error','your email is not varified')
             res.locals.errorMessage = req.flash('error');
             return res.redirect('/varitfyOtp');
         }
+        token.createSendToken(currentUser,res);
+        req.session.user = currentUser 
+        console.log(req.session.user)
         return res.redirect('/');
     }
 
@@ -117,16 +123,47 @@ exports.varifyOtp = catchAsync(async(req,res)=>{
 })
 
 exports.getProduct = catchAsync(async(req,res)=>{
+    const user = req.user;
     const product = await Products.findOne({_id:req.params.id});
-    console.log(product);
     res.render('./users/productsDetails',{
-        product
+        product,user
     });
 })
 exports.getProducts = catchAsync(async(req,res)=>{
+
     const products = await Products.find();
     res.render('./users/products',{
         products
     });
 })
+
+exports.addToCart = catchAsync(async (req,res)=>{
+    console.log(req.user);
+    console.log(req.body.quantity);
+    const quantity = parseInt(req.body.quantity);
+    const product = await Products.findById(req.body.id);
+    const user = await User.findById({_id: req.user._id});
+    
+    console.log('User is : ',user);
+    
+    const existingCartItemIndex = user.cart.filter( item => item.product.equals(product._id));
+    
+    if(!existingCartItemIndex){
+        user.cart[existingCartItemIndex].quantity += quantity; 
+    }else{
+        user.cart.push({product:product._id,quantity});
+    }
+    await user.save();
+    return res.redirect(`/shop/${req.body.id}`);
+})
+
+exports.getCart = catchAsync(async (req,res)=>{
+    const user = await User.findById(req.user._id).populate('cart.product');
+    const cart = user.cart;
+    console.log(user.cart);
+    return res.render('./users/cart',{
+        cart
+    });
+})
+
 

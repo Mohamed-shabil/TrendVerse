@@ -2404,6 +2404,8 @@ input::-webkit-inner-spin-button {
 .shopping__cart__table table tbody tr td.product__cart__item .product__cart__item__pic {
 	float: left;
 	margin-right: 30px;
+	width: 90px;
+	height: 90px;
 }
 
 .shopping__cart__table table tbody tr td.product__cart__item .product__cart__item__text {

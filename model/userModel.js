@@ -21,7 +21,13 @@ const userSchema = new mongoose.Schema({
         type:String,
         default:'user.png'
     },
-    cart: Array,
+    cart: [{
+        product:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Product'
+        },
+        quantity:Number
+    }],
     address:Array,
     blocked :{
         type:Boolean,

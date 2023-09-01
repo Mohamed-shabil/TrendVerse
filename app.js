@@ -11,7 +11,7 @@ const methodOverride = require('method-override');
 const adminRoute = require('./routes/adminRoute');
 const cookieParser = require('cookie-parser')
 const nocache = require('nocache');
-const middleware = require('./middleware/middleware');
+
 
 dotenv.config({path:'./config.env'});
 const db = process.env.DATABASE

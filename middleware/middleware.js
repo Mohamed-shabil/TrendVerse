@@ -3,8 +3,8 @@ const sharp = require('sharp');
 const jwt = require('jsonwebtoken');
 const catchAsync = require('../utils/catchAsync');
 const Admin = require('../model/adminModel');
+const User = require('../model/userModel');
 const {promisify}  = require('util');
-const { log } = require('console');
 
 const multerStorage = multer.memoryStorage();
 
@@ -22,19 +22,19 @@ const upload = multer({
 }); 
 
 exports.uploadProductImages = upload.fields([
-  {name:'images',maxCount:4}
+  {name:'images',maxCount:4},
 ])
 
 
 exports.resizeProductImages = catchAsync(async(req, res, next)=>{
-    console.log(req.files); 
+    console.log(req.files);
     if(!req.files.images) return next()
 
       req.body.images = [];
       await Promise.all( 
 
         req.files.images.map( async ( file, i ) =>{
-        const filename = `-${Date.now()}-${i+1}.jpeg`;
+        const filename = `-${Date.now()}test-${i+1}.jpeg`;
        
         await sharp(file.buffer)
           .resize(640,640)
@@ -70,7 +70,6 @@ exports.isAdminLoggedIn = async(req,res,next)=>{
       // the second parenthesis is to initialise the jwt.verify method
       const decoded = await promisify(jwt.verify)(req.cookies.jwt,process.env.JWTSECRET);
       const admin = await Admin.findById({_id:decoded.id});
-      console.log(req.path);
       if(admin){
         return next();
       }else{
@@ -95,3 +94,33 @@ exports.checkAdmin = async(req,res,next)=>{
   }
   next();
 }
+
+exports.authChecker = async(req,res,next)=>{
+  let token
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
+
+  if (!token) {
+    req.flash('error','please login');
+    res.redirect('/login');
+  }
+  
+  const decoded = await promisify(jwt.verify)(token, process.env.JWTSECRET);
+  
+  const currentUser = await User.findById(decoded.id);
+  console.log(currentUser);
+
+  if (!currentUser) {
+    req.flash('error','please login');
+    res.redirect('/login')
+  }
+  req.user = currentUser;
+  next();
+}
+
