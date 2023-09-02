@@ -29,6 +29,9 @@ router.route('/cart')
     .patch(middleware.authChecker,userController.addToCart)
     .delete(middleware.authChecker,userController.removeCartItem)
 
+router.route('/cart/:id')
+    .patch(middleware.authChecker,userController.updateCartQuantity);
+
 
 
 

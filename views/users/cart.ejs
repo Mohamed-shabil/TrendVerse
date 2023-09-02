@@ -34,13 +34,12 @@
                                                         </div>
                                                     </td>
                                                     <td class="quantity__item">
-                                                        <div class="quantity">
-                                                            <div class="pro-qty-2">
-                            
-                                                                <input type="text" value="<%=item.quantity%>">
-                                                                
+                                                        <form action="/cart/<%=item.product._id%>?_method=PATCH" method="post">
+                                                            <div class="quantity">
+                                                                <input type="number" name="quantity" class="quantity_input" value="<%=item.quantity%>">
+                                                                <button type="submit" class="quantity_changer">Update</button>
                                                             </div>
-                                                        </div>
+                                                        </form>
                                                     </td>
                                                     <td class="cart__price">₹<%=item.totalAmount%></td>
                                                     <td class="cart__close">
@@ -74,8 +73,8 @@
                         <div class="cart__total">
                             <h6>Cart total</h6>
                             <ul>
-                                <li>Subtotal <span>$ 169.50</span></li>
-                                <li>Total <span>$ 169.50</span></li>
+                                <li>Subtotal <span>₹ <%=totalCartValue%></span></li>
+                                <li>Total <span>₹ <%=totalCartValue%></span></li>
                             </ul>
                             <a href="#" class="primary-btn">Proceed to checkout</a>
                         </div>

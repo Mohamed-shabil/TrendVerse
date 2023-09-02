@@ -142,23 +142,23 @@ exports.addToCart = catchAsync(async (req,res)=>{
     console.log(previousPath);
     const quantity = parseInt(req.body.quantity) || 1;
     const product = await Products.findById(req.body.id);
-    const user = await User.findById({_id: req.user._id});
+    const user = await User.findById({_id: req.user._id}).populate('cart.product');
     const totalAmount = product.price * quantity;
     
     
-    const existingCartItemIndex = user.cart.filter( item => item.product.equals(product._id));
     let totalCartValue = 0;
     user.cart.forEach(item => {
-      totalCartValue += item.product.price * item.quantity;
+        totalCartValue +=  item.totalAmount;
     })
     
+    const existingCartItemIndex = user.cart.filter( item => item.product.equals(product._id));
     if(!existingCartItemIndex){
         user.cart[existingCartItemIndex].quantity += quantity;
         user.cart[existingCartItemIndex].totalAmount += totalAmount; 
-        user.totalCartValue = totalCartValue; 
+        user.totalCartValue += (totalCartValue + totalAmount); 
     }else{
         user.cart.push({product:product._id,quantity,totalAmount});
-        user.totalCartValue = totalCartValue;
+        user.totalCartValue = (totalCartValue + totalAmount);
     }
     await user.save();
     return res.redirect(previousPath);
@@ -167,9 +167,10 @@ exports.addToCart = catchAsync(async (req,res)=>{
 exports.getCart = catchAsync(async (req,res)=>{
     const user = await User.findById(req.user._id).populate('cart.product');
     const cart = user.cart;
+    const totalCartValue = user.totalCartValue;
     console.log(user.cart);
     return res.render('./users/cart',{
-        cart
+        cart,totalCartValue
     });
 })
 
@@ -179,9 +180,29 @@ exports.removeCartItem = catchAsync (async (req,res) => {
     const cartItemIndex = user.cart.findIndex(item => item._id.equals(cartItemId));
     console.log(cartItemIndex);
     if (cartItemIndex !== -1) {
+      user.totalCartValue = user.totalCartValue - user.cart[cartItemIndex].totalAmount
       user.cart.splice(cartItemIndex, 1);
       await user.save();
     }
     res.redirect('/cart');
 })
 
+exports.updateCartQuantity = catchAsync( async(req,res)=>{
+    const product = req.params.id;
+    const userId = req.user._id 
+    const updateQuantity = req.body.quantity
+    
+    const user = await User.findById(userId).populate('cart.product');
+    cartItemIndex = user.cart.findIndex(item => item.product.equals(product));
+    if(cartItemIndex !=-1){
+        user.cart[cartItemIndex].quantity = updateQuantity;
+        user.cart[cartItemIndex].totalAmount = updateQuantity * user.cart[cartItemIndex].product.price;
+        let totalCartValue = 0;
+        user.cart.forEach(item => {
+            totalCartValue +=  item.totalAmount;
+        })
+        user.totalCartValue = totalCartValue;
+        user.save();
+    }
+    res.redirect(req.previousUrl);
+})

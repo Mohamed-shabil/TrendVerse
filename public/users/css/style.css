@@ -616,7 +616,27 @@ input::-webkit-inner-spin-button {
   Hero
 -----------------------*/
 
-
+.quantity{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	flex-direction: row;
+}
+.quantity_changer{
+	outline: none;
+	border: none;
+	text-align: center;
+	border-radius:30px;
+	padding: 5px 15px;
+}
+.quantity_changer i {
+	line-height: 35px;
+}
+.quantity_input{
+	width: 30px;
+	text-align: center;
+}
 .remove_cart{
 	outline: none;
 	border: none;
@@ -2394,6 +2414,7 @@ input::-webkit-inner-spin-button {
 }
 
 .shopping__cart__table table thead tr th {
+	text-align: center;
 	color: #111111;
 	font-size: 16px;
 	font-weight: 700;
@@ -2462,6 +2483,7 @@ input::-webkit-inner-spin-button {
 }
 
 .shopping__cart__table table tbody tr td.cart__price {
+	text-align: center;
 	color: #111111;
 	font-size: 18px;
 	font-weight: 700;
