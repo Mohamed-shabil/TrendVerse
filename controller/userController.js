@@ -10,7 +10,7 @@ const sendMail = require('../utils/email');
 exports.getHome = catchAsync(async(req,res)=>{
     const products = await Products.find();
     res.render('./users/home',{
-        products
+        products,user:req.user
     });
 })
 

@@ -37,16 +37,17 @@ app.use(session({
 app.use(cookieParser());
 app.use(methodOverride('_method'));
 app.use(flash());
-app.use(function(req, res, next){
-  res.locals.successMessage = req.flash('success');
-  res.locals.errorMessage = req.flash('error');
-  res.locals.userData = req.flash('data');
-  next();
-});
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended:true}))
 
+app.use(function(req, res, next){
+  res.locals.successMessage = req.flash('success');
+  res.locals.errorMessage = req.flash('error');
+  res.locals.userData = req.flash('data');
+  res.locals.user = req.user;
+  next();
+});
 app.use(nocache());
 app.use('/',userRoute);
 app.use('/admin',adminRoute);

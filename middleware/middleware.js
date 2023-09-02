@@ -106,23 +106,30 @@ exports.authChecker = async(req,res,next)=>{
     token = req.cookies.jwt;
   }
 
-  if (!token) {
-    req.flash('error','please login');
-    res.redirect('/login');
+  if(!token){
+    return next();
   }
-  
-  const decoded = await promisify(jwt.verify)(token, process.env.JWTSECRET);
-  
-  const currentUser = await User.findById(decoded.id);
-  console.log(currentUser);
 
-  if (!currentUser) {
-    req.flash('error','please login');
-    res.redirect('/login')
+  const decoded = await promisify(jwt.verify)(token, process.env.JWTSECRET);
+  const currentUser = await User.findById(decoded.id);
+
+  console.log(currentUser);
+  if(!currentUser){
+    return next();
   }
   req.user = currentUser;
+  res.locals.user = req.user
+  return next();
+}
+
+exports.isLoggedin = async (req,res,next)=>{
+  if(!req.user){
+    req.flash('error','Please login to continue');
+    return res.redirect('/login');
+  }
   next();
 }
+
 exports.previousRouteTracker =catchAsync(async (req,res,next)=>{
   req.previousUrl = req.header('Referer') || '/';
   next();

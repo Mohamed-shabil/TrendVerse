@@ -146,6 +146,13 @@ ol {
 	color: #fff!important;
 }
 
+.header__login__btn{
+	color: #fff!important ;
+	background-color: #222!important;
+	padding: 4px 30px;
+	border-radius: 2px;
+}
+
 /* OTP */
 .otp_input{
 	width: 100%;

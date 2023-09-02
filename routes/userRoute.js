@@ -4,7 +4,7 @@ const middleware = require('../middleware/middleware');
 
 
 
-router.use(middleware.previousRouteTracker);
+router.use(middleware.previousRouteTracker,middleware.authChecker);
 router.get('/',userController.getHome);
 
 router.get('/signup',userController.getSignUp)
@@ -22,12 +22,12 @@ router.get('/shop',userController.getProducts)
 
 router.route('/shop/:id')
     .get(userController.getProduct)
-    .put(middleware.authChecker,userController.addToCart);
+    .put(middleware.isLoggedin,userController.addToCart);
 
 router.route('/cart')
-    .get(middleware.authChecker,userController.getCart)
-    .patch(middleware.authChecker,userController.addToCart)
-    .delete(middleware.authChecker,userController.removeCartItem)
+    .get(middleware.isLoggedin,userController.getCart)
+    .patch(middleware.isLoggedin,userController.addToCart)
+    .delete(middleware.isLoggedin,userController.removeCartItem)
 
 router.route('/cart/:id')
     .patch(middleware.authChecker,userController.updateCartQuantity);
