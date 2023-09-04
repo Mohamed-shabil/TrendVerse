@@ -24,8 +24,9 @@ exports.getLogin = (req,res)=>{
 
 exports.userLogin = catchAsync( async (req,res)=>{
     const {password, email} = req.body;
-
-    const currentUser = await User.findOne({email});
+    console.log(password,email)
+    const currentUser = await User.findOne({email})
+    
     if(!currentUser){
         req.flash('error','invalid password or email')
         res.locals.errorMessage = req.flash('error');
@@ -43,6 +44,9 @@ exports.userLogin = catchAsync( async (req,res)=>{
             res.locals.errorMessage = req.flash('error');
             return res.redirect('/varitfyOtp');
         }
+        currentUser.password = undefined;
+        
+        console.log(currentUser)
         token.createSendToken(currentUser,res);
         req.session.user = currentUser 
         console.log(req.session.user)
@@ -205,4 +209,13 @@ exports.updateCartQuantity = catchAsync( async(req,res)=>{
         user.save();
     }
     res.redirect(req.previousUrl);
+})
+
+
+
+// get Account
+exports.getAccount = catchAsync(async (req,res)=>{
+    res.render('./users/account',{
+        user:req.user
+    });
 })

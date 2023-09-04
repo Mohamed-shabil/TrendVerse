@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const userController = require('../controller/userController');
+const accountController = require('../controller/accountController');
+const addressController = require('../controller/addressController');
 const middleware = require('../middleware/middleware');
 
 
@@ -32,6 +34,22 @@ router.route('/cart')
 router.route('/cart/:id')
     .patch(middleware.authChecker,userController.updateCartQuantity);
 
+
+router.route('/account')
+    .get(middleware.isLoggedin,middleware.authChecker,accountController.getAccount);
+
+router.route('/account/address')
+    .get(middleware.isLoggedin,middleware.authChecker,addressController.getAddress)
+    .delete(middleware.isLoggedin,middleware.authChecker,addressController.deleteAddress)
+
+router.route('/account/address/addAddress')
+    .get(middleware.isLoggedin,middleware.authChecker,addressController.getAddAddress)
+    .post(middleware.isLoggedin,middleware.authChecker,addressController.AddAddress)
+    
+
+router.route('/account/address/editAddress/:id')
+    .get(middleware.isLoggedin,middleware.authChecker,addressController.getEditAddress)
+    .put(middleware.isLoggedin,middleware.authChecker,addressController.editAddress)
 
 
 

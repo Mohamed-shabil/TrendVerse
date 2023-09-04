@@ -1,0 +1,36 @@
+<%- include('../../partials/_header') %>
+    <body>
+    <%- include('../../partials/_navbar',) %>
+
+    <div class="container">
+        <div class="row py-5">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body address_icon">
+                    <a href="/account/address/addAddress"><i class="addAddress bi bi-plus-circle-dotted"></i></a>
+                    <a href="/account/address/addAddress">Add Address</a>
+                </div>
+            </div>
+            <% addresses.forEach((address)=>{ %>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                      <p class="card-text"><b><%=address.name %></b></p>
+                      <p class="card-text"><%=address.city %></p>
+                      <p class="card-text"><%=address.locality %></p>
+                      <p class="card-text"><%=address.pincode %></p>
+                      <p class="card-text"><%=address.city %></p>
+                      <p class="card-text"><%=address.phone %></p>
+                      <p class="card-text"><%=address.alternativePhoneNumber %></p>
+                      <p class="card-text"><%=address.landMark %></p>
+                      
+                      <form action="/account/address?_method=DELETE" method="post">
+                            <a href="/account/address/editAddress/<%=address._id%>">Edit</a>
+                            <span> | </span>
+                            <input type="hidden" name="id" value="<%=address._id%>">
+                            <button class="address_delete_button" type="submit">Delete</button>
+                      </form>
+                    </div>
+                </div>
+           <%})%>
+        </div>
+    </div>
+<%- include('../../partials/_footer',) %>

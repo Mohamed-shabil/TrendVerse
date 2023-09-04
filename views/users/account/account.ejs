@@ -1,0 +1,42 @@
+<%- include('../partials/_header',) %>
+<body>
+    <%- include('../partials/_navbar', {user}) %>
+    <section class="account__container w-100 h-100 py-5">
+
+    
+    <div class="container">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="col-12 profile_data">
+                        <img src="/profile/<%=user.profile%>" class="user_profile_pic" alt="<%=user.name%>" srcset="">
+                        <label for="profile_upload" class="Update_pic_btn">Update Profile</label>
+                        <input type="file" accept="image/*" id="profile_upload" >
+                        <div class="user_info text-center">
+                            <h5><b><%=user.name%></b></h5>
+                            <p class="user_info_data"><%=user.email%></p>
+                            <p class="user_info_data"><%=user.phone%></p>
+                            <%if(!user.varified){%>
+                                <p class="user_info_data">Not varified <a href="#">Varify Account Now</a></p>
+                            <%}else{%>
+                                <p class="user_info_data">Varified <b><i class="bi bi-check-circle"></i></b></p>
+                            <%}%>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row justify-content-around">
+                        <button class="col-5 account__options">
+                          <a href="/account/address">Address</a>
+                        </button>
+                        <button class="col-5 account__options">
+                          <a href="/account/orders">Orders</a>
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<%- include('../partials/_footer',) %>

@@ -15,7 +15,8 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        required:true
+        required:true,
+        
     },
     profile:{
         type:String,
@@ -40,7 +41,8 @@ const userSchema = new mongoose.Schema({
     },
     otp:{
         type:Number,
-        createdAt:{type:Date,expires:'5m',default:Date.now}
+        createdAt:{type:Date,expires:'5m',default:Date.now},
+        select:false
     },
     varified: {
         type:Boolean,
