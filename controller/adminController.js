@@ -167,3 +167,6 @@ exports.blockUsers = catchAsync(async(req,res)=>{
     const user = await User.findByIdAndUpdate({_id:req.params.id},{$set:{blocked:userStatus}},{new:true})
     res.redirect('/admin/users');
 })
+
+// Orders
+

@@ -128,7 +128,7 @@ exports.varifyOtp = catchAsync(async(req,res)=>{
 
 exports.getProduct = catchAsync(async(req,res)=>{
     const user = req.user;
-    const product = await Products.findOne({_id:req.params.id});
+    const product = await Products.findById({_id:req.params.id});
     res.render('./users/productsDetails',{
         product,user
     });

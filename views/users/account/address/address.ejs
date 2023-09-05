@@ -12,6 +12,11 @@
             </div>
             <% addresses.forEach((address)=>{ %>
                 <div class="card" style="width: 18rem;">
+                    <%if(address.defaultAddress){%>
+                        <div class="card-header">
+                            Default Address
+                        </div>
+                    <%}%>
                     <div class="card-body">
                       <p class="card-text"><b><%=address.name %></b></p>
                       <p class="card-text"><%=address.city %></p>
@@ -22,12 +27,22 @@
                       <p class="card-text"><%=address.alternativePhoneNumber %></p>
                       <p class="card-text"><%=address.landMark %></p>
                       
-                      <form action="/account/address?_method=DELETE" method="post">
-                            <a href="/account/address/editAddress/<%=address._id%>">Edit</a>
-                            <span> | </span>
+                      <div class="row">
+                        <form action="/account/address?_method=DELETE" method="post">
                             <input type="hidden" name="id" value="<%=address._id%>">
                             <button class="address_delete_button" type="submit">Delete</button>
-                      </form>
+                        </form>
+                        <span> | </span>
+                        <a href="/account/address/editAddress/<%=address._id%>"> Edit </a>
+                        <span> | </span>
+
+                        <%if(!address.defaultAddress){%>
+                            <form action="/account/address?_method=PATCH" method="post">
+                                <input type="hidden" name="id" value="<%=address._id%>">
+                                <button class="address_delete_button" type="submit">Set as Deafult</button>
+                            </form>
+                        <%}%>
+                      </div>
                     </div>
                 </div>
            <%})%>

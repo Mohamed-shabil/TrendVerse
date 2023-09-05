@@ -34,10 +34,15 @@ const userSchema = new mongoose.Schema({
         type:Number,
         default:0
     },
-    address:Array,
-    blocked :{
-        type:Boolean,
-        default:false
+    address: [{
+        address:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Address'
+        }
+    }],
+    defaultAddress:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Address'
     },
     otp:{
         type:Number,

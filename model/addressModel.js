@@ -30,6 +30,10 @@ const addressSchema = new mongoose.Schema({
     alternativePhoneNumber:{
         type:Number,
     },
+    defaultAddress:{
+        type:Boolean,
+        deafult:false
+    },
     landMark:{
         type:String
     }

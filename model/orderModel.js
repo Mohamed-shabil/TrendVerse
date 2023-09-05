@@ -2,10 +2,9 @@ const mongoose = require('mongoose');
 
 // Define the schema for the Order
 const orderSchema = new mongoose.Schema({
-    orderId: {
-        type: String,
-        required: true,
-        unique: true,
+    orderId :{
+        type:String,
+        unique:true,
     },
     customer: {
         type: mongoose.Schema.Types.ObjectId,
@@ -32,7 +31,7 @@ const orderSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['Pending', 'Processing','Dispatch','Shipped', 'Delivered'],
+        enum: ['Pending', 'Processing','Shipped', 'Delivered'],
         default: 'Pending',
     },
     totalPrice: {
@@ -45,7 +44,8 @@ const orderSchema = new mongoose.Schema({
         required:true
     },
     paymentMethod:{
-        type:String
+        type:String,
+        required:true
     }
 });
 

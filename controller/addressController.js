@@ -19,7 +19,6 @@ exports.getAddAddress = async(req,res)=>{
 
 
 exports.AddAddress = catchAsync( async (req,res)=>{
-    console.log(req.body)
     const address = await Address.create({
         userId: req.user._id,
         name:req.body.name,
@@ -51,8 +50,26 @@ exports.editAddress = catchAsync( async (req,res)=>{
         alternativePhoneNumber:req.body.altNo,
         landMark : req.body.landMark
     }
-    await Address.updateOne ({_id:req.params.id},updatedAddress);
+    await Address.updateOne({_id:req.params.id},updatedAddress);
     res.redirect('/account/address');
+})
+
+exports.setDefaultAddress = catchAsync(async (req,res)=>{
+    const setDefaultAddress = req.body.id
+    console.log(setDefaultAddress)
+    const user = await User.findById(req.user._id);
+    console.log('from address',user)
+    let currentDefaultAddress
+    const deafultAddress = await Address.findOne({defaultAddress:true});
+    if(!deafultAddress){
+        currentDefaultAddress = await Address.findByIdAndUpdate({_id:setDefaultAddress},{defaultAddress:true},{new:true});
+    }else{
+        await Address.updateOne({defaultAddress:true},{defaultAddress:false});
+        currentDefaultAddress = await Address.findByIdAndUpdate({_id:setDefaultAddress},{defaultAddress:true},{new:true});
+    }
+    user.defaultAddress = currentDefaultAddress._id;
+    await user.save();
+    res.redirect(req.previousUrl);
 })
 
 exports.deleteAddress = catchAsync( async (req,res)=>{

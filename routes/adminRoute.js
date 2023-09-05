@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controller/adminController');
+const orderController = require('../controller/orderController');
 const middleware = require('../middleware/middleware')
 
 
@@ -39,6 +40,10 @@ router.route('/category/editCategory/:id')
       .get(adminController.getEditCategory)
       .put(middleware.uploadCategoryImage,middleware.resizeCategoryImage,adminController.editCategory)
       .delete(adminController.deleteCategory)
+
+router.route('/orders')
+      .get(orderController.getAllOrders)
+      .patch(orderController.updateOrderStatus)
 
 router.route('/users')
       .get(adminController.getUsers)

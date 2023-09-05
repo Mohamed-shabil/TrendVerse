@@ -1,0 +1,98 @@
+<%- include('../partials/_header.ejs') %>
+<body>
+  <div class="container-scroller">
+    <!-- partial:../../partials/_sidebar.html -->
+    <%- include('../partials/_sidebar.ejs') %>                       
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <%- include('../partials/_navbar.ejs') %>
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+              <div class="page-header">
+                <h3 class="page-title"> Basic Tables </h3>
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+                  </ol>
+                </nav>
+              </div>
+              <%if(successMessage[0]){%>
+                <div id="error-message" class="alert alert-info col-8" role="alert">
+                    <%=successMessage[0]%>
+                </div>
+              <%}else if(errorMessage[0]){%>
+                <div id="error-message" class="alert alert-danger col-8" role="alert">
+                    <%=errorMessage[0]%>
+                </div>
+              <%}%> 
+              <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Order Table</h4>
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>Product</th>
+                              <th>Quantity</th>
+                              <th>Price</th>
+                              <th>Address</th>  
+                              <th>Status</th>
+                              <th>Payment Method</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% orders.forEach((order)=>{%>
+                                <tr>
+                                  <td class="">
+                                    <img src="/products/<%=order.products.product[0].images[0]%>" alt="">
+                                    <p><%=order.products.product[0].name%></p>
+                                  </td>
+                                  
+                                  <td><%=order.products.quantity%></td>
+                                  <td><%=order.products.totalAmount%></td>
+                                  <td>
+                                    <%=order.deliveryAddress[0].name%>,<br>
+                                    <%=order.deliveryAddress[0].pincode%>,<br>
+                                    <%=order.deliveryAddress[0].city%>,<br>
+                                    <%=order.deliveryAddress[0].locality%>,<br>
+                                    <%=order.deliveryAddress[0].phone%>,<br>
+                                    <%=order.deliveryAddress[0].alternativePhoneNumber%>,<br>
+                                    <%=order.deliveryAddress[0].landMark%></p>
+                                </td>
+                                <td>
+                                  <form action="/admin/orders?_method=PATCH" method="POST">
+                                      <select name="status" class="status_order" id="floatingSelectGrid">
+                                          <option value="Pending">Pending</option>
+                                          <option value="Dispatched">Dispatched</option>
+                                          <option value="Shipped">Shipped</option>
+                                          <option value="Deliverd">Deliverd</option>
+                                      </select>
+                                      <input type="hidden" name="orderId" value="<%=order.orderId%>">
+                                      
+                                      <button type="submit" class="status_update btn btn-primary">Update</button>
+                                  </form>
+                                </td>
+                                <td>
+                                  <%=order.paymentMethod%>
+                                </td>
+                                </tr>
+                            <%}) %>
+
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                
+              </div>
+            </div>
+        </div>
+    </div>
+    <%- include('../partials/_footer.ejs') %>

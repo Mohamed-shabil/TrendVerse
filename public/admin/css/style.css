@@ -21168,4 +21168,16 @@ input{
   height: 100%;
 }
 
+
+.status_order{
+  height: 40px;
+  padding: 5px 5px;
+  border-radius: 4px;
+}
+.status_update{
+  height: 40px;
+  padding: 10px 5px;
+}
+
+
 /*# sourceMappingURL=maps/style.css.map */

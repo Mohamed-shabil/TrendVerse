@@ -112,8 +112,6 @@ exports.authChecker = async(req,res,next)=>{
 
   const decoded = await promisify(jwt.verify)(token, process.env.JWTSECRET);
   const currentUser = await User.findById(decoded.id);
-
-  console.log(currentUser);
   if(!currentUser){
     return next();
   }
