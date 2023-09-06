@@ -64,18 +64,22 @@
                                     <%=order.deliveryAddress[0].landMark%></p>
                                 </td>
                                 <td>
-                                  <form action="/admin/orders?_method=PATCH" method="POST">
-                                      <select name="status" class="status_order <%=order.status%>" id="floatingSelectGrid">
-                                          <%for (const option of ['Pending', 'Processing','Shipped', 'Delivered']){%>
-                                            <option value="<%=option%>" <% if(option == order.status) {%> selected <%} %>>
-                                              <%=option%> 
-                                            </option>
-                                          <% } %>
-                                      </select>
-                                      <input type="hidden" name="orderId" value="<%=order.orderId%>">
-                                      
-                                      <button type="submit" class="status_update btn btn-outline-primary">Update</button>
-                                  </form>
+                                  <%if(order.status != 'Cancel'){%>
+                                    <form action="/admin/orders?_method=PATCH" method="POST">
+                                        <select name="status" class="status_order <%=order.status%>" id="floatingSelectGrid">
+                                            <%for (const option of ['Pending', 'Processing','Shipped', 'Delivered']){%>
+                                              <option value="<%=option%>" <% if(option == order.status) {%> selected <%} %>>
+                                                <%=option%> 
+                                              </option>
+                                            <% } %>
+                                        </select>
+                                        <input type="hidden" name="orderId" value="<%=order._id%>">
+                                        
+                                        <button type="submit" class="status_update btn btn-outline-primary">Update</button>
+                                    </form>
+                                  <%}else{%>
+                                     <p class="Cancel">Order Cancelled</p>
+                                  <%}%>
                                 </td>
                                 <td>
                                   <%=order.paymentMethod%>

@@ -1,67 +1,147 @@
 <%- include('./partials/_header') %>
 <body>
-    <%- include('./partials/_navbar') %>
-    <section class="checkout spad">
-        <div class="container">
-            <div class="checkout__form">
-    
-                    <div class="row">
-                        <div class="col-lg-7 col-md-6">
-                            <div class="row justify-content-center align-items-center g-2">
-                                <%if(!user.defaultAddress){%>
-                                    <div class="alert alert-danger w-100 d-flex align-items-center justify-content-between" role="alert">
-                                        Please Set a default Address to continue
-                                        
-                                        <a href="/account/address" class="btn btn-outline-primary">Set Address</a>
-                                    </div>
-                                <%}else{%>
-                                    <div class="card w-100">
-                                        <div class="card-header">
-                                          Default Address
-                                        </div>
-                                        <div class="card-body">
-                                            <p class="card-text"><b><%=user.defaultAddress.name%></b></p>
-                                            <p class="card-text"><%=user.defaultAddress.city %></p>
-                                            <p class="card-text"><%=user.defaultAddress.locality %></p>
-                                            <p class="card-text"><%=user.defaultAddress.pincode %></p>
-                                            <p class="card-text"><%=user.defaultAddress.city %></p>
-                                            <p class="card-text"><%=user.defaultAddress.phone %></p>
-                                            <p class="card-text"><%=user.defaultAddress.alternativePhoneNumber %></p>
-                                            <p class="card-text"><%=user.defaultAddress.landMark %></p>
-                                          <a href="/account/address" class="btn btn-dark">Change Address</a>
-                                        </div>
-                                    </div>
-                                <%}%>
-                            </div>
-                            
-                            
-                        </div>
-                        <div class="col-lg-5 col-md-6">
-                            <div class="checkout__order">
-                                <h4 class="order__title">Your order</h4>
-                                <div class="checkout__order__products">Product <span>Total</span></div>
-                                <ul class="checkout__total__products">
-                                    <%user.cart.forEach((item,i)=>{%>
-                                        <li><%=i+1%>. <%=item.product.name%><span>₹<%=item.totalAmount%></span></li>
-                                    <%})%>
-                                </ul>
-                                <ul class="checkout__total__all">
-                                    <li>Subtotal <span>₹<%=user.totalCartValue%></span></li>
-                                    <li>Total <span>₹<%=user.totalCartValue%></span></li>
-                                </ul>
-                                <p>Your payment and personal information are securely processed using industry-standard encryption, ensuring a safe and reliable checkout experience.</p>
+  <%- include('./partials/_navbar') %>
+  <section class="checkout spad">
+    <div class="container">
+      <div class="checkout__form">
+        <div class="row">
+          <div class="col-lg-7 col-md-6">
+            <div class="row justify-content-center align-items-center g-2">
+              <%if(!user.defaultAddress){%>
+              <div
+                class="alert alert-danger w-100 d-flex align-items-center justify-content-between"
+                role="alert"
+              >
+                Please Set a default Address to continue
 
-                                <form action="/cart/checkout" method="post">
-                                    <input type="radio" name="paymentMethod" value="COD">
-                                    <p>Cash on delivey</p>
-                                    <button type="submit" class="site-btn">PLACE ORDER</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                
+                <a href="/account/address" class="btn btn-outline-primary"
+                  >Set Address</a
+                >
+              </div>
+              <%}else{%>
+              <div class="w-100">
+                <h4 class="default__address">Delivery Address</h4>
+                <div class="card-body">
+                  <h5 class="card-title"><b><%=user.defaultAddress.name%></b></h5>
+                  <p class="card-text checkout_address">
+                    <%=user.defaultAddress.city %>,
+                    <%=user.defaultAddress.locality %>,
+                    <%=user.defaultAddress.landMark%>
+                    <%=user.defaultAddress.pincode %>,
+                  </p>
+                  <h5 class="card-title"><b>Phone number</b></h5>
+                  <p class="card-text checkout_address">
+                    <%=user.defaultAddress.phone %>,<br />
+                    <%=user.defaultAddress.alternativePhoneNumber %>
+                  </p>
+                  <a href="/account/address" class="address_change"
+                    >Change Address</a
+                  >
+                </div>
+              </div>
+              <%}%>
             </div>
-        </div>
-    </section>
 
-<%- include('./partials/_footer') %>
+            <section style="background-color: #eee">
+              <div>
+                <%user.cart.forEach((item)=>{ %>
+                <div class="row justify-content-center mb-3">
+                  <div class="col-md-12 col-xl-10">
+                    <div class="card shadow-0 border rounded-3">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
+                            <div
+                              class="bg-image hover-zoom ripple rounded ripple-surface"
+                            >
+                              <img
+                                src="/products/<%=item.product.images[0]%>"
+                                class="w-100"
+                              />
+                              
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-lg-6 col-xl-6">
+                            <h5><%=item.product.name%></h5>
+                            <p class="mb-4 mb-md-0">
+                                Quantity: <%=item.quantity%>
+                              </p>
+                            <p class="text-truncate mb-4 mb-md-0">
+                              <%=item.product.description%>
+                            </p>
+                            <h6 class="text-success">Free shipping</h6>
+                          </div>
+                          <div
+                            class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start"
+                          >
+                            <div
+                              class="d-flex flex-row align-items-center mb-1"
+                            >
+                              <h4 class="mb-1 me-1">$<%=item.product.price%></h4>
+                            </div>
+                            
+                            <div class="d-flex flex-column mt-4">
+                              <button class="btn btn-primary btn-sm" type="button">
+                                <a class="text-white" href="/shop/<%=item.product._id%>">Details</a>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <%})%>
+              </div>
+            </section>
+          </div>
+
+          <div class="col-lg-5 col-md-6">
+            <div class="checkout__order">
+              <h4 class="order__title">Your order</h4>
+              <div class="checkout__order__products">
+                Product <span>Total</span>
+              </div>
+              <ul class="checkout__total__products">
+                <%user.cart.forEach((item,i)=>{%>
+                <li>
+                  <%=i+1%>. <%=item.product.name%><span
+                    >₹<%=item.totalAmount%></span
+                  >
+                </li>
+                <%})%>
+              </ul>
+              <ul class="checkout__total__all">
+                <li>Subtotal <span>₹<%=user.totalCartValue%></span></li>
+                <li>Total <span>₹<%=user.totalCartValue%></span></li>
+              </ul>
+              <p>
+                Your payment and personal information are securely processed
+                using industry-standard encryption, ensuring a safe and reliable
+                checkout experience.
+              </p>
+
+              <form action="/cart/checkout" method="post">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="paymentMethod"
+                    id="flexRadioDefault1"
+                  />
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    Cash On Delivery
+                  </label>
+                </div>
+                <button type="submit" class="site-btn">PLACE ORDER</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%- include('./partials/_footer') %>
+</body>

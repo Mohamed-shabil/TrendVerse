@@ -107,6 +107,11 @@ exports.getVarifyOtp =(req,res)=>{
     res.render('./users/validateOtp')
 }
 
+
+
+
+
+
 exports.varifyOtp = catchAsync(async(req,res)=>{
     const otp = req.body.otp
     const user = await User.findOne({otp});
@@ -125,6 +130,35 @@ exports.varifyOtp = catchAsync(async(req,res)=>{
         }
     }
 })
+
+exports.getUpdatePassword = (req,res)=>{
+    res.render('./users/account/changePassword');
+}
+
+exports.updatePassword = catchAsync(async(req,res)=>{
+    const oldPassword = req.body.oldPassword;
+    const newPassword = req.body.newPassword;
+
+    const user = await User.findById(req.user._id);
+    console.log(user.password)
+    const isOldPasswordValid = await bcrypt.compare(oldPassword,user.password);
+    if(!isOldPasswordValid){
+        req.flash('error','The Password that you given is wrong! , Please try again')
+        res.redirect('/acount/changePassword');
+    }
+    const newPasswordHash = await bcrypt.hash(newPassword,10);
+    user.password = newPasswordHash ;
+    await user.save();
+    res.redirect('/account')
+})
+
+exports.logout = catchAsync(async (req, res, next )=>{
+    res.clearCookie('jwt');
+    res.redirect('/')
+})
+
+
+
 
 exports.getProduct = catchAsync(async(req,res)=>{
     const user = req.user;

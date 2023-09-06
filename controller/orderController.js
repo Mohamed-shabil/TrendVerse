@@ -25,11 +25,11 @@ exports.checkout = catchAsync(async (req,res)=>{
         paymentMethod: req.body.paymentMethod
     });
     await User.updateOne({_id:req.user._id},{$set:{cart:[],totalCartValue:0}});
-    res.send("order-success")
+    req.flash('success','Order Placed Successfully')
+    res.redirect('/account/orders');
 })
 
 exports.getAllOrders = catchAsync(async(req,res)=>{
-    // const orders = await Order.find().populate(['products.product','customer','deliveryAddress']);
     const orders = await Order.aggregate([
         {
           $unwind: "$products" 
@@ -83,6 +83,9 @@ exports.getMyOrders = catchAsync(async(req,res)=>{
             }
         },
         {
+          $sort: { orderDate: -1 }
+        },
+        {
           $unwind: "$products" 
         },
         {
@@ -111,6 +114,7 @@ exports.getMyOrders = catchAsync(async(req,res)=>{
 exports.updateOrderStatus = catchAsync(async(req,res) => {
     const status = req.body.status;
     const orderId = req.body.orderId
-    await Order.updateOne({orderId},{$set:{status:status}});
+    const updated = await Order.findByIdAndUpdate(orderId,{$set:{status:status}});
     res.redirect(req.previousUrl);
 })
+

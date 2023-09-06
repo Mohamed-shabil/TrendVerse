@@ -21206,13 +21206,20 @@ input{
     border-radius: 4px;
 }
 .Delivered{
-	outline: none;
+	  outline: none;
     border: none;
     background-color: rgb(155 255 165);
     color: #346945;
     padding: 3px 15px;
     font-size: 13px;
     border-radius: 4px;
+}
+.Cancel{
+  border-radius: 4px;
+  display: inline;
+  padding: 10px 40px;
+  color: #8d0505;
+  background-color: #efadad;
 }
 
 /*# sourceMappingURL=maps/style.css.map */

@@ -147,3 +147,11 @@ exports.previousRouteTracker =catchAsync(async (req,res,next)=>{
   req.previousUrl = req.header('Referer') || '/';
   next();
 })
+
+
+exports.checkCart = catchAsync (async (req,res,next)=>{
+  if(!req.user.cart.length){
+    res.redirect('/cart');
+  }
+  next();
+})

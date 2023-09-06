@@ -40,7 +40,7 @@
           <div class="tab-content">
             <!-- Data -->
             <%product.images.forEach((image,i) => {%>
-            <div class="tab-pane" id="tabs-<%=i+1%>" role="tabpanel">
+            <div class="tab-pane <% if(i==0) {%>active<%}%>" id="tabs-<%=i+1%>" role="tabpanel">
               <div class="product__details__pic__item">
                 <img src="/products/<%=image%>" alt="" />
               </div>

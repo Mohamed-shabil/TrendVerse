@@ -369,9 +369,30 @@ input::-webkit-inner-spin-button {
 }
 
 
+/* CheckOut */
+.address_change{
+	padding: 5px 10px;
+	border-radius: 3px;
+	background-color: #222;
+	color: #fff;
+	text-decoration: none;
+	
+}
+.checkout_address{
+	margin-bottom: 10px!important;
+}
 /* Orders  */
 
 .Pending{
+	outline: none;
+    border: none;
+    background-color: rgb(255 206 206);
+    color: #e02121;
+    padding: 3px 15px;
+    font-size: 13px;
+    border-radius: 10px;
+}
+.Cancel{
 	outline: none;
     border: none;
     background-color: rgb(255 206 206);
@@ -406,6 +427,12 @@ input::-webkit-inner-spin-button {
     padding: 3px 15px;
     font-size: 13px;
     border-radius: 10px;
+}
+.cancel_order{
+	outline: none;
+	border: none;
+	padding: 5px;
+	border-radius: 3px;
 }
 /* Preloder */
 
