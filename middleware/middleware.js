@@ -50,19 +50,34 @@ exports.resizeProductImages = catchAsync(async(req, res, next)=>{
 
 exports.uploadCategoryImage = upload.single('photo');
 
-
 exports.resizeCategoryImage = catchAsync(async(req, res, next)=>{
 
   if(!req.file) return next();
   req.file.originalname = `category-${Date.now()}.png`;
   
-  req.body.photo = req.file.originalname
+  req.body.profile = req.file.originalname
  await sharp(req.file.buffer)
   .resize(500,500)
   .toFormat('png')
   .png({quality:90}).toFile(`public/category/${req.file.originalname}`);
   next();
 })
+
+exports.uploadProfileImage = upload.single('profile');
+
+exports.resizeProfileImage = catchAsync(async (req,res,next) => {
+  if(!req.file) return next();
+  req.file.originalname = `userProfile-${Date.now()}.png`;
+  console.log('Working me...')
+  req.body.profile = req.file.originalname
+  await sharp(req.file.buffer)
+  .resize(300,300)
+  .toFormat('jpeg')
+  .png({quality:90}).toFile(`public/profile/${req.file.originalname}`);
+  next();
+})
+
+
 
 exports.isAdminLoggedIn = async(req,res,next)=>{
   if(req.cookies.jwt){

@@ -65,15 +65,16 @@
                                 </td>
                                 <td>
                                   <form action="/admin/orders?_method=PATCH" method="POST">
-                                      <select name="status" class="status_order" id="floatingSelectGrid">
-                                          <option value="Pending">Pending</option>
-                                          <option value="Dispatched">Dispatched</option>
-                                          <option value="Shipped">Shipped</option>
-                                          <option value="Deliverd">Deliverd</option>
+                                      <select name="status" class="status_order <%=order.status%>" id="floatingSelectGrid">
+                                          <%for (const option of ['Pending', 'Processing','Shipped', 'Delivered']){%>
+                                            <option value="<%=option%>" <% if(option == order.status) {%> selected <%} %>>
+                                              <%=option%> 
+                                            </option>
+                                          <% } %>
                                       </select>
                                       <input type="hidden" name="orderId" value="<%=order.orderId%>">
                                       
-                                      <button type="submit" class="status_update btn btn-primary">Update</button>
+                                      <button type="submit" class="status_update btn btn-outline-primary">Update</button>
                                   </form>
                                 </td>
                                 <td>

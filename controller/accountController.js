@@ -16,3 +16,18 @@ exports.getAccountInformation = catchAsync(async(req,res)=>{
         user:req.user
     })
 })
+
+exports.getUpdateProfile = catchAsync(async(req,res)=>{
+    res.render('./users/account/updateAccount',{user:req.user})
+})
+
+
+exports.updateProfile = catchAsync(async (req,res)=>{
+    const data = {
+        name: req.body.name,
+        phone:req.body.phone,
+        profile:req.body.profile
+    }
+    await User.findByIdAndUpdate({_id:req.user._id},data);
+    res.redirect('/account');
+})

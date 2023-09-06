@@ -311,18 +311,31 @@ input::-webkit-inner-spin-button {
 	display: none;
 }
 .Update_pic_btn{
-	width: 130px;
+	width: 140px;
 	text-align: center;
 	background-color: #222;
 	color: #fff;
 	border-radius: 5px;
-	height: 30px;
+	height: 35px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
 }
-
+.uploading_image{
+	width: 150px;
+	height: 150px;
+	margin-bottom: 20px;
+	border-radius: 50%;
+}
+.Update__Button{
+	height: 40px;
+	background-color:#222;
+	color: #fff;
+	border-radius: 3px;
+	outline: none;
+	border: none;
+}
 /* address */
 .card{
 	border-radius: 10px;
@@ -363,6 +376,33 @@ input::-webkit-inner-spin-button {
     border: none;
     background-color: rgb(255 206 206);
     color: #e02121;
+    padding: 3px 15px;
+    font-size: 13px;
+    border-radius: 10px;
+}
+.Processing{
+	outline: none;
+    border: none;
+    background-color: rgb(241, 253, 170);
+    color: #baa114;
+    padding: 3px 15px;
+    font-size: 13px;
+    border-radius: 10px;
+}
+.Shipped{
+	outline: none;
+    border: none;
+    background-color: rgb(206, 221, 255);
+    color: #217de0;
+    padding: 3px 15px;
+    font-size: 13px;
+    border-radius: 10px;
+}
+.Delivered{
+	outline: none;
+    border: none;
+    background-color: rgb(183, 255, 196);
+    color: #2ae021;
     padding: 3px 15px;
     font-size: 13px;
     border-radius: 10px;

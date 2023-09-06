@@ -1,0 +1,52 @@
+<%- include('../partials/_header') %>
+    <body>
+    <%- include('../partials/_navbar',) %>
+
+    <section class="container">
+        <div class="m-auto">
+            <div class="row d-flex justify-content-center ">
+                <div class="col-md-6">
+                    <h3 class="text-center mt-5 mb-3">Update Your Profile</h3>
+
+                    <form action="/account/updateProfile?_method=PATCH"  method="post" enctype="multipart/form-data">
+                        <div class="mb-3 d-flex align-items-center flex-column justify-content-center">
+                            <img src="/profile/<%=user.profile%>"  id="preview" class="uploading_image" alt="<%=user.name%>">
+                            <label for="profile_upload" class="Update_pic_btn">Upload Profile</label>
+                            <input type="file" accept="image/*" name="profile" onchange="previewImages(event)" id="profile_upload">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="formGroupExampleInput" class="form-label">Change Username</label>
+                            <input type="text" name="name" required class="form-control" value="<%=user.name%>" placeholder="Enter the User Name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="formGroupExampleInput2" class="form-label">Phone Nummber</label>
+                            <input type="text" minlength="10" name="phone" oninput="restrictToNumbers(event)" class="form-control" id="formGroupExampleInput2" value="<%=user.phone%>" placeholder="Enter Your new phone number">
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="Update__Button w-100">Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        const previewImages = (event) => {
+        const imageFiles = event.target.files;
+        const imageFilesLength = imageFiles.length;
+        if (imageFilesLength > 0) {
+          const imageSrc = URL.createObjectURL(imageFiles[0]);
+          const imagePreviewElement = document.querySelector("#preview");
+          imagePreviewElement.src = imageSrc;
+        }
+      }
+
+      function restrictToNumbers(event) {
+      const input = event.target;
+      const currentValue = input.value;
+      const newValue = currentValue.replace(/[^0-9]/g, '');
+      input.value = newValue;
+    }
+    </script>
+<%- include('../partials/_footer',) %>

@@ -10,8 +10,8 @@
                 <div class="col-lg-4 col-md-4">
                     <div class="col-12 profile_data">
                         <img src="/profile/<%=user.profile%>" class="user_profile_pic" alt="<%=user.name%>" srcset="">
-                        <label for="profile_upload" class="Update_pic_btn">Update Profile</label>
-                        <input type="file" accept="image/*" id="profile_upload" >
+                        <!-- <label for="profile_upload" class="Update_pic_btn">Update Profile</label>
+                        <input type="file" accept="image/*" id="profile_upload" > -->
                         <div class="user_info text-center">
                             <h5><b><%=user.name%></b></h5>
                             <p class="user_info_data"><%=user.email%></p>
@@ -31,6 +31,14 @@
                         </button>
                         <button class="col-5 account__options">
                           <a href="/account/orders">Orders</a>
+                        </button>
+                    </div>
+                    <div class="row justify-content-around">
+                        <button class="col-5 account__options">
+                          <a href="/account/updateProfile">Update Profile </a>
+                        </button>
+                        <button class="col-5 account__options">
+                          <a href="/account/orders">Change Password</a>
                         </button>
                     </div>
                     

@@ -42,6 +42,12 @@ router.route('/cart/:id')
 router.route('/account')
     .get(middleware.isLoggedin,middleware.authChecker,accountController.getAccount);
 
+router.route('/account/updateProfile')
+    .get(middleware.isLoggedin,middleware.authChecker,accountController.getUpdateProfile)
+    .patch(middleware.isLoggedin,middleware.authChecker,middleware.uploadProfileImage,middleware.resizeProfileImage,accountController.updateProfile)
+
+
+
 router.route('/account/address')
     .get(middleware.isLoggedin,middleware.authChecker,addressController.getAddress)
     .patch(middleware.isLoggedin,middleware.authChecker,addressController.setDefaultAddress)

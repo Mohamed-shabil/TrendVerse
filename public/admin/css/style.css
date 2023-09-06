@@ -21178,6 +21178,41 @@ input{
   height: 40px;
   padding: 10px 5px;
 }
-
+.Pending{
+	outline: none;
+    border: none;
+    background-color: rgb(255 206 206);
+    color: #e02121;
+    padding: 3px 15px;
+    font-size: 13px;
+    border-radius: 4px;
+}
+.Processing{
+	outline: none;
+    border: none;
+    background-color: #f6d697;
+    color: #ab8a4a;
+    padding: 3px 15px;
+    font-size: 13px;
+    border-radius: 4px;
+}
+.Shipped{
+	outline: none;
+  border: none;
+  background-color: rgb(196 221 255);
+    color: #264761;
+    padding: 3px 15px;
+    font-size: 13px;
+    border-radius: 4px;
+}
+.Delivered{
+	outline: none;
+    border: none;
+    background-color: rgb(155 255 165);
+    color: #346945;
+    padding: 3px 15px;
+    font-size: 13px;
+    border-radius: 4px;
+}
 
 /*# sourceMappingURL=maps/style.css.map */
