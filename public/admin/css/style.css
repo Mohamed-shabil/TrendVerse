@@ -21221,5 +21221,7 @@ input{
   color: #8d0505;
   background-color: #efadad;
 }
-
+.Category__name{
+  text-transform: capitalize;
+}
 /*# sourceMappingURL=maps/style.css.map */

@@ -2,10 +2,17 @@
 <body>
     <%- include('../partials/_navbar', {user}) %>
     <section class="account__container w-100 h-100 py-5">
-
-    
     <div class="container">
         <div class="col-12">
+            <%if(successMessage[0]){%>
+            <div id="error-message" class="alert alert-info col-8" role="alert">
+                <%=successMessage[0]%>
+            </div>
+          <%}else if(errorMessage[0]){%>
+            <div id="error-message" class="alert alert-danger col-8" role="alert">
+                <%=errorMessage[0]%>
+          </div>
+          <% } %>
             <div class="row">
                 <div class="col-lg-4 col-md-4">
                     <div class="col-12 profile_data">
@@ -52,4 +59,16 @@
         </div>
     </div>
 </section>
+<script>
+    function hideErrorMessage() {
+        var errorMessageElement = document.getElementById('error-message');
+        if (errorMessageElement) {
+          setTimeout(()=>{
+            errorMessageElement.style.display = 'none';
+          }, 4000);
+          
+        }
+      }
+      hideErrorMessage();
+</script>
 <%- include('../partials/_footer',) %>

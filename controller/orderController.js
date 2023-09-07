@@ -15,7 +15,12 @@ exports.getCheckout = catchAsync(async (req,res)=>{
     })
 })
 exports.checkout = catchAsync(async (req,res)=>{
+    if(!req.body.paymentMethod){
+      req.flash('error','Please choose a payment method');
+      res.redirect('/cart/checkout')
+    }
     const orderId = crypto.randomUUID();
+    console.log("Default Address",req.user.defaultAddress);
     const order = await Order.create({
         orderId,
         customer:req.user._id,

@@ -125,7 +125,13 @@ exports.getAddCategory = (req,res)=>{
     res.render("./admin/addCategory");
 }
 exports.addCategory = catchAsync(async(req,res)=>{
-    const {name,photo} = req.body;
+    const name = req.body.name;
+    const photo = req.body.photo;
+    const isCategoryExist = await Category.findOne({name});
+    if(isCategoryExist){
+        req.flash('error',`Category with name ${name} already Exist !`);
+        return res.redirect("/admin/category");
+    }
     await Category.create({
         name:name,
         image:photo
@@ -144,7 +150,10 @@ exports.getEditCategory = catchAsync(async(req,res)=>{
 })
 
 exports.editCategory = catchAsync(async(req,res)=>{
-    const {name,photo} = req.body;
+    const name= req.body.name.toLowerCase();
+    console.log(name);
+    const photo= req.body.photo
+
     await Category.updateOne({_id:req.params.id},{name,image:photo});
     req.flash('success','Category Added successfully')
     res.redirect("/admin/category");

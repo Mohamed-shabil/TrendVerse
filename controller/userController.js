@@ -9,7 +9,7 @@ const sendMail = require('../utils/email');
 
 exports.getHome = catchAsync(async(req,res)=>{
     const products = await Products.find();
-    res.render('./users/home',{
+    return res.render('./users/home',{
         products,user:req.user
     });
 })
@@ -32,7 +32,7 @@ exports.userLogin = catchAsync( async (req,res)=>{
         res.locals.errorMessage = req.flash('error');
         res.render('./users/login');
     }else{
-        const isMatch = await bcrypt.compare(password, currentUser.password);
+        const isMatch = await bcrypt.compare(password,currentUser.password);
 
         if(!isMatch){
             req.flash('error','invalid password or email')
@@ -206,7 +206,6 @@ exports.getCart = catchAsync(async (req,res)=>{
     const user = await User.findById(req.user._id).populate('cart.product');
     const cart = user.cart;
     const totalCartValue = user.totalCartValue;
-    console.log(user.cart);
     return res.render('./users/cart',{
         cart,totalCartValue
     });

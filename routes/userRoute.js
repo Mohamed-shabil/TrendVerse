@@ -10,16 +10,17 @@ const middleware = require('../middleware/middleware');
 router.use(middleware.previousRouteTracker,middleware.authChecker);
 router.get('/',userController.getHome);
 
-router.get('/signup',userController.getSignUp)
-router.post('/signup',userController.signup)
-router.get('/varifyOtp',userController.getVarifyOtp);
-router.post('/varifyOtp',userController.varifyOtp);
+router.get('/signup',middleware.isAlreadyLoggedIn,userController.getSignUp)
+router.post('/signup',middleware.isAlreadyLoggedIn,userController.signup)
+router.get('/varifyOtp',middleware.isAlreadyLoggedIn,userController.getVarifyOtp);
+router.post('/varifyOtp',middleware.isAlreadyLoggedIn,userController.varifyOtp);
 
 
 router.route('/login')
-    .get(userController.getLogin)
+    .get(middleware.isAlreadyLoggedIn,userController.getLogin)
     .post(userController.userLogin);
 
+// router.use(middleware.isBlocked);   
 
 router.get('/shop',userController.getProducts)
 
@@ -28,9 +29,9 @@ router.route('/shop/:id')
     .put(middleware.isLoggedin,userController.addToCart);
 
 router.route('/cart')
-    .get(middleware.isLoggedin,userController.getCart)
-    .patch(middleware.isLoggedin,userController.addToCart)
-    .delete(middleware.isLoggedin,userController.removeCartItem)
+    .get(userController.getCart)
+    .patch(userController.addToCart)
+    .delete(userController.removeCartItem)
 
 router.route('/cart/:id')
     .patch(middleware.authChecker,userController.updateCartQuantity);

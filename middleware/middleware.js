@@ -140,8 +140,9 @@ exports.isLoggedin = async (req,res,next)=>{
     req.flash('error','Please login to continue');
     return res.redirect('/login');
   }
-  next();
+   next();
 }
+
 
 exports.previousRouteTracker =catchAsync(async (req,res,next)=>{
   req.previousUrl = req.header('Referer') || '/';
@@ -154,4 +155,23 @@ exports.checkCart = catchAsync (async (req,res,next)=>{
     res.redirect('/cart');
   }
   next();
+})
+
+exports.isBlocked = catchAsync(async(req, res, next)=>{
+  if(!req.user){
+    return next();
+  }else{
+    if(req.user.blocked){
+      res.render('./users/blocked')
+    }
+  }
+  next();
+})
+
+exports.isAlreadyLoggedIn = catchAsync(async (req,res,next)=>{
+  if(!req.user){
+    return next();
+  }
+  req.flash('success','You are already loggedIn')
+  return res.redirect('/account')
 })

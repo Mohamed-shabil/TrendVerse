@@ -44,10 +44,11 @@
                         <%=order.deliveryAddress[0].pincode %>
                       </p>
                       <p class=" mb-4 mb-md-0">
-                        <b>Phone number<br></b>
-                        <%=order.deliveryAddress[0].phone %>, <%=order.deliveryAddress[0].alternativePhoneNumber %><br>
+                        <b>Phone Number : <%=order.deliveryAddress[0].phone %>, <%=order.deliveryAddress[0].alternativePhoneNumber %></b><br>
+                        <b>Order Date :</b><%=order.orderDate.toDateString() %> 
                       </p>
                     </div>
+                    <div class="vr"></div>
                     <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                       <p class=" mb-2 ">
                         <b>Qunatity : </b>
@@ -82,5 +83,17 @@
         
       </div>
     </section>
-    
+  
+    <script>
+      function hideErrorMessage() {
+          var errorMessageElement = document.getElementById('error-message');
+          if (errorMessageElement) {
+            setTimeout(()=>{
+              errorMessageElement.style.display = 'none';
+            }, 4000);
+            
+          }
+        }
+        hideErrorMessage();
+  </script>
 <%- include('../partials/_footer',) %>

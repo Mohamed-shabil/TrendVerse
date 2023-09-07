@@ -19,24 +19,23 @@
                     <%}%>
                     <div class="card-body">
                       <p class="card-text"><b><%=address.name %></b></p>
-                      <p class="card-text"><%=address.city %></p>
-                      <p class="card-text"><%=address.locality %></p>
-                      <p class="card-text"><%=address.pincode %></p>
-                      <p class="card-text"><%=address.city %></p>
+                      <p class="card-text"><%=address.city %>, <%=address.locality %></p>
+                      <p class="card-text"><%=address.landMark %>, <%=address.pincode %></p>
                       <p class="card-text"><%=address.phone %></p>
                       <p class="card-text"><%=address.alternativePhoneNumber %></p>
-                      <p class="card-text"><%=address.landMark %></p>
                       
-                      <div class="row">
-                        <form action="/account/address?_method=DELETE" method="post">
-                            <input type="hidden" name="id" value="<%=address._id%>">
-                            <button class="address_delete_button" type="submit">Delete</button>
-                        </form>
-                        <span> | </span>
+                      <div class="row ml-1">
+                        <% if(!address.defaultAddress) {%>
+                            <form action="/account/address?_method=DELETE" method="post">
+                                <input type="hidden" name="id" value="<%=address._id%>">
+                                <button class="address_delete_button" type="submit">Delete</button>
+                            </form>
+                            <span> | </span>
+                        <% } %>
                         <a href="/account/address/editAddress/<%=address._id%>"> Edit </a>
-                        <span> | </span>
-
+                        
                         <%if(!address.defaultAddress){%>
+                            <span> | </span>
                             <form action="/account/address?_method=PATCH" method="post">
                                 <input type="hidden" name="id" value="<%=address._id%>">
                                 <button class="address_delete_button" type="submit">Set as Deafult</button>
