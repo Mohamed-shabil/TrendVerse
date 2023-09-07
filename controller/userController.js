@@ -189,8 +189,9 @@ exports.addToCart = catchAsync(async (req,res)=>{
         totalCartValue +=  item.totalAmount;
     })
     
-    const existingCartItemIndex = user.cart.filter( item => item.product.equals(product._id));
-    if(!existingCartItemIndex){
+    const existingCartItemIndex = user.cart.findIndex( item => item.product.equals(product._id));
+    console.log( 'Existing', existingCartItemIndex);
+    if(existingCartItemIndex!=-1){
         user.cart[existingCartItemIndex].quantity += quantity;
         user.cart[existingCartItemIndex].totalAmount += totalAmount; 
         user.totalCartValue += (totalCartValue + totalAmount); 
