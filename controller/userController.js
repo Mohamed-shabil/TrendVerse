@@ -228,7 +228,16 @@ exports.removeCartItem = catchAsync (async (req,res) => {
 exports.updateCartQuantity = catchAsync( async(req,res)=>{
     const product = req.params.id;
     const userId = req.user._id 
-    const updateQuantity = req.body.quantity
+    let updateQuantity
+    if(req.body.quantityIncrement){
+        updateQuantity = parseInt(req.body.quantityIncrement);
+        updateQuantity++
+    }
+    if(req.body.quantityDecrement){
+        updateQuantity = parseInt(req.body.quantityDecrement);
+        updateQuantity--
+    }
+    console.log('qunatity',updateQuantity);
     
     const user = await User.findById(userId).populate('cart.product');
     cartItemIndex = user.cart.findIndex(item => item.product.equals(product));
