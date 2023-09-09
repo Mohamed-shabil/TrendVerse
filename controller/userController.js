@@ -8,7 +8,7 @@ const sendMail = require('../utils/email');
 
 
 exports.getHome = catchAsync(async(req,res)=>{
-    const products = await Products.find();
+    const products = await Products.find().limit(8).sort()
     return res.render('./users/home',{
         products,user:req.user
     });
@@ -167,11 +167,16 @@ exports.getProduct = catchAsync(async(req,res)=>{
         product,user
     });
 })
-exports.getProducts = catchAsync(async(req,res)=>{
 
-    const products = await Products.find();
+exports.getProducts = catchAsync(async(req,res)=>{
+    const page = parseInt(req.query.page) || 1; 
+    const limit = 12;
+    const skip = (page - 1) * limit 
+    const products = await Products.find().skip(skip).limit(limit);
+    const totalDocs = await Products.countDocuments();
+    const totalPages= totalDocs/limit
     res.render('./users/products',{
-        products
+        products,page,totalPages
     });
 })
 
@@ -232,10 +237,16 @@ exports.updateCartQuantity = catchAsync( async(req,res)=>{
     if(req.body.quantityIncrement){
         updateQuantity = parseInt(req.body.quantityIncrement);
         updateQuantity++
+        if(updateQuantity <= 0 ){
+            updateQuantity = 1;
+        }
     }
     if(req.body.quantityDecrement){
         updateQuantity = parseInt(req.body.quantityDecrement);
         updateQuantity--
+        if(updateQuantity <= 0 ){
+            updateQuantity = 1;
+        }
     }
     console.log('qunatity',updateQuantity);
     

@@ -81,36 +81,38 @@ exports.getAllOrders = catchAsync(async(req,res)=>{
 })
 
 exports.getMyOrders = catchAsync(async(req,res)=>{
-    const myOrders = await Order.aggregate([
-        {
-            $match:{
-              customer: req.user._id
-            }
-        },
-        {
-          $sort: { orderDate: -1 }
-        },
-        {
-          $unwind: "$products" 
-        },
-        {
-          $lookup: {
-            from: "products", 
-            localField: "products.product", 
-            foreignField: "_id", 
-            as: "products.product" 
-          }
-        },
-        {
-          $lookup: {
-            from: "addresses", 
-            localField: "deliveryAddress", 
-            foreignField: "_id", 
-            as: "deliveryAddress" 
-          }
-        }
-      ]);
-    console.log(myOrders);
+    // const myOrders = await Order.aggregate([
+    //     {
+    //         $match:{
+    //           customer: req.user._id
+    //         }
+    //     },
+    //     {
+    //       $sort: { orderDate: -1 }
+    //     },
+    //     {
+    //       $unwind: "$products" 
+    //     },
+    //     {
+    //       $lookup: {
+    //         from: "products", 
+    //         localField: "products.product", 
+    //         foreignField: "_id", 
+    //         as: "products.product" 
+    //       }
+    //     },
+    //     {
+    //       $lookup: {
+    //         from: "addresses", 
+    //         localField: "deliveryAddress", 
+    //         foreignField: "_id", 
+    //         as: "deliveryAddress" 
+    //       }
+    //     }
+    //   ]);
+    const myOrders = await Order.find({customer:req.user._id}).populate(['products.product','deliveryAddress'])
+    console.log(myOrders[0].products[0].product);
+    // res.send(myOrders)
     res.render('./users/account/order',{
         orders:myOrders
     });

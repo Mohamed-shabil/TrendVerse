@@ -7,6 +7,12 @@ const categorySchema = new mongoose.Schema({
         unique:true
     },
     image:String,
+    products:[
+    {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Product',
+        required:true}
+    ]
 })
 
 const Category = mongoose.model('Category',categorySchema);

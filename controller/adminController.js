@@ -56,21 +56,23 @@ exports.getAddProducts = catchAsync(async (req,res) =>{
 })
 exports.addProducts = catchAsync(async(req,res) =>{
     const {name,description,price,stock,images,category} = req.body;
-    await Product.create({
+    const product = await Product.create({
         name,
         description,
         price,
         stock,
         images,
         category
-    }).then(async ()=>{
-        req.flash('success','Product Added successfully')
-        return res.redirect('/admin/products');
-        
-    }).catch((e)=>{
+    })
+    if(!product){
         req.flash('error','Something went Wrong try again')
         return res.redirect('/admin/products/addProducts');
-    })
+    }
+    const categoryName = await Category.findOne({name:product.category})
+    categoryName.products.push(product._id);
+    categoryName.save();
+    req.flash('success','Product Added successfully')
+    return res.redirect('/admin/products');
 })
 
 exports.getEditProduct = catchAsync(async(req,res)=>{

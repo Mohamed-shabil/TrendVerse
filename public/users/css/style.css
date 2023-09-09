@@ -2649,7 +2649,7 @@ input::-webkit-inner-spin-button {
 .shopping__cart__table table tbody tr td.quantity__item {
 	width: 175px;
 	display: flex;
-    width: 175px;
+    height: 100%;
     justify-content: space-around
 }
 

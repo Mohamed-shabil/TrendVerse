@@ -4,80 +4,19 @@
     <section style="background-color: #eee;">
       <div class="container py-5">
         <h2 class="text-center mt-4">My Orders</h2>
-        <%if(successMessage[0]){%>
-          <div id="error-message" class="alert alert-info col-8" role="alert">
-              <%=successMessage[0]%>
-          </div>
-        <%}else if(errorMessage[0]){%>
-          <div id="error-message" class="alert alert-danger col-8" role="alert">
-              <%=errorMessage[0]%>
-        </div>
-        <% } %>
+      
 
         <% orders.forEach((order) => {%>
-          <div class="row justify-content-center mb-3">
-            <div class="col-md-12 col-xl-10">
-              <div class="card shadow-0 border rounded-3">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
-                      <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                        <img src="/products/<%=order.products.product[0].images[0]%>" 
-                          class="w-100" />
-                        <a href="#!">
-                          <div class="hover-overlay">
-                            <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="col-md-6 col-lg-6 col-xl-6">
-                      <h5><%=order.products.product[0].name%></h5>
-                      
-                      <p class="text-truncate mb-4 mb-md-0">
-                        <%= order.products.product[0].description %>
-                      </p>
-                      <p class=" mb-4 mb-md-0">
-                        <b><%=order.deliveryAddress[0].name %><br></b>
-                        <%=order.deliveryAddress[0].city %>, <%=order.deliveryAddress[0].locality %><br>
-                        <%=order.deliveryAddress[0].landMark %><br>
-                        <%=order.deliveryAddress[0].pincode %>
-                      </p>
-                      <p class=" mb-4 mb-md-0">
-                        <b>Phone Number : <%=order.deliveryAddress[0].phone %>, <%=order.deliveryAddress[0].alternativePhoneNumber %></b><br>
-                        <b>Order Date :</b><%=order.orderDate.toDateString() %> 
-                      </p>
-                    </div>
-                    <div class="vr"></div>
-                    <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
-                      <p class=" mb-2 ">
-                        <b>Qunatity : </b>
-                        <%=order.products.quantity%><br>
-                      </p>
-                      <p>Status : <span class="mt-4 <%=order.status%>"><%=order.status%></span></p>
-                      <div class="d-flex flex-row align-items-center mb-1">
-                        <h4 class="mb-1 me-1">₹<%=order.products.product[0].price%></h4>
-                      </div>
-                      
-                      <div class="d-flex flex-column mb-2">
-                        <a href="/shop/<%=order.products.product[0]._id%>" class="w-100">
-                          <button class="btn btn-dark w-100"  type="button">Details</button>
-                        </a>
-                      </div>
-                      <% if(order.status != 'Delivered'&& order.status != 'Cancel') {%>
-                        <form action="/account/orders?_method=PATCH" method="post">
-                          <div class="d-flex flex-column ">
-                            <input type="hidden" value="Cancel" name="status" />
-                            <input type="hidden" value="<%=order._id%>" name="orderId" />
-                            <button class="cancel_order" type="submit">Cancel Order</button>
-                          </div>
-                        </form>
-                      <%}%>
-                    </div>
-                  </div>
-                </div>
+          <div class="row mb-2 bg-white">
+              <div class="col-md-4 p-2">
+                
               </div>
-            </div>
+              <div class="col-md-4 p-2">
+                
+              </div>
+              <div class="col-md-4 p-2">
+                
+              </div>
           </div>
         <% }) %>
         
