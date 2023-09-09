@@ -162,7 +162,7 @@ exports.logout = catchAsync(async (req, res, next )=>{
 
 exports.getProduct = catchAsync(async(req,res)=>{
     const user = req.user;
-    const product = await Products.findById({_id:req.params.id});
+    const product = await Products.findOne({slug:req.params.slug});
     res.render('./users/productsDetails',{
         product,user
     });

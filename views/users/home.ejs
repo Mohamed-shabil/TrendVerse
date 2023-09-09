@@ -108,7 +108,7 @@
             <div class="row product__filter">
                 <%products.forEach((product)=>{%>
                     <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                        <a href="/shop/<%=product._id%>">
+                        <a href="/shop/<%=product.slug%>">
                             <div class="product__item">
                                 <div class="product__item__pic set-bg" data-setbg="/products/<%=product.images[0]%>">
                                     <span class="label">New</span>

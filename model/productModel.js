@@ -1,6 +1,7 @@
 const mongoose = require('mongoose'); 
+const slugify = require('slugify');
 
-const adminSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
     name:{
         type: String,
         required: true,
@@ -17,10 +18,17 @@ const adminSchema = new mongoose.Schema({
         type:Number,
         required:true,
     },
+    slug: String,
     images:[String],
     category:String
     
 })
 
-const Product = mongoose.model('Product',adminSchema);
+productSchema.pre('save',function(next){
+    this.slug = slugify(this.name,{lower:true});
+    next();
+})
+
+
+const Product = mongoose.model('Product',productSchema);
 module.exports = Product; 

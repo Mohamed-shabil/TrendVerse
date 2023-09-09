@@ -5,6 +5,7 @@ const Category = require('../model/categoryModel');
 const User = require('../model/userModel')
 const bcrypt = require('bcrypt');
 const token = require('../utils/token');
+const slugify = require('slugify')
 
 exports.getLogin = (req,res) =>{
     res.render('./admin/login')

@@ -24,7 +24,7 @@ router.route('/login')
 
 router.get('/shop',userController.getProducts)
 
-router.route('/shop/:id')
+router.route('/shop/:slug')
     .get(userController.getProduct)
     .put(middleware.isLoggedin,userController.addToCart);
 
