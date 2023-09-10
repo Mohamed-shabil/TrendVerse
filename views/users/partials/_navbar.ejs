@@ -32,39 +32,39 @@
 <header class="header">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-md-3">
+            <div class="col-lg-2 col-md-2">
                 <div class="header__logo">
                     <a href="./inex.html"><img src="/users/img/logo.png" alt=""></a>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-4 col-md-4">
                 <nav class="header__menu mobile-menu">
                     <ul>
                         <li><a href="/">Home</a></li>
                         <li class="active"><a href="/shop">Shop</a></li>
-                        <li><a href="#">Pages</a>
-                            <ul class="dropdown">
-                                <li><a href="./about.html">About Us</a></li>
-                                <li><a href="./shop-details.html">Shop Details</a></li>
-                                <li><a href="./shopping-cart.html">Shopping Cart</a></li>
-                                <li><a href="./checkout.html">Check Out</a></li>
-                                <li><a href="./blog-details.html">Blog Details</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="./blog.html">Blog</a></li>
-                        <li><a href="./contact.html">Contacts</a></li>
+                        <li><a href="#">Pages</a></li>
                     </ul>
                 </nav>
             </div>
             <%if(!user){%>
-                <div class="col-lg-3 col-md-3 d-flex align-items-center justify-content-end">
-                    <a href="/login" class="header__login__btn">Login</a>
+                <div class="col-lg-6 col-md-6 d-flex align-items-center ">
+                    <div class="col-md-8">
+                        <form action="/shop" class="form-outline row">
+                          <input type="text" name="query" class="search__inpu w-90" placeholder="Search"/>
+                          <button type="submit" class="btn btn-primary">
+                              <a href="/shop?search="><i class="bi bi-search"></i></a>
+                          </button>
+                        </form>
+                      </div>
+                    <div class="col-md-4 d-flex justify-content-end">
+                        <a href="/login" class="header__login__btn">Login</a>
+                    </div>
                 </div> 
             <%}else{%>
-                <div class="col-lg-3 col-md-3 ">
+                <div class="col-lg-6 col-md-6 ">
                     <div class="header__nav__option">
-                        <a href="#" class="search-switch">
-                            <img src="/users/img/icon/search.png" alt="">
+                        <a href="/user">
+                            <img src="/users/img/icon/search.png" alt="search">
                         </a>
                         <a href="/user">
                             <img src="/users/img/icon/heart.png" alt="whishlist">

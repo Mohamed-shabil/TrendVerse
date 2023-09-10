@@ -171,14 +171,30 @@ exports.getProduct = catchAsync(async(req,res)=>{
 exports.getProducts = catchAsync(async(req,res)=>{
     const page = parseInt(req.query.page) || 1; 
     const limit = 12;
-    const skip = (page - 1) * limit 
-    const products = await Products.find().skip(skip).limit(limit);
+    const skip = (page - 1) * limit
+    const { category, minPrice, maxPrice, brand } = req.query;
+    const filter = {}
+    if(category){
+        filter.category = category
+    }
+    if(minPrice||maxPrice){
+        filter.price = {}
+    }
+    if(minPrice){
+        filter.price.$gte = minPrice
+    }
+    if(maxPrice){
+        filter.price.$lte = maxPrice;
+    }
+    const products = await Products.find(filter).skip(skip).limit(limit);
     const totalDocs = await Products.countDocuments();
     const totalPages= totalDocs/limit
     res.render('./users/products',{
         products,page,totalPages
     });
 })
+
+
 
 exports.addToCart = catchAsync(async (req,res)=>{
     const previousPath = req.previousUrl;

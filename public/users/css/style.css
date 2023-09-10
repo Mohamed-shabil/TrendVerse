@@ -381,6 +381,18 @@ input::-webkit-inner-spin-button {
 .checkout_address{
 	margin-bottom: 10px!important;
 }
+
+/* Search	 */
+
+.search__input{
+	width: 80%;
+    border: 1px solid #999;
+    outline: none;
+    border-radius: 4px;
+    margin-right: 10px;
+	padding-left: 10px;
+}
+
 /* Orders  */
 
 .Pending{
