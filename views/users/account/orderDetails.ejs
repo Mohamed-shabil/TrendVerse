@@ -1,6 +1,6 @@
 <%- include('../partials/_header') %>
     <body>
-    <%- include('../partials/_navbar',) %>
+    <%- include('../partials/_navbar') %>
     <section style="background-color: #eee;">
       <div class="container py-5">
         <h2 class="text-center mt-4">My Orders</h2>
@@ -11,7 +11,7 @@
         <%}else if(errorMessage[0]){%>
           <div id="error-message" class="alert alert-danger col-8" role="alert">
               <%=errorMessage[0]%>
-        </div>
+          </div>
         <% } %>
 
         <% orders.forEach((order) => {%>
@@ -96,4 +96,4 @@
         }
         hideErrorMessage();
   </script>
-<%- include('../partials/_footer',) %>
+<%- include('../partials/_footer') %>

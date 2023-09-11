@@ -45,12 +45,17 @@ exports.getDashboard = (req,res) =>{
 }
 // Products
 exports.getProducts = catchAsync( async (req,res) =>{
-    const products = await Product.find();
-    res.render('./admin/products',{products:products})
+    const page = parseInt(req.query.page) || 1; 
+    const limit = 12;
+    const skip = (page - 1) * limit
+    const products = await Product.find().skip(skip).limit(limit);
+    const totalDocs = await Product.countDocuments();
+    const totalPages= totalDocs/limit
+    res.render('./admin/products',{products:products,page,totalPages})
 });
 
 exports.getAddProducts = catchAsync(async (req,res) =>{
-    const categories = await Category.find();
+    const categories = await Category.find()
     res.render('./admin/addProducts',{
         categories
     });
@@ -128,7 +133,8 @@ exports.getAddCategory = (req,res)=>{
     res.render("./admin/addCategory");
 }
 exports.addCategory = catchAsync(async(req,res)=>{
-    const name = req.body.name;
+    const name = req.body.name.toLowerCase();
+    console.log(name);
     const photo = req.body.photo;
     const isCategoryExist = await Category.findOne({name});
     if(isCategoryExist){

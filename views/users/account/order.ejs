@@ -3,19 +3,30 @@
     <%- include('../partials/_navbar',) %>
     <section style="background-color: #eee;">
       <div class="container py-5">
-        <h2 class="text-center mt-4">My Orders</h2>
+        <h2 class="text-center mt-4 mb-4">My Orders</h2>
       
 
         <% orders.forEach((order) => {%>
-          <div class="row mb-2 bg-white">
+          <div class="row mb-2 bg-white rounded p-2">
               <div class="col-md-4 p-2">
-                
+                <p class="text-center fs-6"><small>#<%=order.orderId%></small></p>
+                <h4 class="text-center">₹<%=order.totalPrice%></h4>
+
               </div>
-              <div class="col-md-4 p-2">
-                
+              <div class="col-md-4 p-2 d-flex align-items-center">
+                <ul class="product_list">
+                  <%order.products.product.forEach((product) => {%>
+                        <li>- <%=product.name%></li>
+                    <% }) %>
+                </ul>
               </div>
-              <div class="col-md-4 p-2">
-                
+              <div class="col-md-3 p-2">
+                <p><%=order.orderDate.toDateString() %></p>
+                <p><%=order.paymentMethod %></p>
+                <span class="<%=order.status %>"><%=order.status %></span>
+              </div>
+              <div class="col-md-1 d-flex align-items-center justify-content-center">
+                <a href="/account/orders/<%=order.orderId%>"><i class="bi bi-chevron-double-right"></i></a>
               </div>
           </div>
         <% }) %>
@@ -34,5 +45,6 @@
           }
         }
         hideErrorMessage();
+        
   </script>
 <%- include('../partials/_footer',) %>

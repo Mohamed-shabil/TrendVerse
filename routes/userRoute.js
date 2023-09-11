@@ -60,7 +60,8 @@ router.route('/account/address')
 router.route('/account/orders')
     .get(middleware.isLoggedin,middleware.authChecker,orderController.getMyOrders)
     .patch(middleware.isLoggedin,middleware.authChecker,orderController.updateOrderStatus)
-
+router.route('/account/orders/:orderId')
+    .get(middleware.isLoggedin,middleware.authChecker,orderController.getOrderDatails)
 
 router.route('/account/address/addAddress')
     .get(middleware.isLoggedin,middleware.authChecker,addressController.getAddAddress)

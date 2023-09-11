@@ -1,6 +1,7 @@
 const catchAsync = require('../utils/catchAsync');
 const User = require('../model/userModel');
-const Products = require('../model/productModel'); 
+const Products = require('../model/productModel');
+const Category = require('../model/categoryModel');
 const bcrypt = require('bcrypt');
 const randomString = require('randomstring');
 const token = require('../utils/token')
@@ -193,11 +194,13 @@ exports.getProducts = catchAsync(async(req,res)=>{
     if(maxPrice){
         filter.price.$lte = maxPrice;
     }
+    
     const products = await Products.find(filter).skip(skip).limit(limit);
     const totalDocs = await Products.countDocuments();
+    const categories = await Category.find();
     const totalPages= totalDocs/limit
     res.render('./users/products',{
-        products,page,totalPages
+        products,page,totalPages,categories
     });
 })
 

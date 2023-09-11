@@ -67,6 +67,21 @@
                           </tbody>
                         </table>
                       </div>
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                              <% for( let i = 1 ; i <= totalPages+1 ; i++ ){%>
+                                <% if(page == i) {%>
+                                    <li class="page-item"><a class="page-link active_page" href="/admin/products?page=<%=i%>"><%=i%></a></li>
+                                <% }else{%>
+                                    <li class="page-item"><a class="page-link active" href="/admin/products?page=<%=i%>"><%=i%></a></li>
+                                <% }%>
+                            <% } %>
+                            </ul>
+                          </nav>
+                        </div>
+                    </div>
                     </div>
                   </div>
                 </div>

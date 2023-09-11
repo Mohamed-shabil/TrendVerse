@@ -454,6 +454,12 @@ input::-webkit-inner-spin-button {
 	padding: 5px;
 	border-radius: 3px;
 }
+.product_list{
+	list-style: none;
+}
+.product_list li{
+	font-size: 14px;
+}
 /* Preloder */
 
 #preloder {

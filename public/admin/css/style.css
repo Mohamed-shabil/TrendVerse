@@ -21224,4 +21224,13 @@ input{
 .Category__name{
   text-transform: capitalize;
 }
+.active_page{
+  background-color: #0050e3!important;
+  color: #fff;
+}
+.active_page:hover{
+  color: #fff;
+}
+
+
 /*# sourceMappingURL=maps/style.css.map */

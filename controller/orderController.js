@@ -81,42 +81,75 @@ exports.getAllOrders = catchAsync(async(req,res)=>{
 })
 
 exports.getMyOrders = catchAsync(async(req,res)=>{
-    // const myOrders = await Order.aggregate([
-    //     {
-    //         $match:{
-    //           customer: req.user._id
-    //         }
-    //     },
-    //     {
-    //       $sort: { orderDate: -1 }
-    //     },
-    //     {
-    //       $unwind: "$products" 
-    //     },
-    //     {
-    //       $lookup: {
-    //         from: "products", 
-    //         localField: "products.product", 
-    //         foreignField: "_id", 
-    //         as: "products.product" 
-    //       }
-    //     },
-    //     {
-    //       $lookup: {
-    //         from: "addresses", 
-    //         localField: "deliveryAddress", 
-    //         foreignField: "_id", 
-    //         as: "deliveryAddress" 
-    //       }
-    //     }
-    //   ]);
-    const myOrders = await Order.find({customer:req.user._id}).populate(['products.product','deliveryAddress'])
-    console.log(myOrders[0].products[0].product);
-    // res.send(myOrders)
+    const myOrders = await Order.aggregate([
+        {
+            $match:{
+              customer: req.user._id
+            }
+        },
+        {
+          $sort: { orderDate: -1 }
+        },
+        {
+          $lookup: {
+            from: "products", 
+            localField: "products.product", 
+            foreignField: "_id", 
+            as: "products.product" 
+          }
+        },
+        {
+          $lookup: {
+            from: "addresses", 
+            localField: "deliveryAddress", 
+            foreignField: "_id", 
+            as: "deliveryAddress" 
+          }
+        }
+      ]);
+
+      console.log(myOrders);
     res.render('./users/account/order',{
         orders:myOrders
     });
 })
+
+exports.getOrderDatails = catchAsync(async (req, res) => {
+  const orderId = req.params.orderId
+  const orders = await Order.aggregate([
+    {
+        $match:{
+          orderId: orderId
+        }
+    },
+    {
+      $unwind: "$products"
+    },
+    {
+      $sort: { orderDate: -1 }
+    },
+    {
+      $lookup: {
+        from: "products", 
+        localField: "products.product", 
+        foreignField: "_id", 
+        as: "products.product" 
+      }
+    },
+    {
+      $lookup: {
+        from: "addresses", 
+        localField: "deliveryAddress", 
+        foreignField: "_id", 
+        as: "deliveryAddress" 
+      }
+    }
+  ]);
+  console.log(orders)
+  res.render('./users/account/orderDetails',{
+    orders
+  })
+});
 
 exports.updateOrderStatus = catchAsync(async(req,res) => {
     const status = req.body.status;
