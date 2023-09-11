@@ -23,6 +23,7 @@ router.route('/login')
 // router.use(middleware.isBlocked);   
 
 router.get('/shop',userController.getProducts)
+    .post('/shop',userController.getProducts);
 
 router.route('/shop/:slug')
     .get(userController.getProduct)

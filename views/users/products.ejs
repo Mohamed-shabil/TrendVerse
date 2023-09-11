@@ -3,13 +3,19 @@
     <%- include('./partials/_navbar') %>
 
     <section class="shop spad">
+        <div class="container d-flex align-items-center justify-content-center mb-4">
+            <form action="#">
+                <input type="text" placeholder="Search...">
+                <button type="submit"><span class="icon_search"></span></button>
+            </form>
+        </div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
                     <div class="shop__sidebar">
                         <div class="shop__sidebar__search">
-                            <form action="#">
-                                <input type="text" placeholder="Search...">
+                            <form action="/shop" method="post">
+                                <input type="text" name="search" placeholder="Search...">
                                 <button type="submit"><span class="icon_search"></span></button>
                             </form>
                         </div>
@@ -192,8 +198,8 @@
                                             <h6><%=product.name%></h6>
                                             <form  class="cart_form" action="/cart?_method=PATCH" method="post">
                                                 <h5>₹<%=product.price%></h5>
-                                                <input type="hidden" name="id" value="<%=product._id%>">
-                                                <button class="cart_button"><img src="/users/img/icon/cart.png" alt="" srcset=""></button>
+                                                <input type="hidden" class="id" name="id" value="<%=product._id%>">
+                                                <button class="cart_button"><img src="/users/img/icon/cart.png" alt="cart" srcset=""></button>
                                             </form>
                                             
                                         </div>
@@ -219,5 +225,7 @@
             </div>
         </div>
     </section>
+
+
 
 <%- include('./partials/_footer.ejs') %>

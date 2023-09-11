@@ -393,6 +393,14 @@ input::-webkit-inner-spin-button {
 	padding-left: 10px;
 }
 
+
+/* show */
+.show{
+	display: block!important;
+}
+.toast{
+	display: none;
+}
 /* Orders  */
 
 .Pending{

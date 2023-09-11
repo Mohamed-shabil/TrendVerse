@@ -172,8 +172,15 @@ exports.getProducts = catchAsync(async(req,res)=>{
     const page = parseInt(req.query.page) || 1; 
     const limit = 12;
     const skip = (page - 1) * limit
-    const { category, minPrice, maxPrice, brand } = req.query;
+    const { category, minPrice, maxPrice} = req.query;
+    const query = req.body.search
     const filter = {}
+    if(query){
+        filter.$or = [
+            { title: { $regex: query, $options: 'i' } },
+            { description: { $regex: query, $options: 'i' } }
+        ]
+    }
     if(category){
         filter.category = category
     }
