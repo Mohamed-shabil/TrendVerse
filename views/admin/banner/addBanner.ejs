@@ -1,0 +1,106 @@
+<%- include('partials/_header.ejs') %>
+<body>
+  <div class="container-scroller">
+    <!-- partial:../../partials/_sidebar.html -->
+    <%- include('partials/_sidebar.ejs') %>                       
+    
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <%- include('partials/_navbar.ejs') %>
+        
+
+
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="page-header">
+              <h3 class="page-title"> Add Banner </h3>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+                </ol>
+              </nav>
+            </div>
+
+            <!-- Adding Form  -->
+            <div class="row align-items-center justify-content-center">
+              <%if(successMessage[0]){%>
+                <div id="error-message" class="alert alert-info col-8" role="alert">
+                    <%=successMessage[0]%>
+                </div>
+              <%}else if(errorMessage[0]){%>
+                <div id="error-message" class="alert alert-danger col-8" role="alert">
+                    <%=errorMessage[0]%>
+                </div>
+              <%}%> 
+              <div class="col-8  grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <form class="forms-sample" method="post" action="/admin/banner/addBanner" enctype="multipart/form-data">
+                      <div class="form-group">
+                        <label for="exampleInputName1">Banner Name</label>
+                        <input type="text" name="name" required class="form-control" id="exampleInputName1" placeholder="Category name">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputName1">Banner description</label>
+                        <input type="text" name="name" required class="form-control" id="exampleInputName1" placeholder="Category name">
+                      </div>
+                      
+                      <div class="form-group">
+                        <label>File upload</label>
+                        <input type="file" class="file-upload-default">
+                        <div class="input-group col-xs-12">
+                          <input type="file" accept="image/*" required multiple name="photo" onchange="previewImages(event);" class="form-control file-upload-info" placeholder="Upload Image">
+                          <span class="input-group-append">
+                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-2" height="100px" width="100px">
+                        <img id="preview">
+                      </div>
+                      <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    
+    <script>
+      function hideErrorMessage() {
+        var errorMessageElement = document.getElementById('error-message');
+        if (errorMessageElement) {
+          setTimeout(()=>{
+            errorMessageElement.style.display = 'none';
+          }, 4000);
+          
+        }
+      }
+      hideErrorMessage();
+
+
+      const previewImages = (event) => {
+        const imageFiles = event.target.files;
+        const imageFilesLength = imageFiles.length;
+        if (imageFilesLength > 0) {
+          const imageSrc = URL.createObjectURL(imageFiles[0]);
+          const imagePreviewElement = document.querySelector("#preview");
+          imagePreviewElement.src = imageSrc;
+          imagePreviewElement.style.display = "block";
+          imagePreviewElement.style.height = "100%";
+          imagePreviewElement.style.width = "100%";
+        }
+      }
+    </script>
+    <%- include('partials/_footer.ejs') %>
