@@ -3,7 +3,7 @@ const catchAsync = require('../utils/catchAsync')
 
 exports.getBanner = catchAsync(async(req,res)=>{
     const banners = await Banner.find();
-    res.render('./admin/banner/banner',{
+    res.render('./admin/banner/banners',{
         banners
     });
 })
@@ -23,14 +23,15 @@ exports.addBanner = catchAsync(async (req,res)=>{
         req.flash('error','something went wrong try again');
         res.redirect('/admin/banner/banner');
     }
-    req.flash('success',)
+    req.flash('success',"banner added Successfully")
     res.redirect('/admin/banner');
 })
 
 exports.getEditBanner = catchAsync(async (req,res)=>{
-    const bannerId = req.body.id
-    const banner = await Banner.find({id: bannerId});
-    res.render('./admin/banner/editBanner')
+    const bannerId = req.params.id
+    const banner = await Banner.findById(bannerId);
+    console.log(banner);
+    res.render('./admin/banner/editBanner',{banner});
 })
 exports.editBanner = catchAsync(async (req,res)=>{
     const bannerId = req.params.id;
@@ -44,7 +45,7 @@ exports.editBanner = catchAsync(async (req,res)=>{
 })
 
 exports.deleteBanner = catchAsync(async (req,res)=>{
-    const bannerId = req.body;
+    const bannerId = req.params.id;
     await Banner.deleteOne({_id:bannerId});
     res.redirect('/admin/banner');
 })

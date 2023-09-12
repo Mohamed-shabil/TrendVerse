@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const adminController = require('../controller/adminController');
 const orderController = require('../controller/orderController');
-const middleware = require('../middleware/middleware')
+const middleware = require('../middleware/middleware');
+const bannerController = require('../controller/bannerController');
 
 
 router.get('/login',middleware.checkAdmin,adminController.getLogin)
@@ -40,6 +41,19 @@ router.route('/category/editCategory/:id')
       .get(adminController.getEditCategory)
       .put(middleware.uploadCategoryImage,middleware.resizeCategoryImage,adminController.editCategory)
       .delete(adminController.deleteCategory)
+
+router.route('/banner')
+      .get(bannerController.getBanner)
+
+router.route('/banner/addBanner')
+      .get(bannerController.getAddBanner)
+      .post(middleware.uploadBannerImage,middleware.resizeBannerImages,bannerController.addBanner)
+
+router.route('/banner/editBanner/:id')
+      .get(bannerController.getEditBanner)
+
+router.route('/banner/deleteBanner/:id')
+      .delete(bannerController.deleteBanner)
 
 router.route('/orders')
       .get(orderController.getAllOrders)

@@ -1,6 +1,7 @@
 const catchAsync = require('../utils/catchAsync');
 const User = require('../model/userModel');
 const Products = require('../model/productModel');
+const Banner = require('../model/bannerModel')
 const Category = require('../model/categoryModel');
 const bcrypt = require('bcrypt');
 const randomString = require('randomstring');
@@ -9,9 +10,10 @@ const sendMail = require('../utils/email');
 
 
 exports.getHome = catchAsync(async(req,res)=>{
+    const banners = await Banner.find();
     const products = await Products.find().limit(8).sort()
     return res.render('./users/home',{
-        products,user:req.user
+        products,user:req.user,banners
     });
 })
 
