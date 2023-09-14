@@ -64,15 +64,6 @@
                           <button class="btn btn-dark w-100"  type="button">Details</button>
                         </a>
                       </div>
-                      <% if(order.status != 'Delivered'&& order.status != 'Cancel') {%>
-                        <form action="/account/orders?_method=PATCH" method="post">
-                          <div class="d-flex flex-column ">
-                            <input type="hidden" value="Cancel" name="status" />
-                            <input type="hidden" value="<%=order._id%>" name="orderId" />
-                            <button class="cancel_order" type="submit">Cancel Order</button>
-                          </div>
-                        </form>
-                      <%}%>
                     </div>
                   </div>
                 </div>

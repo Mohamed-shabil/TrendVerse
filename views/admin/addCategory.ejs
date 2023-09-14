@@ -38,7 +38,7 @@
               <div class="col-8  grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <form class="forms-sample" method="post" action="/admin/category/addCategory" enctype="multipart/form-data">
+                    <form  class="forms-sample" method="post" action="/admin/category/addCategory" enctype="multipart/form-data">
                       <div class="form-group">
                         <label for="exampleInputName1">Category Name</label>
                         <input type="text" name="name" required class="form-control" id="exampleInputName1" placeholder="Category name">
@@ -81,6 +81,10 @@
     </div>
     <!-- container-scroller -->
     
+
+    
+
+
     <script>
       function hideErrorMessage() {
         var errorMessageElement = document.getElementById('error-message');
@@ -92,8 +96,6 @@
         }
       }
       hideErrorMessage();
-
-
       const previewImages = (event) => {
         const imageFiles = event.target.files;
         const imageFilesLength = imageFiles.length;
@@ -106,5 +108,8 @@
           imagePreviewElement.style.width = "100%";
         }
       }
+
+      
+      
     </script>
     <%- include('partials/_footer.ejs') %>

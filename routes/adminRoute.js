@@ -59,6 +59,9 @@ router.route('/orders')
       .get(orderController.getAllOrders)
       .patch(orderController.updateOrderStatus)
 
+router.route('/orders/:orderId')
+      .get(orderController.getOrderDetailsForAdmin)
+
 router.route('/users')
       .get(adminController.getUsers)
 

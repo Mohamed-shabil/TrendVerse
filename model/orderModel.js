@@ -46,10 +46,15 @@ const orderSchema = new mongoose.Schema({
     paymentMethod:{
         type:String,
         required:true
+    },
+    paymentStatus:{
+        type:String,
+        enum:['Pending','Done'],
+        default:'Pending'
     }
 });
 
-// Create the Order model
+
 const Order = mongoose.model('Order', orderSchema);
 
 module.exports = Order;

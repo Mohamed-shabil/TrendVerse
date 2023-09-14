@@ -48,11 +48,8 @@ exports.userLogin = catchAsync( async (req,res)=>{
             return res.redirect('/varitfyOtp');
         }
         currentUser.password = undefined;
-        
         console.log(currentUser)
         token.createSendToken(currentUser,res);
-        req.session.user = currentUser 
-        console.log(req.session.user)
         return res.redirect('/');
     }
 

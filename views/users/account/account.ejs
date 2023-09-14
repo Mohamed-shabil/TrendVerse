@@ -50,15 +50,36 @@
                     </div>
                     
                     <div class="row justify-content-around">
-                        <button class="col-5 account__options">
-                          <a href="/account/logout">Logout</a>
-                        </button>
+                        <form class="col-5 account__options" action="/account/logout" id="cancel_order_form" method="get">
+                          <button type="button" class="logout" onclick="showConfirmationModal()">Logout</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<div id="overlay"></div>
+
+    <div id="confirmationModal" class="custonm_modal col-md-3 bg-white">
+      <div class="col">
+        <div class="close_btn_div d-flex align-center justify-content-end">
+          <span onclick="hideConfirmationModal()"><i class="bi bi-x "></i></span>
+        </div>
+        <div class="closing_icon text-center py-2">
+          <h1 class="text-primary"><i class="bi bi-box-arrow-right"></i></h1>
+        </div>
+        <div class="confirmation_text text-center mt-3 mb-3">
+          Do you really want to logout now ? 
+        </div>
+        <div class="cnfrm_button d-flex align-items-center justify-content-center">
+          <button class="cancel_btn" onclick="hideConfirmationModal()">Cancel</button>
+          <button class="delete_btn" onclick="submitForm()">Logout</button>
+        </div>
+      </div>
+    </div>
+
 <script>
     function hideErrorMessage() {
         var errorMessageElement = document.getElementById('error-message');
@@ -70,5 +91,21 @@
         }
       }
       hideErrorMessage();
+
+      function showConfirmationModal() { 
+        document.getElementById("confirmationModal").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+      }
+
+      function hideConfirmationModal() {
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("confirmationModal").style.display = "none";
+      }
+
+      function submitForm() {
+        document.getElementById("cancel_order_form").submit();
+      }
+
+
 </script>
 <%- include('../partials/_footer',) %>

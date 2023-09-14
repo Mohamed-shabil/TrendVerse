@@ -37,10 +37,13 @@ router.route('/cart')
 router.route('/cart/:id')
     .patch(middleware.authChecker,userController.updateCartQuantity);
 
+
 router.route('/cart/checkout')
     .get(middleware.isLoggedin,middleware.authChecker,middleware.checkCart,orderController.getCheckout)
     .post(middleware.isLoggedin,middleware.authChecker,orderController.checkout);
 
+router.route('/verifyPayment')
+    .post(middleware.isLoggedin,middleware.authChecker,orderController.verifyPayment)
 router.route('/account')
     .get(middleware.isLoggedin,middleware.authChecker,accountController.getAccount);
 

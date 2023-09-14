@@ -122,7 +122,8 @@
                 checkout experience.
               </p>
 
-              <form action="/cart/checkout" method="post">
+              <!-- <form action="/cart/checkout" method="post"> -->
+              <form id="checkout">
                 <div class="form-check">
                   <% if(errorMessage[0]){%>
                     <p class="text-danger"><%=errorMessage[0]%></p>
@@ -138,6 +139,18 @@
                     Cash On Delivery
                   </label>
                 </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    value="Online"
+                    name="paymentMethod"
+                    id="flexRadioDefault1"
+                  />
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    Pay Online
+                  </label>
+                </div>
                 <button type="submit" class="site-btn">PLACE ORDER</button>
               </form>
             </div>
@@ -147,5 +160,89 @@
     </div>
   </section>
 
-  <%- include('./partials/_footer') %>
 </body>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $('#checkout').submit(function(e){
+      e.preventDefault();
+      var formData = $(this).serialize();
+      console.log("formData",formData);
+      if(formData=='paymentMethod=COD'){
+        $.ajax({
+          type: 'POST',
+          url:'/cart/checkout',
+          data:formData,
+          success: function(res){
+            if(res.status == "success"){
+              location.href = '/account/orders'
+            }
+          }
+        })
+      }else{
+        $.ajax({
+        type: 'POST',
+        url:'/cart/checkout',
+        data:formData,
+        success:function(order){
+          var options = {
+            "key": "rzp_test_RooEVCj8UbzuAF", 
+            "amount": order.amount,
+            "currency": "INR",
+            "name": "TrendVerse",
+            "description": "The World of Mens Fashion",
+            "image": "https://example.com/your_logo",
+            "order_id": order.id,   
+            "handler": function (response){
+
+                alert(response.razorpay_payment_id);
+                alert(response.razorpay_order_id);
+                alert(response.razorpay_signature);
+                verifyPayment(response,order);
+          },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9000090000"
+          },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+          },
+            "theme": {
+                "color": "#3399cc"
+            }
+          };
+          var rzp1 = new Razorpay(options);
+          rzp1.open();
+          rzp1.on('payment.failed', function (response){
+          console.log(response);    
+        });
+        },
+        error:function(error){
+          console.log('Error Req: '+ error);
+        }
+      })
+      }
+    })
+  })
+
+  function verifyPayment(payment,order){
+    console.log('Verifying')
+    $.ajax({
+      type: "POST",
+      url:'/verifyPayment',
+      data:{
+        payment,order
+      },
+      success:function(res) {
+        if(res.status == 'success'){
+          location.href = '/account/orders'
+        }
+        
+      }
+    })
+  }
+</script>
+<%- include('./partials/_footer') %>

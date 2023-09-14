@@ -47,8 +47,8 @@
                                     </span>
                                 </td>
                                 <td>
-                                  <form action="/admin/category/editCategory/<%=category._id%>?_method=DELETE" method="post">
-                                    <button class="edit_btn_icon"><i class="mdi mdi-delete"></i></button>
+                                  <form id="<%=category._id%>" onsubmit="alert('Are you really sure you want to delete this category?!')" action="/admin/category/editCategory/<%=category._id%>?_method=DELETE" method="post">
+                                    <button class="edit_btn_icon" type="submit" onclick="showConfirmationModal()" ><i class="mdi mdi-delete"></i></button>
                                   </form>
                                 </td>
                               </tr>
@@ -64,7 +64,7 @@
         </div>
     </div>
 
-
+    
     <script>
       function hideErrorMessage() {
         var errorMessageElement = document.getElementById('error-message');
@@ -75,6 +75,7 @@
           
         }
       }
-      hideErrorMessage();
+      hideErrorMessage()
+
     </script>
 <%- include('partials/_footer.ejs') %>

@@ -27,77 +27,64 @@
                     <%=errorMessage[0]%>
                 </div>
               <%}%> 
-              <div class="row">
-                <div class="col-lg-12 grid-margin stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Order Table</h4>
-                      <div class="table-responsive">
-                        <table class="table">
-                          <thead>
-                            <tr>
-                              <th>Product</th>
-                              <th>Quantity</th>
-                              <th>Price</th>
-                              <th>Address</th>  
-                              <th>Status</th>
-                              <th>Payment Method</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <% orders.forEach((order)=>{%>
-                                <tr>
-                                  <td class="">
-                                    <img src="/products/<%=order.products.product[0].images[0]%>" alt="">
-                                    <p><%=order.products.product[0].name%></p>
-                                  </td>
+              <% orders.forEach((order) => {%>
+                <div class="row mb-2 rounded p-2" style="background: #191c24;">
+                    <div class="col-md-3 p-2">
+                      <p class="text-center fs-6"><small>#<%=order.orderId%></small></p>
+                      <h4 class="text-center">₹<%=order.totalPrice%></h4>
+      
+                    </div>
+                    <div class="col-md-4 p-2 d-flex align-items-center">
+                      <ul class="product_list">
+                        <%order.products.product.forEach((product) => {%>
+                              <li>- <%=product.name%></li>
+                          <% }) %>
+                      </ul>
+                    </div>
+                    <div class="col-md-4 p-2">
+                      <div class="row">
+                        <div class="col-5">
+                          <p><%=order.orderDate.toDateString() %></p>
+                          <p>Payment :<%=order.paymentMethod %></p>
+                          <span class="<%=order.status %>"><%=order.status %></span>
+                        </div>
+                        <div class="col-7 d-flex align-items-center w-100">
+                          <% if(order.status != 'Delivered'&& order.status != 'Cancel') {%>
+                            <%if(order.status != 'Cancel'){%>
+                              <form action="/admin/orders?_method=PATCH" class="d-flex align-items-center justify-content-between" method="POST">
+                                  <select name="status" class="status_order <%=order.status%>" id="floatingSelectGrid">
+                                      <%for (const option of ['Pending', 'Processing','Shipped', 'Delivered']){%>
+                                        <option value="<%=option%>" <% if(option == order.status) {%> selected <%} %>>
+                                          <%=option%> 
+                                        </option>
+                                      <% } %>
+                                  </select>
+                                  <input type="hidden" name="orderId" value="<%=order._id%>">
                                   
-                                  <td><%=order.products.quantity%></td>
-                                  <td><%=order.products.totalAmount%></td>
-                                  <td>
-                                    <%=order.deliveryAddress[0].name%>,<br>
-                                    <%=order.deliveryAddress[0].pincode%>,<br>
-                                    <%=order.deliveryAddress[0].city%>,<br>
-                                    <%=order.deliveryAddress[0].locality%>,<br>
-                                    <%=order.deliveryAddress[0].phone%>,<br>
-                                    <%=order.deliveryAddress[0].alternativePhoneNumber%>,<br>
-                                    <%=order.deliveryAddress[0].landMark%></p>
-                                </td>
-                                <td>
-                                  <%if(order.status != 'Cancel'){%>
-                                    <form action="/admin/orders?_method=PATCH" method="POST">
-                                        <select name="status" class="status_order <%=order.status%>" id="floatingSelectGrid">
-                                            <%for (const option of ['Pending', 'Processing','Shipped', 'Delivered']){%>
-                                              <option value="<%=option%>" <% if(option == order.status) {%> selected <%} %>>
-                                                <%=option%> 
-                                              </option>
-                                            <% } %>
-                                        </select>
-                                        <input type="hidden" name="orderId" value="<%=order._id%>">
-                                        
-                                        <button type="submit" class="status_update btn btn-outline-primary">Update</button>
-                                    </form>
-                                  <%}else{%>
-                                     <p class="Cancel">Order Cancelled</p>
-                                  <%}%>
-                                </td>
-                                <td>
-                                  <%=order.paymentMethod%>
-                                </td>
-                                </tr>
-                            <%}) %>
-
-
-                          </tbody>
-                        </table>
+                                  <button type="submit" class="status_update btn btn-outline-primary">Update</button>
+                              </form>
+                            <%}else{%>
+                               <p class="Cancel">Order Cancelled</p>
+                            <%}%>
+                          <%}%>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-center">
+                      <a href="/admin/orders/<%=order.orderId%>"><i class="bi bi-chevron-double-right"></i></a>
+                    </div>
                 </div>
-                
-                
-              </div>
+              <% }) %>
+
+
+
             </div>
         </div>
     </div>
+
+
+
+
+
+
     <%- include('../partials/_footer.ejs') %>

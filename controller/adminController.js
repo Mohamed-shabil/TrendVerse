@@ -3,6 +3,7 @@ const Admin = require('../model/adminModel');
 const Product = require('../model/productModel');
 const Category = require('../model/categoryModel');
 const User = require('../model/userModel')
+const Order = require('../model/orderModel')
 const bcrypt = require('bcrypt');
 const token = require('../utils/token');
 const slugify = require('slugify')
@@ -40,9 +41,153 @@ exports.logout = catchAsync(async (req, res, next )=>{
 })
 
 
-exports.getDashboard = (req,res) =>{
-    res.render('./admin/dashboard');
-}
+exports.getDashboard = catchAsync(async(req,res) =>{
+    const orders = await Order.find().populate('products');
+    const monthSales = await Order.aggregate([
+        {
+            $group: {
+                _id: {
+                  year: { $year: '$orderDate' },
+                  month: { $month: '$orderDate' }
+                },
+                totalSales: { $sum: '$totalPrice' }
+            }
+        },
+        {
+            $sort: {
+              '_id.year': 1,
+              '_id.month': 1
+            }
+        }
+    ])
+    const topSellingProducts = await Order.aggregate([
+        {
+            $unwind: '$products'
+        },
+        {
+            $group: {
+              _id: '$products.product',
+              totalQuantitySold: { $sum: '$products.quantity' }
+            }
+        },
+        {
+            $lookup: {
+              from: 'products', 
+              localField: '_id',
+              foreignField: '_id',
+              as: 'productInfo'
+            }
+        },
+        {
+            $unwind: '$productInfo'
+        },
+        {
+            $sort: {
+              totalQuantitySold: -1 // Sort in descending order of quantity sold
+            }
+        },
+        {
+            $limit: 5 // Get the top 10 selling products (you can change this as needed)
+        }
+    ])
+
+    const topSellingCategory = await Order.aggregate([
+        {
+            $unwind: '$products'
+          },
+          {
+            $lookup: {
+              from: 'products', // The name of your Product collection
+              localField: 'products.product',
+              foreignField: '_id',
+              as: 'productInfo'
+            }
+          },
+          {
+            $unwind: '$productInfo'
+          },
+          {
+            $group: {
+              _id: '$productInfo.category',
+              totalQuantitySold: { $sum: '$products.quantity' }
+            }
+          },
+          {
+            $sort: {
+              totalQuantitySold: -1 // Sort in descending order of quantity sold
+            }
+          },
+    ])
+
+    const cancelOrders = await Order.aggregate([
+        {
+            $match: {
+              status: 'Cancel' 
+            }
+          },
+          {
+            $group: {
+              _id: null,
+              totalCancelledOrders: { $sum: 1 } 
+            }
+          },
+          {
+            $project: {
+              _id: 0 
+            }
+        }
+    ])
+    
+    const paymentStatics = await Order.aggregate([
+        {
+            $group: {
+              _id: '$paymentMethod',
+              totalAmount: { $sum: '$totalPrice' }
+            }
+          }
+    ])
+
+    const totalRevenue = await Order.aggregate([
+        {
+            $group: {
+              _id: null,
+              totalRevenue: { $sum: '$totalPrice' }
+            }
+          }
+    ])
+
+    const blockedUser = await User.find({blocked:true});
+    // console.log('Monthly Sales :',monthSales,"topSellingProducts : ",topSellingProducts, "topSellingCategory :",topSellingCategory,"cancelOrders :",cancelOrders)
+    
+    const today = new Date().toISOString().split('T')[0];
+    console.log(today)
+    const todaysRevenue = await Order.aggregate([
+        {
+            $match: {
+                orderDate: {
+                    $gte: new Date(today), // Match orders with orderDate greater than or equal to today's date
+                    $lt: new Date(new Date(today).setDate(new Date(today).getDate() + 1)) // Match orders before tomorrow's date
+                }
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                todaysSales: { $sum: '$totalPrice' }
+            }
+        }
+    ])
+    console.log(topSellingProducts);
+    res.render('./admin/dashboard',{
+        monthSales,
+        topSellingProducts,
+        topSellingCategory,
+        cancelOrders,
+        paymentStatics,
+        totalRevenue,
+        todaysRevenue
+    });
+})
 // Products
 exports.getProducts = catchAsync( async (req,res) =>{
     const page = parseInt(req.query.page) || 1; 
