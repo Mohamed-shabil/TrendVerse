@@ -203,40 +203,43 @@ exports.getProducts = catchAsync(async(req,res)=>{
     });
 })
 
-
-
-exports.addToCart = catchAsync(async (req,res)=>{
+exports.addToCart = catchAsync(async (req, res) => {
     const previousPath = req.previousUrl;
     console.log(previousPath);
     const quantity = parseInt(req.body.quantity) || 1;
     const product = await Products.findById(req.body.id);
-    const user = await User.findById({_id: req.user._id}).populate('cart.product');
+    const user = await User.findById({ _id: req.user._id }).populate('cart.product');
     const totalAmount = product.price * quantity;
-    
-    
+
     let totalCartValue = 0;
-    user.cart.forEach(item => {
-        totalCartValue +=  item.totalAmount;
-    })
-    
-    const existingCartItemIndex = user.cart.findIndex( item => item.product.equals(product._id));
-    console.log( 'Existing', existingCartItemIndex);
-    if(existingCartItemIndex!=-1){
+
+    const existingCartItemIndex = user.cart.findIndex(item => item.product.equals(product._id));
+    console.log('Existing', existingCartItemIndex);
+    if (existingCartItemIndex !== -1) {
         user.cart[existingCartItemIndex].quantity += quantity;
-        user.cart[existingCartItemIndex].totalAmount += totalAmount; 
-        user.totalCartValue += (totalCartValue + totalAmount); 
-    }else{
-        user.cart.push({product:product._id,quantity,totalAmount});
-        user.totalCartValue = (totalCartValue + totalAmount);
+        user.cart[existingCartItemIndex].totalAmount = product.price * user.cart[existingCartItemIndex].quantity;
+    } else {
+        user.cart.push({ product: product._id, quantity, totalAmount });
     }
+    user.cart.forEach(item => {
+        totalCartValue += item.totalAmount;
+    });
+    user.totalCartValue = totalCartValue;
     await user.save();
+
     return res.redirect(previousPath);
-})
+});
+
+
+
+
+
 
 exports.getCart = catchAsync(async (req,res)=>{
     const user = await User.findById(req.user._id).populate('cart.product');
     const cart = user.cart;
     const totalCartValue = user.totalCartValue;
+    console.log(totalCartValue);
     return res.render('./users/cart',{
         cart,totalCartValue
     });
@@ -255,40 +258,41 @@ exports.removeCartItem = catchAsync (async (req,res) => {
     res.redirect('/cart');
 })
 
-exports.updateCartQuantity = catchAsync( async(req,res)=>{
+exports.updateCartQuantity = catchAsync(async (req, res) => {
     const product = req.params.id;
-    const userId = req.user._id 
-    let updateQuantity
-    if(req.body.quantityIncrement){
+    const userId = req.user._id;
+    let updateQuantity;
+    if (req.body.quantityIncrement) {
         updateQuantity = parseInt(req.body.quantityIncrement);
-        updateQuantity++
-        if(updateQuantity <= 0 ){
+        updateQuantity++;
+        if (updateQuantity <= 0) {
             updateQuantity = 1;
         }
     }
-    if(req.body.quantityDecrement){
+    if (req.body.quantityDecrement) {
         updateQuantity = parseInt(req.body.quantityDecrement);
-        updateQuantity--
-        if(updateQuantity <= 0 ){
+        updateQuantity--;
+        if (updateQuantity <= 0) {
             updateQuantity = 1;
         }
     }
-    console.log('qunatity',updateQuantity);
-    
+    console.log('qunatity', updateQuantity);
+
     const user = await User.findById(userId).populate('cart.product');
-    cartItemIndex = user.cart.findIndex(item => item.product.equals(product));
-    if(cartItemIndex !=-1){
+    const cartItemIndex = user.cart.findIndex(item => item.product.equals(product));
+    if (cartItemIndex !== -1) {
         user.cart[cartItemIndex].quantity = updateQuantity;
         user.cart[cartItemIndex].totalAmount = updateQuantity * user.cart[cartItemIndex].product.price;
         let totalCartValue = 0;
         user.cart.forEach(item => {
-            totalCartValue +=  item.totalAmount;
-        })
+            totalCartValue += item.totalAmount;
+        });
         user.totalCartValue = totalCartValue;
-        user.save();
+
+        await user.save();
     }
     res.redirect(req.previousUrl);
-})
+});
 
 
 
