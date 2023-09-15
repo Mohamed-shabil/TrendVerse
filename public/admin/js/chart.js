@@ -194,7 +194,7 @@ $(function() {
         borderWidth: 1,
         fill: true
       }
-    ]
+    ] 
   };
 
   var multiAreaOptions = {

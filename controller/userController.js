@@ -295,8 +295,6 @@ exports.updateCartQuantity = catchAsync(async (req, res) => {
 });
 
 
-
-// get Account
 exports.getAccount = catchAsync(async (req,res)=>{
     res.render('./users/account',{
         user:req.user

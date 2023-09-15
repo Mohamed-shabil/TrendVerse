@@ -43,8 +43,15 @@ exports.logout = catchAsync(async (req, res, next )=>{
 
 exports.getDashboard = catchAsync(async(req,res) =>{
     const orders = await Order.find().populate('products');
+    const totalUsers = await User.find().countDocuments();
     const monthSales = await Order.aggregate([
         {
+            $match:{
+                status:{$ne:'Cancel'}
+            }
+        },
+        {
+
             $group: {
                 _id: {
                   year: { $year: '$orderDate' },
@@ -113,6 +120,14 @@ exports.getDashboard = catchAsync(async(req,res) =>{
             }
           },
           {
+            $lookup: {
+              from: 'categories', // The name of your Product collection
+              localField: '_id',
+              foreignField: 'name',
+              as: 'category'
+            }
+          },
+          {
             $sort: {
               totalQuantitySold: -1 // Sort in descending order of quantity sold
             }
@@ -156,11 +171,39 @@ exports.getDashboard = catchAsync(async(req,res) =>{
           }
     ])
 
-    const blockedUser = await User.find({blocked:true});
-    // console.log('Monthly Sales :',monthSales,"topSellingProducts : ",topSellingProducts, "topSellingCategory :",topSellingCategory,"cancelOrders :",cancelOrders)
+    const yearlyChart = await Order.aggregate([
+        {
+            $match: {
+              status: 'Delivered', // Filter for only delivered orders (adjust as needed)
+            }
+          },
+          {
+            $group: {
+              _id: {
+                year: { $year: '$orderDate' },
+                month: { $month: '$orderDate' }
+              },
+              totalSales: { $sum: '$totalPrice' }
+            }
+          },
+          {
+            $sort: {
+              '_id.year': 1,
+              '_id.month': 1
+            }
+          },
+          {
+
+            $project:{
+                _id:0
+            }
+          }
+    ])
+    const yearlyData =yearlyChart.map((item)=>{ return item.totalSales});
+
+    const blockedUser = await User.find({blocked:true}).countDocuments();
     
     const today = new Date().toISOString().split('T')[0];
-    console.log(today)
     const todaysRevenue = await Order.aggregate([
         {
             $match: {
@@ -177,7 +220,36 @@ exports.getDashboard = catchAsync(async(req,res) =>{
             }
         }
     ])
-    console.log(topSellingProducts);
+    const totalOrders = await Order.aggregate([
+        {
+            $match: {
+                status: { $ne: 'Cancel' }
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                totalOrders: { $sum: 1 }
+            }
+        }
+    ])
+    
+    const pendingOrders = await Order.aggregate([
+        {
+            $match: {
+              status: 'Pending'
+            }
+        },
+        {
+            $lookup: {
+              from: 'products', // The name of your Product collection
+              localField: 'products.product',
+              foreignField: '_id',
+              as: 'productsInfo'
+            }
+        }
+    ])
+    console.log(paymentStatics);
     res.render('./admin/dashboard',{
         monthSales,
         topSellingProducts,
@@ -185,10 +257,15 @@ exports.getDashboard = catchAsync(async(req,res) =>{
         cancelOrders,
         paymentStatics,
         totalRevenue,
-        todaysRevenue
+        todaysRevenue,
+        totalOrders,
+        yearlyData,
+        pendingOrders,
+        totalUsers,
+        blockedUser,
     });
 })
-// Products
+
 exports.getProducts = catchAsync( async (req,res) =>{
     const page = parseInt(req.query.page) || 1; 
     const limit = 12;
@@ -205,6 +282,7 @@ exports.getAddProducts = catchAsync(async (req,res) =>{
         categories
     });
 })
+
 exports.addProducts = catchAsync(async(req,res) =>{
     const {name,description,price,stock,images,category} = req.body;
     const product = await Product.create({
@@ -244,6 +322,7 @@ exports.editProduct = catchAsync(async(req,res)=>{
     req.flash('success','Product updated successfully')
     res.redirect('/admin/products');
 })
+
 exports.deleteProductImage = catchAsync(async (req,res)=>{
     console.log('params works')
     console.log(req.params.image);
@@ -253,6 +332,7 @@ exports.deleteProductImage = catchAsync(async (req,res)=>{
         res.redirect(`/admin/products/editProduct/${req.params.id}`);
     }
 })
+
 exports.addProductImage = catchAsync(async (req,res)=>{
     console.log(req.body.images);
     
@@ -273,7 +353,6 @@ exports.deleteProduct = catchAsync(async(req,res)=>{
     })
 })
 
-// Category
 exports.getAddCategory = (req,res)=>{
     res.render("./admin/addCategory");
 }

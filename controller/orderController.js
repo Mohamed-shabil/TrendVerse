@@ -79,6 +79,11 @@ exports.verifyPayment = catchAsync(async (req,res)=>{
     res.status(201).json({
       status:'success'
     })
+  }else{
+    await Order.deleteOne({orderId:order.receipt});
+    res.status(201).json({
+      status:'fail'
+    })
   }
 })
 
