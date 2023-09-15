@@ -68,6 +68,11 @@ router.route('/users')
 router.route('/users/:id')
       .put(adminController.blockUsers)
 
+router.route('/salesReport')
+      .get(adminController.getSalesReport)
+      .post(adminController.downloadSalesReport)
+
+
 router.route('/logout')
       .get(adminController.logout)
 

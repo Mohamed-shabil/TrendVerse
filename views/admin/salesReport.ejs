@@ -1,0 +1,123 @@
+<%- include('partials/_header.ejs') %>
+<body>
+  <div class="container-scroller">
+    <!-- partial:../../partials/_sidebar.html -->
+    <%- include('partials/_sidebar.ejs') %>                       
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <%- include('partials/_navbar.ejs') %>
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+              <div class="page-header">
+                
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+                  </ol>
+                </nav>
+              </div>
+              <%if(successMessage[0]){%>
+                <div id="error-message" class="alert alert-info col-8" role="alert">
+                    <%=successMessage[0]%>
+                </div>
+              <%}else if(errorMessage[0]){%>
+                <div id="error-message" class="alert alert-danger col-8" role="alert">
+                    <%=errorMessage[0]%>
+                </div>
+              <%}%> 
+              <div class="row">
+                <div class="col-md-12 mt-4 mb-4 p-4">
+                    <form action="/admin/salesReport" method="GET">
+                      <div class="row">
+                        <div class="input-group col-md-4">
+                          <input value="<%=from%>" type="date" name="from" class="form-control">
+                        </div>
+                        <div class="input-group col-md-4 mb-3">
+                          <input type="date"  value="<%=to%>" name="to" class="form-control">
+                        </div>
+                        <div class="input-group col-md-4 mb-3">
+                          <select name="status" class="form-select" aria-label="Default select example">
+                            <option selected>All</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Delivered">Delivered</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6">
+                          <button class="btn btn-primary">Get Report</button>
+                        </div>
+                      </div>
+              
+                    </form>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                  <div class="card">
+                    <form action="/admin/salesReport" method="POST">
+                    <div class="card-body">
+                      <h3 class="page-title"> Sales Report </h3>
+                      <a href=""><button class="btn btn-primary">Download Sales Report</button></a>
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>Date</th>
+                              <th>OrderId</th>
+                              <th>Consumer</th>
+                              <th>Product</th>
+                              <th>Quantity</th>
+                              <th>Payment Method</th>
+                              <th>Amount</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            
+                            <%report.forEach((order)=>{%>
+                              <tr>
+                                <td>
+                                  <input type="hidden" name="orderDate" value="<%=order.orderDate.toDateString()%>">
+                                  <%=order.orderDate.toDateString() %>
+                                </td>
+                                <td>
+                                  <input type="hidden" name="orderId" value="<%=order.orderId%>">
+                                  <small><%=order.orderId%></small>
+                                </td>
+                                <td>
+                                  <input type="hidden" name="userEmail" value="<%=order.customer[0].email%>">
+                                  <%=order.customer[0].email%>
+                                </td>
+                                <td>
+                                  <input type="hidden" name="product" value="<%=order.productsInfo[0].name%>">
+                                  <%=order.productsInfo[0].name%>
+                                </td>
+                                <td>
+                                  <input type="hidden" name="quantity" value="<%=order.products.quantity%>">
+                                  <%=order.products.quantity%>
+                                </td>
+                                <td>
+                                  <input type="hidden" name="paymentMethod" value="<%=order.paymentMethod%>">
+                                  <%=order.paymentMethod%>
+                                </td>
+                              </tr>
+                            <%}) %>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </form>
+                  </div>
+                </div>
+                
+                
+              </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+<%- include('partials/_footer.ejs') %>

@@ -7,6 +7,9 @@ const Order = require('../model/orderModel')
 const bcrypt = require('bcrypt');
 const token = require('../utils/token');
 const slugify = require('slugify')
+const json2csv = require('json2csv');
+const fs = require('fs')
+
 
 exports.getLogin = (req,res) =>{
     res.render('./admin/login')
@@ -90,11 +93,11 @@ exports.getDashboard = catchAsync(async(req,res) =>{
         },
         {
             $sort: {
-              totalQuantitySold: -1 // Sort in descending order of quantity sold
+              totalQuantitySold: -1 
             }
         },
         {
-            $limit: 5 // Get the top 10 selling products (you can change this as needed)
+            $limit: 5 
         }
     ])
 
@@ -104,7 +107,7 @@ exports.getDashboard = catchAsync(async(req,res) =>{
           },
           {
             $lookup: {
-              from: 'products', // The name of your Product collection
+              from: 'products', 
               localField: 'products.product',
               foreignField: '_id',
               as: 'productInfo'
@@ -121,7 +124,7 @@ exports.getDashboard = catchAsync(async(req,res) =>{
           },
           {
             $lookup: {
-              from: 'categories', // The name of your Product collection
+              from: 'categories', 
               localField: '_id',
               foreignField: 'name',
               as: 'category'
@@ -129,7 +132,7 @@ exports.getDashboard = catchAsync(async(req,res) =>{
           },
           {
             $sort: {
-              totalQuantitySold: -1 // Sort in descending order of quantity sold
+              totalQuantitySold: -1 
             }
           },
     ])
@@ -174,7 +177,7 @@ exports.getDashboard = catchAsync(async(req,res) =>{
     const yearlyChart = await Order.aggregate([
         {
             $match: {
-              status: 'Delivered', // Filter for only delivered orders (adjust as needed)
+              status: 'Delivered', 
             }
           },
           {
@@ -208,8 +211,8 @@ exports.getDashboard = catchAsync(async(req,res) =>{
         {
             $match: {
                 orderDate: {
-                    $gte: new Date(today), // Match orders with orderDate greater than or equal to today's date
-                    $lt: new Date(new Date(today).setDate(new Date(today).getDate() + 1)) // Match orders before tomorrow's date
+                    $gte: new Date(today), 
+                    $lt: new Date(new Date(today).setDate(new Date(today).getDate() + 1)) 
                 }
             }
         },
@@ -242,7 +245,7 @@ exports.getDashboard = catchAsync(async(req,res) =>{
         },
         {
             $lookup: {
-              from: 'products', // The name of your Product collection
+              from: 'products', 
               localField: 'products.product',
               foreignField: '_id',
               as: 'productsInfo'
@@ -412,3 +415,80 @@ exports.blockUsers = catchAsync(async(req,res)=>{
 
 // Orders
 
+
+exports.getSalesReport = catchAsync(async(req,res)=>{
+    const to = req.query.to
+    const from = req.query.from
+    const status = req.query.status
+
+    const dateRangeFilter = {};
+
+    if (from) {
+      dateRangeFilter.orderDate = {
+        $gte: new Date(`${from}T00:00:00.000Z`), 
+      };
+    }
+    if (to) {
+      dateRangeFilter.orderDate = {
+        ...dateRangeFilter.orderDate,
+        $lte: new Date(`${to}T23:59:59.999Z`),
+      };
+    }
+    
+    let pipeline = [
+        {
+            $unwind:"$products"
+        },
+        {
+            $lookup: {
+                from: "products",
+                localField: "products.product",
+                foreignField: "_id",
+                as: "productsInfo"
+            }
+        },
+        {
+            $lookup:{
+                from:"users",
+                localField:"customer",
+                foreignField:"_id",
+                as:"customer"
+            }
+        }
+    ]
+    
+    if (Object.keys(dateRangeFilter).length > 0) {
+        pipeline.push({
+            $match: dateRangeFilter,
+        });
+    }
+    
+    console.log(dateRangeFilter)
+    // console.log(pipeline)
+    let report = await Order.aggregate(pipeline);
+    
+    console.log(report)
+    res.render('./admin/salesReport',{report,to,from});
+})
+
+exports.downloadSalesReport = catchAsync(async(req,res)=>{
+    const data = req.body
+    const dataLength = data.orderDate.length
+    const transformedData = [];
+    for(let i=0; i<dataLength; i++){
+        transformedData.push({
+            orderDate: data.orderDate[i],
+            orderId: data.orderId[i],
+            userEmail:data.userEmail[i],
+            products:data.product[i],
+            quantity:data.quantity[i],
+            paymentMethod:data.paymentMethod[i],
+        })
+    }
+    console.log(transformedData)
+    const fields = ['orderDate',"orderId","userEmail","products","quantity","paymentMethod"]
+    const csv = json2csv.parse(transformedData, { fields });
+    console.log(transformedData);
+    res.attachment('salesReport.csv');
+    res.status(200).send(csv);
+})
