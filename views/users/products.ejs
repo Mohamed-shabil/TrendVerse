@@ -3,19 +3,13 @@
     <%- include('./partials/_navbar') %>
 
     <section class="shop spad">
-        <div class="container d-flex align-items-center justify-content-center mb-4">
-            <form action="#">
-                <input type="text" placeholder="Search...">
-                <button type="submit"><span class="icon_search"></span></button>
-            </form>
-        </div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
                     <div class="shop__sidebar">
                         <div class="shop__sidebar__search">
-                            <form action="/shop" method="post">
-                                <input type="text" name="search" placeholder="Search...">
+                            <form action="/shop" method="GET">
+                                <input type="text" name="search" value="<%=query%>" placeholder="Search...">
                                 <button type="submit"><span class="icon_search"></span></button>
                             </form>
                         </div>
@@ -61,14 +55,16 @@
                                     <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
                                         <div class="card-body">
                                             <div class="shop__sidebar__price">
-                                                <ul>
-                                                    <li><a href="#">$0.00 - $50.00</a></li>
-                                                    <li><a href="#">$50.00 - $100.00</a></li>
-                                                    <li><a href="#">$100.00 - $150.00</a></li>
-                                                    <li><a href="#">$150.00 - $200.00</a></li>
-                                                    <li><a href="#">$200.00 - $250.00</a></li>
-                                                    <li><a href="#">250.00+</a></li>
-                                                </ul>
+                                                <div class="shop__sidebar__price">
+                                                    <ul>
+                                                        <li><a href="/shop?minPrice=0&maxPrice=500">₹0.00 - ₹500.00</a></li>
+                                                        <li><a href="/shop?minPrice=500&maxPrice=1000">₹500 - ₹1000</a></li>
+                                                        <li><a href="/shop?minPrice=1000&maxPrice=1500">₹1000 - ₹1500</a></li>
+                                                        <li><a href="/shop?minPrice=1500&maxPrice=2000">₹1500 - ₹2000</a></li>
+                                                        <li><a href="/shop?minPrice=2000&maxPrice=2500">₹2000 - ₹2500.00</a></li>
+                                                        <li><a href="/shop?minPrice=2500">₹2500+</a></li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -110,8 +106,8 @@
                                 <div class="shop__product__option__right">
                                     <p>Sort by Price:</p>
                                     <select>
-                                        <option value="">Low To High</option>
-                                        <option value="">High To Lo</option>
+                                        <option name="sort" value="-price">Low to High</option>
+                                        <option name="sort" value="price">High To Low</option>
                                     </select>
                                 </div>
                             </div>
@@ -144,9 +140,9 @@
                             <div class="product__pagination">
                                 <% for( let i = 1 ; i <= totalPages+1 ; i++ ){%>
                                     <% if(page == i) {%>
-                                        <a href="/shop?page=<%=i%>" class="active"><%=i%></a>
+                                        <a href="/shop?page=<%=i%>&<%if(query){%>search=<%=query%><%}%>" class="active"><%=i%></a>
                                     <% }else{%>
-                                        <a href="/shop?page=<%=i%>"><%=i%></a>
+                                        <a href="/shop?page=<%=i%><%if(query){%>&search=<%=query%><%}%>"><%=i%></a>
                                     <% }%>
                                 <% } %>
                             </div>

@@ -24,43 +24,42 @@ var instance = new Razorpay({
 
 
 exports.checkout = catchAsync(async (req,res)=>{
-    if(!req.body.paymentMethod){
-      req.flash('error','Please choose a payment method');
-      res.redirect('/cart/checkout')
-    }
-    const orderId = crypto.randomUUID();
-  
-    console.log("Default Address",req.user.defaultAddress);
-    console.log(req.body.paymentMethod)
-    const order = await Order.create({
-        orderId,
-        customer:req.user._id,
-        products: req.user.cart,
-        totalPrice : req.user.totalCartValue,
-        deliveryAddress:req.user.defaultAddress,
-        paymentMethod: req.body.paymentMethod,
+  if(!req.body.paymentMethod){
+    req.flash('error','Please choose a payment method');
+    res.redirect('/cart/checkout')
+  }
+  const orderId = crypto.randomUUID();
+
+  console.log("Default Address",req.user.defaultAddress);
+  // const order = await Order.create({
+  //     orderId,
+  //     customer:req.user._id,
+  //     products: req.user.cart,
+  //     totalPrice : req.user.totalCartValue,
+  //     deliveryAddress:req.user.defaultAddress,
+  //     paymentMethod: req.body.paymentMethod,
+  // });
+  if(req.body.paymentMethod =='Online'){
+    
+    var options = {
+      amount: parseInt(req.user.totalCartValue) * 100,
+      currency: "INR",
+      receipt: orderId.toString()
+    };
+    // await User.updateOne({_id:req.user._id},{$set:{cart:[],totalCartValue:0}});
+    instance.orders.create(options, function(err, order) {
+      if(err){
+        console.log(err)
+      }
+      res.send(order);
     });
-    if(order.paymentMethod =='Online'){
-      
-      var options = {
-        amount: parseInt(req.user.totalCartValue) * 100,
-        currency: "INR",
-        receipt: order.orderId.toString()
-      };
-      await User.updateOne({_id:req.user._id},{$set:{cart:[],totalCartValue:0}});
-      instance.orders.create(options, function(err, order) {
-        if(err){
-          console.log(err)
-        }
-        res.send(order);
-      });
-    }else{
-      await User.updateOne({_id:req.user._id},{$set:{cart:[],totalCartValue:0}});
-      req.flash('success','Order Placed Successfully')
-      res.status(201).json({
-        status:"success"
-      })
-    }
+  }else{
+    await User.updateOne({_id:req.user._id},{$set:{cart:[],totalCartValue:0}});
+    req.flash('success','Order Placed Successfully')
+    res.status(201).json({
+      status:"success"
+    })
+  }
 })
 
 exports.verifyPayment = catchAsync(async (req,res)=>{
@@ -75,7 +74,17 @@ exports.verifyPayment = catchAsync(async (req,res)=>{
   hmac = hmac.digest('hex')
   console.log(hmac)
   if (hmac == signature) {
-    const updatedOrder = await Order.findOneAndUpdate({orderId:order.receipt},{$set:{paymentStatus:'Done'}},{new:true});
+    const placeOrder = await Order.create({
+      orderId:order.receipt,
+      customer:req.user._id,
+      products: req.user.cart,
+      totalPrice : req.user.totalCartValue,
+      deliveryAddress:req.user.defaultAddress,
+      paymentMethod: 'Online',
+      paymentStatus:'Done'
+  });
+    await User.updateOne({_id:req.user._id},{$set:{cart:[],totalCartValue:0}});
+    // const updatedOrder = await Order.findOneAndUpdate({orderId:order.receipt},{$set:{paymentStatus:'Done'}},{new:true});
     res.status(201).json({
       status:'success'
     })

@@ -463,11 +463,7 @@ exports.getSalesReport = catchAsync(async(req,res)=>{
         });
     }
     
-    console.log(dateRangeFilter)
-    // console.log(pipeline)
     let report = await Order.aggregate(pipeline);
-    
-    console.log(report)
     res.render('./admin/salesReport',{report,to,from});
 })
 
@@ -485,10 +481,8 @@ exports.downloadSalesReport = catchAsync(async(req,res)=>{
             paymentMethod:data.paymentMethod[i],
         })
     }
-    console.log(transformedData)
     const fields = ['orderDate',"orderId","userEmail","products","quantity","paymentMethod"]
     const csv = json2csv.parse(transformedData, { fields });
-    console.log(transformedData);
     res.attachment('salesReport.csv');
     res.status(200).send(csv);
 })

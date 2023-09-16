@@ -172,9 +172,14 @@ exports.getProducts = catchAsync(async(req,res)=>{
     const page = parseInt(req.query.page) || 1; 
     const limit = 12;
     const skip = (page - 1) * limit
+    const sort = req.query.sort
     const { category, minPrice, maxPrice} = req.query;
-    const query = req.body.search
+    const query = req.query.search;
     const filter = {}
+    const sortFilter = {}
+    if(sort){
+        sortFilter.sort = sort
+    }
     if(query){
         filter.$or = [
             { title: { $regex: query, $options: 'i' } },
@@ -194,12 +199,12 @@ exports.getProducts = catchAsync(async(req,res)=>{
         filter.price.$lte = maxPrice;
     }
     
-    const products = await Products.find(filter).skip(skip).limit(limit);
-    const totalDocs = await Products.countDocuments();
+    const products = await Products.find(filter).skip(skip).limit(limit).sort(sortFilter);
+    const totalDocs = products.length
     const categories = await Category.find();
     const totalPages= totalDocs/limit
     res.render('./users/products',{
-        products,page,totalPages,categories
+        products,page,totalPages,categories,query
     });
 })
 
