@@ -11,7 +11,7 @@ const sendMail = require('../utils/email');
 
 exports.getHome = catchAsync(async(req,res)=>{
     const banners = await Banner.find();
-    const products = await Products.find().limit(8).sort()
+    const products = await Products.find({visibility:true}).limit(8).sort()
     return res.render('./users/home',{
         products,user:req.user,banners
     });
@@ -162,7 +162,7 @@ exports.logout = catchAsync(async (req, res, next )=>{
 
 exports.getProduct = catchAsync(async(req,res)=>{
     const user = req.user;
-    const product = await Products.findOne({slug:req.params.slug});
+    const product = await Products.findOne({slug:req.params.slug,visibility:true});
     res.render('./users/productsDetails',{
         product,user
     });
@@ -175,7 +175,7 @@ exports.getProducts = catchAsync(async(req,res)=>{
     const sort = req.query.sort
     const { category, minPrice, maxPrice} = req.query;
     const query = req.query.search;
-    const filter = {}
+    const filter = {visibility:true}
     const sortFilter = {}
     if(sort){
         sortFilter.sort = sort
@@ -264,6 +264,7 @@ exports.removeCartItem = catchAsync (async (req,res) => {
 })
 
 exports.updateCartQuantity = catchAsync(async (req, res) => {
+    console.log('req. is getting');
     const product = req.params.id;
     const userId = req.user._id;
     let updateQuantity;

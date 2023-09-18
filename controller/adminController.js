@@ -320,6 +320,7 @@ exports.editProduct = catchAsync(async(req,res)=>{
         description:req.body.description,
         category: req.body.category,
         price: req.body.price,
+        visibility:true
     } 
     await Product.findOneAndUpdate({_id:req.params.id},data,{new:true})
     req.flash('success','Product updated successfully')
@@ -485,4 +486,15 @@ exports.downloadSalesReport = catchAsync(async(req,res)=>{
     const csv = json2csv.parse(transformedData, { fields });
     res.attachment('salesReport.csv');
     res.status(200).send(csv);
+})
+
+exports.getStockAlert = catchAsync(async(req,res)=>{
+    const products = await Product.find({stock:{$lte:50}});
+    res.render('./admin/stockAlert',{products})
+})
+
+exports.updateVisibility = catchAsync(async (req,res)=>{
+    const visibility = /^true$/i.test(req.body.visibility);
+    await Product.updateOne({_id:req.params.id},{visibility:visibility});
+    res.redirect('/admin/stockAlert')
 })

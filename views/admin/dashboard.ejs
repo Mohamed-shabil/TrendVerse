@@ -38,9 +38,7 @@
                     <div class="col-9">
                       <div class="d-flex align-items-center align-self-start">
                         <h3 class="mb-0">₹<%=totalRevenue[0].totalRevenue%></h3>
-                        <p class="text-success ml-2 mb-0 font-weight-medium">
-                          +11%
-                        </p>
+                       
                       </div>
                     </div>
                     <div class="col-3">
@@ -62,9 +60,7 @@
                     <div class="col-9">
                       <div class="d-flex align-items-center align-self-start">
                         <h3 class="mb-0"><%=todaysRevenue[0]?todaysRevenue[0].todaysSales : 0%></h3>
-                        <p class="text-danger ml-2 mb-0 font-weight-medium">
-                          -2.4%
-                        </p>
+                        
                       </div>
                     </div>
                     <div class="col-3">
@@ -86,9 +82,7 @@
                     <div class="col-9">
                       <div class="d-flex align-items-center align-self-start">
                         <h3 class="mb-0">$31.53</h3>
-                        <p class="text-success ml-2 mb-0 font-weight-medium">
-                          +3.5%
-                        </p>
+                        
                       </div>
                     </div>
                     <div class="col-3">
@@ -324,27 +318,32 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <%pendingOrders.forEach((order)=>{%>
-
+                        <% if(!pendingOrders.length){%>
                           <tr>
-                            <td>
-                              <a href="/admin/orders/<%=order.orderId%>" class="fs-1"><i class="bi bi-arrow-bar-right"></i></a>
-                            </td>
-                            <td>
-                              <span class="pl-2"><%=order.productsInfo[0].name %></span>
-                            </td>
-                            <td><small><%=order.orderId%></small></td>
-                            <td><%=order.products[0].quantity%></td>
-                            <td><%=order.paymentMethod %></td>
-                            <td><%=order.orderDate.toDateString()%></td>
-                            <td>
-                              <div class="badge badge-outline-warning">
-                                Pending
-                              </div>
-                            </td>
+                            <td><h3>No Pending Orders Left !</h3></td>
                           </tr>
-                        <%}) %>
-                        
+                        <% }else{ %>
+                          <%pendingOrders.forEach((order)=>{%>
+
+                            <tr>
+                              <td>
+                                <a href="/admin/orders/<%=order.orderId%>" class="fs-1"><i class="bi bi-arrow-bar-right"></i></a>
+                              </td>
+                              <td>
+                                <span class="pl-2"><%=order.productsInfo[0].name %></span>
+                              </td>
+                              <td><small><%=order.orderId%></small></td>
+                              <td><%=order.products[0].quantity%></td>
+                              <td><%=order.paymentMethod %></td>
+                              <td><%=order.orderDate.toDateString()%></td>
+                              <td>
+                                <div class="badge badge-outline-warning">
+                                  Pending
+                                </div>
+                              </td>
+                            </tr>
+                          <%}) %>
+                        <% } %>
                       </tbody>
                     </table>
                   </div>

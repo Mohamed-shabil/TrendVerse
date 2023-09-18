@@ -20,9 +20,14 @@ const productSchema = new mongoose.Schema({
     },
     slug: String,
     images:[String],
-    category:String
+    category:String,
+    visibility:{
+        type:Boolean,
+        default:true
+    }
     
 })
+
 
 productSchema.pre('save',function(next){
     this.slug = slugify(this.name,{lower:true});

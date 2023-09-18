@@ -1340,17 +1340,17 @@ input::-webkit-inner-spin-button {
 }
 
 .product__item__pic .label {
-	color: #111111;
-	font-size: 11px;
+	
+	font-size: 18px;
 	font-weight: 700;
 	letter-spacing: 2px;
 	text-transform: uppercase;
 	display: inline-block;
 	padding: 4px 15px 2px;
-	background: #ffffff;
+	
 	position: absolute;
-	left: 0;
-	top: 20px;
+	left: 0px;
+	top: 10px;
 }
 
 /* .product__item__pic .product__hover {

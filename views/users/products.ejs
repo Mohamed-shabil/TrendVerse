@@ -119,7 +119,8 @@
                                 <a href="/shop/<%=product.slug%>">
                                     <div class="product__item">
                                         <div class="product__item__pic set-bg" data-setbg="/products/<%=product.images[0]%>">
-                                            <span class="label">New</span>
+                                            <span class="label"><i class="bi bi-heart"></i></span>
+                                            
                                         </div>
                                         <div class="product__item__text">
                                             <h6><%=product.name%></h6>
@@ -128,8 +129,8 @@
                                                 <input type="hidden" class="id" name="id" value="<%=product._id%>">
                                                 <button class="cart_button"><img src="/users/img/icon/cart.png" alt="cart" srcset=""></button>
                                             </form>
-                                            
                                         </div>
+                                    
                                     </div>
                                 </a>
                             </div>

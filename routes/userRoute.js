@@ -3,6 +3,7 @@ const userController = require('../controller/userController');
 const accountController = require('../controller/accountController');
 const addressController = require('../controller/addressController');
 const orderController = require('../controller/orderController');
+const wishlistController = require('../controller/wishlistController');
 const middleware = require('../middleware/middleware');
 
 
@@ -41,6 +42,9 @@ router.route('/cart/checkout')
     .get(middleware.isLoggedin,middleware.authChecker,middleware.checkCart,orderController.getCheckout)
     .post(middleware.isLoggedin,middleware.authChecker,orderController.checkout);
 
+
+router.route('/wishlist')
+    .get(middleware.isLoggedin,middleware.authChecker,wishlistController.getWishList)
 router.route('/verifyPayment')
     .post(middleware.isLoggedin,middleware.authChecker,orderController.verifyPayment)
 router.route('/account')

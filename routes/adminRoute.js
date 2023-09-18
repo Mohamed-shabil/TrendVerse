@@ -72,7 +72,12 @@ router.route('/salesReport')
       .get(adminController.getSalesReport)
       .post(adminController.downloadSalesReport)
 
+router.route('/stockAlert')
+      .get(adminController.getStockAlert)
 
+router.route('/stockAlert/:id')
+      .patch(adminController.updateVisibility);
+      
 router.route('/logout')
       .get(adminController.logout)
 
