@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const adminController = require('../controller/adminController');
 const orderController = require('../controller/orderController');
+const returnController = require('../controller/returnController')
 const middleware = require('../middleware/middleware');
 const bannerController = require('../controller/bannerController');
 
@@ -62,6 +63,10 @@ router.route('/orders')
 router.route('/orders/:orderId')
       .get(orderController.getOrderDetailsForAdmin)
 
+router.route('/returnOrder')
+      .get(returnController.getAllReturnOrder)
+      .patch(returnController.updateStatus)
+
 router.route('/users')
       .get(adminController.getUsers)
 
@@ -77,7 +82,10 @@ router.route('/stockAlert')
 
 router.route('/stockAlert/:id')
       .patch(adminController.updateVisibility);
-      
+
+router.route('/returnOrders')
+      .get(returnController.getAllReturnOrder)
+
 router.route('/logout')
       .get(adminController.logout)
 

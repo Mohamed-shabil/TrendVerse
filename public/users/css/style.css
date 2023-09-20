@@ -411,8 +411,8 @@ input::-webkit-inner-spin-button {
 .Pending{
 	outline: none;
     border: none;
-    background-color: rgb(255 206 206);
-    color: #e02121;
+    background-color: #ffe4f8;
+    color: #ed24bb;
     padding: 3px 15px;
     font-size: 13px;
     border-radius: 10px;
@@ -448,7 +448,16 @@ input::-webkit-inner-spin-button {
 	outline: none;
     border: none;
     background-color: rgb(183, 255, 196);
-    color: #2ae021;
+    color: #089434;
+    padding: 3px 15px;
+    font-size: 13px;
+    border-radius: 10px;
+}
+.Return{
+	outline: none;
+    border: none;
+    background-color: rgb(187, 242, 255);
+    color: #1778c3;
     padding: 3px 15px;
     font-size: 13px;
     border-radius: 10px;
@@ -466,8 +475,31 @@ input::-webkit-inner-spin-button {
 	font-size: 14px;
 }
 
-
-
+/* Return Status */
+.Requested{
+	padding: 1px 10px ;
+	background-color: #c5d4ff;
+	color: #3f5289;
+	border-radius: 5px;
+}
+.Approved{
+	padding: 5px 5px ;
+	background-color: #c5faff;
+	color: #287377;
+	border-radius: 5px;
+}
+.Rejected{
+	padding: 2px 5px ;
+	background-color: #ffc5cc;
+	color: #772828;
+	border-radius: 5px;
+}
+.Completed{
+	padding: 2px 5px ;
+	background-color: #c7ffc5;
+	color: #28774d;
+	border-radius: 5px;
+}
 /* Modal  */
 .custonm_modal{
 	border-radius: 10px;
@@ -502,6 +534,17 @@ input::-webkit-inner-spin-button {
 	z-index: 1;
 	cursor: pointer;
   }
+
+/* return order  */
+
+.return_order{
+	text-decoration: underline;
+    background: none;
+    outline: none;
+    border: none;
+    color: #438cf1;
+}
+
 
 /* Preloder */
 

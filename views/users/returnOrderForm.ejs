@@ -1,0 +1,55 @@
+<%- include('./partials/_header') %>
+<body>
+    <%- include('./partials/_navbar') %>
+        <div class="container">
+            <div class="row mb-2 bg-white rounded p-2 border">
+                <div class="col-md-4 p-2">
+                  <p class="text-center fs-6"><small>#<%=order.orderId%></small></p>
+                  <h4 class="text-center">₹<%=order.totalPrice%></h4>
+  
+                </div>
+                <div class="col-md-4 p-2 d-flex align-items-center">
+                  <ul class="product_list">
+                    <%order.products.forEach((productItem) => {%>
+                          <li>- <%=productItem.product.name%></li>
+                      <% }) %>
+                  </ul>
+                </div>
+                <div class="col-md-4 p-2">
+                  <div class="row ">
+                    <div class="col-12 text-center">
+                      <p><%=order.orderDate.toDateString() %></p>
+                      <p>Payment :<%=order.paymentMethod %></p>
+                      <span class="<%=order.status %>"><%=order.status %></span>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+
+            <div class="reason">
+                <dic class="row align-items-center justify-content-center">
+                    <div class="col-md-4 ">
+                        <form action="/account/orders/returnOrderForm/<%=order.orderId%>" method="post">
+                            <input type="hidden" name="order" value="<%=order._id%>">
+                            <label for=""> Choose the Reason : </label>
+                            <select class="mt-3 mb-3 w-100" name="reason">
+                                <option value="Wrong Size">The product received doesn't fit as expected.</option>
+                                <option value="Wrong Color">The product received is a different color .</option>
+                                <option value="Defective or Damaged">The product arrived in a damaged or defective</option>
+                                <option value="Quality Issues">The product's quality is not up to the expected</option>
+                                <option value="Changed Mind">Simply changed their mind</option>
+                                <option value="Duplicate Order.">accidentally placed a duplicate order.</option>
+                                <option value="Late Delivery">product arrived later than the expected delivery date.</option>
+                                <option value="Received Wrong Item">received the wrong product entirely.</option>
+                                <option value="Other">Becouse of some Other reason</option>
+                            </select>
+                            <textarea class="border rounded" name="description" id="" cols="38" rows="6" class="w-100" placeholder="Message (Optional)"></textarea>
+                            <button type="submit" class="btn btn-dark w-100">Submit</button>
+                        </form>
+                    </div>
+                </dic>
+            </div>
+        </div>
+
+<%- include('./partials/_footer') %>

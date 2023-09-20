@@ -3,6 +3,7 @@ const User = require('../model/userModel');
 const Order = require('../model/orderModel');
 const Products = require('../model/productModel');
 const Address = require('../model/addressModel');
+const Return = require('../model/returnModel')
 const crypto = require('crypto')
 const Razorpay = require('razorpay')
 const dotenv = require('dotenv');
@@ -178,6 +179,7 @@ exports.getOrderDetailsForAdmin = catchAsync(async (req,res)=>{
 })
 
 exports.getMyOrders = catchAsync(async(req,res)=>{
+  const returns = await Return.find({user:req.user._id});
   const myOrders = await Order.aggregate([
     {
         $match:{
@@ -204,10 +206,16 @@ exports.getMyOrders = catchAsync(async(req,res)=>{
       }
     }
   ]);
-    
-  res.render('./users/account/order',{
-      orders:myOrders
-  });
+  if(!returns){
+    return res.render('./users/account/order',{
+        orders:myOrders
+    });
+  }
+  console.log(returns);
+  console.log(myOrders)
+  return res.render('./users/account/order',{
+    orders:myOrders,returns
+  })
 })
 
 exports.getOrderDatails = catchAsync(async (req, res) => {

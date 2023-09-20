@@ -1,0 +1,94 @@
+<%- include('../partials/_header.ejs') %>
+<body>
+  <div class="container-scroller">
+    <!-- partial:../../partials/_sidebar.html -->
+    <%- include('../partials/_sidebar.ejs') %>                       
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <%- include('../partials/_navbar.ejs') %>
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+              <div class="page-header">
+                <h3 class="page-title"> Basic Tables </h3>
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+                  </ol>
+                </nav>
+              </div>
+              <%if(successMessage[0]){%>
+                <div id="error-message" class="alert alert-info col-8" role="alert">
+                    <%=successMessage[0]%>
+                </div>
+              <%}else if(errorMessage[0]){%>
+                <div id="error-message" class="alert alert-danger col-8" role="alert">
+                    <%=errorMessage[0]%>
+                </div>
+              <%}%> 
+              <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Return Orders</h4>
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>OrderId</th>
+                              <th>Reason</th>
+                              <th>Message</th>
+                              <th>Price</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <%returnOrder.forEach((item)=>{%>
+                              <tr>
+                                <td><%= item.order._id %></td>
+                                <td><%= item.reason %></td>
+                                <td><%= item.message %></td>
+                                <td><%= item.order.totalPrice %></td>
+                                <td>
+                                  <form action="/admin/returnOrder?_method=PATCH" method="POST">
+                                    <input type="hidden" name="id" value="<%=item.order._id%>">
+                                    <select name="status">
+                                      <%for (const option of ['Requested','Approved','Rejected','Completed']){%>
+                                        <option value="<%=option%>" <% if(option == item.status) {%> selected <%} %>>
+                                          <%=option%> 
+                                        </option>
+                                      <% } %>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                  </form>                                  
+                                </td>
+                              </tr>
+                            <%})%>
+                          </tbody>
+                        </table>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+      
+      function hideErrorMessage() {
+        var errorMessageElement = document.getElementById('error-message');
+        if (errorMessageElement) {
+          setTimeout(()=>{
+            errorMessageElement.style.display = 'none';
+          }, 4000);
+          
+        }
+      }
+      hideErrorMessage();
+    </script>
+<%- include('../partials/_footer.ejs') %>

@@ -3,7 +3,7 @@ const userController = require('../controller/userController');
 const accountController = require('../controller/accountController');
 const addressController = require('../controller/addressController');
 const orderController = require('../controller/orderController');
-const wishlistController = require('../controller/wishlistController');
+const returnController = require('../controller/returnController');
 const middleware = require('../middleware/middleware');
 
 
@@ -42,9 +42,6 @@ router.route('/cart/checkout')
     .get(middleware.isLoggedin,middleware.authChecker,middleware.checkCart,orderController.getCheckout)
     .post(middleware.isLoggedin,middleware.authChecker,orderController.checkout);
 
-
-router.route('/wishlist')
-    .get(middleware.isLoggedin,middleware.authChecker,wishlistController.getWishList)
 router.route('/verifyPayment')
     .post(middleware.isLoggedin,middleware.authChecker,orderController.verifyPayment)
 router.route('/account')
@@ -69,6 +66,10 @@ router.route('/account/orders')
 router.route('/account/orders/:orderId')
     .get(middleware.isLoggedin,middleware.authChecker,orderController.getOrderDatails)
 
+
+
+
+
 router.route('/account/address/addAddress')
     .get(middleware.isLoggedin,middleware.authChecker,addressController.getAddAddress)
     .post(middleware.isLoggedin,middleware.authChecker,addressController.AddAddress)
@@ -77,6 +78,12 @@ router.route('/account/address/addAddress')
 router.route('/account/address/editAddress/:id')
     .get(middleware.isLoggedin,middleware.authChecker,addressController.getEditAddress)
     .put(middleware.isLoggedin,middleware.authChecker,addressController.editAddress)
+
+
+router.route('/account/orders/returnOrderForm/:id')
+    .get(middleware.isLoggedin,middleware.authChecker,returnController.getReturnOrderForm)
+    .post(middleware.isLoggedin,middleware.authChecker,returnController.createReturn);
+
 
 router.route('/account/logout')
     .get(middleware.isLoggedin,middleware.authChecker,userController.logout);
