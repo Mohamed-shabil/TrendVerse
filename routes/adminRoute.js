@@ -5,6 +5,7 @@ const orderController = require('../controller/orderController');
 const returnController = require('../controller/returnController')
 const middleware = require('../middleware/middleware');
 const bannerController = require('../controller/bannerController');
+const couponController = require('../controller/couponController');
 
 
 router.get('/login',middleware.checkAdmin,adminController.getLogin)
@@ -76,6 +77,14 @@ router.route('/users/:id')
 router.route('/salesReport')
       .get(adminController.getSalesReport)
       .post(adminController.downloadSalesReport)
+
+
+router.route('/coupons')
+      .get(couponController.getAllCoupons)
+
+router.route('/coupons/addCoupon')
+      .get(couponController.getAddCoupon)
+      .post(couponController.createCoupon)
 
 router.route('/stockAlert')
       .get(adminController.getStockAlert)

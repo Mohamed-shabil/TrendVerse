@@ -1,0 +1,106 @@
+<%- include('../partials/_header.ejs') %>
+<body>
+  <div class="container-scroller">
+    <!-- partial:../../partials/_sidebar.html -->
+    <%- include('../partials/_sidebar.ejs') %>                       
+    
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <%- include('../partials/_navbar.ejs') %>
+        
+
+
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="page-header">
+              <h3 class="page-title"> Add Coupon </h3>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+                </ol>
+              </nav>
+            </div>
+
+            <!-- Adding Form  -->
+            <div class="row align-items-center justify-content-center">
+              <%if(successMessage[0]){%>
+                <div id="error-message" class="alert alert-info col-8" role="alert">
+                    <%=successMessage[0]%>
+                </div>
+              <%}else if(errorMessage[0]){%>
+                <div id="error-message" class="alert alert-danger col-8" role="alert">
+                    <%=errorMessage[0]%>
+                </div>
+              <%}%> 
+              <div class="col-8  grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <form  class="forms-sample" method="POST" action="/admin/coupons/addCoupon">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputName1">Coupons Code</label>
+                                <input type="text" name="code" minlength="4" required class="form-control" id="exampleInputName1" placeholder="Coupon Code">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputName1">Select Coupon Type</label><br>
+                                <select name="discountType" required class="nice-select w-100 discountType" placeholder="Select">
+                                    <option value="percentage">Percentage</option>
+                                    <option value="fixed">Fixed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputName1">Expiration Date</label>
+                                <input type="date" name="expirationDate" required class="form-control" id="exampleInputName1" placeholder="Expiration Date">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputName1">Minimum Spend</label>
+                                <input type="number" name="minimumSpend" required class="form-control" id="exampleInputName1" placeholder="Minimum Spend">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputName1">Discount Amount</label>
+                                <input type="number" name="discount" required class="form-control" id="exampleInputName1" placeholder="discount Amount">
+                            </div>
+                        </div>
+                      
+                      <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    
+
+    
+
+
+    <script>
+      function hideErrorMessage() {
+        var errorMessageElement = document.getElementById('error-message');
+        if (errorMessageElement) {
+          setTimeout(()=>{
+            errorMessageElement.style.display = 'none';
+          }, 4000);
+          
+        }
+      }
+      hideErrorMessage();
+    
+    </script>
+    <%- include('../partials/_footer.ejs') %>

@@ -21289,4 +21289,18 @@ input{
   border-radius: 2px;
 }
 
+/* Coupons */
+.discountType{
+  width: 100%;
+  height: 36px!important;
+}
+.delete_button_coupon{
+  color: #006db0;
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
+
+
+
 /*# sourceMappingURL=maps/style.css.map */
