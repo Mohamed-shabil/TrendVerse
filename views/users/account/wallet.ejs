@@ -1,0 +1,38 @@
+<%- include('./../partials/_header') %>
+    <body>
+    <%- include('./../partials/_navbar',) %>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mt-4 mb-4 text-center">
+                <h4>Balance : <b>$ <%=wallet.balance%></b></h4>
+            </div>
+            <div class="col-md-12 d-flex align-items-center justify-content-center">
+                <div class="col-md-6 ">
+                    <div class="col-md-12">
+                        <% if(!wallet.transactionHistory.length){ %>
+                            <h3 class="text-center">No Transaction History</h3>
+                        <% }else{%>
+                            <% wallet.transactionHistory.forEach((transaction)=>{ %>
+                                <div class="row p-2 border rounded mb-2">
+                                    <div class="col-md-8 ">
+                                        <span><small>#<%=transaction.OrderId %></small><br></span>
+                                        <span>Refund amount is credit to your wallet</span>
+                                    </div>
+                                    <div class="col-md-4 d-flex flex-column align-items-end justify-content-end">
+                                        <span class="p-0 m-0 text-end">
+                                            <% if(transaction.operation=='credit'){%>
+                                                <b class="text-success">+<%=transaction.amount%></b>
+                                            <% }else if(transaction.operation=='debit'){%>
+                                                <b class="text-danger">-<%=transaction.amount%></b>
+                                                <% } %></b></span>
+                                        <span class="text-end "><% if(transaction.operation=='credit'){%>Credited<% }else if(transaction.operation=='debit'){%>Debited<% } %></span>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<%- include('./../partials/_footer',) %>

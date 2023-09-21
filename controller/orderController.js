@@ -23,6 +23,31 @@ var instance = new Razorpay({
 });
 
 
+exports.applyWallet = catchAsync(async(req,res)=>{
+  console.log(req.body);
+  const balance = parseInt(req.body.balance);
+  const totalAmount = parseInt(req.body.totalAmount);
+  let updatedWallet;
+  let updatedTotal;
+  let discounted;
+  if(balance >= totalAmount){
+    updatedWallet = balance - totalAmount
+    updatedTotal = 0;
+    discounted = totalAmount
+  }else{
+    updatedTotal = totalAmount - balance
+    updatedWallet = 0;
+    discounted = balance
+  }
+  res.status(200).json({
+    status:'success',
+    data:{
+      balance: updatedWallet,
+      totalAmount : updatedTotal,
+      discounted
+    }
+  })
+});
 
 exports.checkout = catchAsync(async (req,res)=>{
   if(!req.body.paymentMethod){
@@ -30,17 +55,44 @@ exports.checkout = catchAsync(async (req,res)=>{
     res.redirect('/cart/checkout')
   }
   const orderId = crypto.randomUUID();
+  if(req.body.paymentMethod ==='Online'){
+    if(req.body.walletUsed=='true' && req.body.payableAmount == 0){
+        const order = await Order.create({
+          orderId,
+          customer:req.user._id,
+          products: req.user.cart,
+          totalPrice : req.body.payableAmount,
+          deliveryAddress:req.user.defaultAddress,
+          paymentMethod: 'Wallet',
+        });
+        const user = await User.findById(req.user._id);
+        const currentBalance = parseInt(req.body.currentWalletBalance)
+        const debitedAmount = parseInt(req.user.wallet.balance) - currentBalance
+        user.wallet.transactionHistory.push({
+          amount:debitedAmount,
+          operation:'debit',
+          message:`Used in Purchase`,
+          OrderId:orderId
+        })
 
-  
-  
-  if(req.body.paymentMethod =='Online'){
-    
+        user.wallet.balance = currentBalance
+        user.cart = [];
+        user.totalCartValue = 0;
+        await user.save();
+        req.flash('success','Order Placed Successfully')
+        return res.status(200).json({
+          status:'success',
+          payment:'Wallet'
+        })
+    }
+    console.log(req.body);
+    let amountPayable = parseInt(req.body.payableAmount);
+    console.log('amount Payabal :',amountPayable)
     var options = {
-      amount: parseInt(req.user.totalCartValue) * 100,
+      amount: amountPayable * 100,
       currency: "INR",
       receipt: orderId.toString()
     };
-    // await User.updateOne({_id:req.user._id},{$set:{cart:[],totalCartValue:0}});
     instance.orders.create(options, function(err, order) {
       if(err){
         console.log(err)
@@ -48,11 +100,12 @@ exports.checkout = catchAsync(async (req,res)=>{
       res.send(order);
     });
   }else{
+    console.log("COD")
     const order = await Order.create({
       orderId,
       customer:req.user._id,
       products: req.user.cart,
-      totalPrice : req.user.totalCartValue,
+      totalPrice : req.body.payableAmount,
       deliveryAddress:req.user.defaultAddress,
       paymentMethod: req.body.paymentMethod,
     });
@@ -61,9 +114,21 @@ exports.checkout = catchAsync(async (req,res)=>{
       productDetails.stock = productDetails.stock - product.quantity;
       productDetails.save();
     })
-    await User.updateOne({_id:req.user._id},{$set:{cart:[],totalCartValue:0}});
+    const user = await User.findById(req.user._id);
+    const currentBalance = parseInt(req.body.currentWalletBalance)
+    const debitedAmount = parseInt(req.user.wallet.balance) - currentBalance
+    user.wallet.transactionHistory.push({
+      amount:debitedAmount,
+      operation:'debit',
+      message:`Used in Purchase`,
+      OrderId:orderId
+    });
+    user.wallet.balance = currentBalance
+    user.cart = [];
+    user.totalCartValue = 0;
+    await user.save();
     req.flash('success','Order Placed Successfully')
-    res.status(201).json({
+    return res.status(201).json({
       status:"success"
     })
   }

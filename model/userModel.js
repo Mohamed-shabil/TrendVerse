@@ -49,6 +49,21 @@ const userSchema = new mongoose.Schema({
         createdAt:{type:Date,expires:'5m',default:Date.now},
         select:false
     },
+    wallet:{
+        balance:{
+            type:Number,
+            default:0.00
+        },
+        transactionHistory:[{
+            amount: Number,
+            operation : {
+                type: String,
+                enums:['credit','debit']
+            },
+            message:String,
+            OrderId:String
+        }]
+    },
     varified: {
         type:Boolean,
         default:false
@@ -58,7 +73,6 @@ const userSchema = new mongoose.Schema({
         default:false
     }
 })
-
 
 const User = mongoose.model('User',userSchema);
 module.exports = User; 

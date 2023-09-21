@@ -4,6 +4,7 @@ const accountController = require('../controller/accountController');
 const addressController = require('../controller/addressController');
 const orderController = require('../controller/orderController');
 const returnController = require('../controller/returnController');
+const walletController = require('../controller/walletController');
 const middleware = require('../middleware/middleware');
 
 
@@ -21,7 +22,7 @@ router.route('/login')
     .get(middleware.isAlreadyLoggedIn,userController.getLogin)
     .post(userController.userLogin);
 
-// router.use(middleware.isBlocked);   
+router.use(middleware.isBlocked);   
 
 router.get('/shop',userController.getProducts)
 
@@ -40,7 +41,8 @@ router.route('/cart/:id')
 
 router.route('/cart/checkout')
     .get(middleware.isLoggedin,middleware.authChecker,middleware.checkCart,orderController.getCheckout)
-    .post(middleware.isLoggedin,middleware.authChecker,orderController.checkout);
+    .post(middleware.isLoggedin,middleware.authChecker,orderController.checkout)
+    .put(middleware.isLoggedin,middleware.authChecker,orderController.applyWallet)
 
 router.route('/verifyPayment')
     .post(middleware.isLoggedin,middleware.authChecker,orderController.verifyPayment)
@@ -60,15 +62,16 @@ router.route('/account/address')
     .patch(middleware.isLoggedin,middleware.authChecker,addressController.setDefaultAddress)
     .delete(middleware.isLoggedin,middleware.authChecker,addressController.deleteAddress)
 
+
+router.route('/account/myWallet')
+    .get(middleware.isLoggedin,middleware.authChecker,walletController.getWallet)
+    
 router.route('/account/orders')
     .get(middleware.isLoggedin,middleware.authChecker,orderController.getMyOrders)
     .patch(middleware.isLoggedin,middleware.authChecker,orderController.updateOrderStatus)
+
 router.route('/account/orders/:orderId')
     .get(middleware.isLoggedin,middleware.authChecker,orderController.getOrderDatails)
-
-
-
-
 
 router.route('/account/address/addAddress')
     .get(middleware.isLoggedin,middleware.authChecker,addressController.getAddAddress)

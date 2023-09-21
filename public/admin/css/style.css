@@ -21281,7 +21281,12 @@ input{
   }
 
 
-
-
+/* return button Completed */
+.Completed{
+  padding: 5px 5px;
+  background-color: #d9fee9;
+  color: #008a3c;
+  border-radius: 2px;
+}
 
 /*# sourceMappingURL=maps/style.css.map */

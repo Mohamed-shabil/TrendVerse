@@ -112,10 +112,19 @@
                 </li>
                 <%})%>
               </ul>
-              <ul class="checkout__total__all">
-                <li>Subtotal <span>₹<%=user.totalCartValue%></span></li>
-                <li>Total <span>₹<%=user.totalCartValue%></span></li>
+              <div class="wallet d-flex justify-content-between">
+                Wallet Balance : <b id="walletBalance">₹ <%=user.wallet.balance %></b>
+              </div>
+              <form id="wallet">
+                <input type="hidden" name="balance" value="<%=user.wallet.balance%>">
+                <input type="hidden" name="totalAmount" value="<%=user.totalCartValue%>">
+                <button type="submit" class="Apply_wallet mt-3 mb-3">Apply Wallet</button>
+              </form>
+              <ul id="checkoutTotal" class="checkout__total__all">
+                <!-- <li>Subtotal <span>₹<%=user.totalCartValue%></span></li> -->
+                <li>Total <span id="total">₹<%=user.totalCartValue%></span></li>
               </ul>
+            
               <p>
                 Your payment and personal information are securely processed
                 using industry-standard encryption, ensuring a safe and reliable
@@ -128,6 +137,9 @@
                   <% if(errorMessage[0]){%>
                     <p class="text-danger"><%=errorMessage[0]%></p>
                   <%}%>
+                  <input type="hidden" id="walletUsed" name="walletUsed" value="false" />
+                  <input type="hidden" id="payableAmount" name="payableAmount" value="<%=user.totalCartValue%>" />
+                  <input type="hidden" id="currentWalletBalance" name="currentWalletBalance" value="<%=user.wallet.balance%>" />
                   <input
                     class="form-check-input"
                     type="radio"
@@ -151,6 +163,18 @@
                     Pay Online
                   </label>
                 </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    value="Wallet"
+                    name="paymentMethod"
+                    id="flexRadioDefault1"
+                  />
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    Use Wallet balance
+                  </label>
+                </div>
                 <button id="checkoutBtn" type="submit" class="site-btn">PLACE ORDER</button>
               </form>
             </div>
@@ -165,12 +189,43 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
+
   $(document).ready(function(){
+
+    $('#wallet').submit(function(e) {
+      e.preventDefault();
+      var walletData = $(this).serialize();
+      $.ajax({
+        type:'PUT',
+        url:'/cart/checkout',
+        data:walletData,
+        success: function(res) {
+          console.log(res.data)
+          document.getElementById('total').textContent = '₹ '+res.data.totalAmount
+          document.getElementById('walletBalance').textContent = '₹ '+res.data.balance
+          document.getElementById('walletUsed').value = true;
+          document.getElementById('payableAmount').value = res.data.totalAmount;
+          document.getElementById('currentWalletBalance').value = res.data.balance;
+          var listItem = document.createElement('li');
+          listItem.innerHTML = `Wallet applied<span>- ₹${res.data.discounted}</span>`;
+          document.getElementById('checkoutTotal').appendChild(listItem);
+        },
+        error:function(err){
+            console.log(err);
+        }
+      })
+    })
+
+
     $('#checkout').submit(function(e){
       e.preventDefault();
-      var formData = $(this).serialize();
+      var formDataArray = $(this).serializeArray();
+      var formData= {};
+    $.each(formDataArray,function(index, field) {
+      formData[field.name] = field.value;
+    });  
       console.log("formData",formData);
-      if(formData=='paymentMethod=COD'){
+      if(formData.paymentMethod=='COD'){
         $.ajax({
           type: 'POST',
           url:'/cart/checkout',
@@ -179,7 +234,8 @@
             if(res.status == "success"){
               location.href = '/account/orders'
             }
-          }
+          },
+          
         })
       }else{
         $.ajax({
@@ -187,6 +243,9 @@
         url:'/cart/checkout',
         data:formData,
         success:function(order){
+          if(order.payment === 'Wallet'){
+            return location.href='/account/orders'
+          }
           var options = {
             "key": "rzp_test_RooEVCj8UbzuAF", 
             "amount": order.amount,

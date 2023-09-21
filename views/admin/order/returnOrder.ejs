@@ -51,17 +51,21 @@
                                 <td><%= item.message %></td>
                                 <td><%= item.order.totalPrice %></td>
                                 <td>
-                                  <form action="/admin/returnOrder?_method=PATCH" method="POST">
-                                    <input type="hidden" name="id" value="<%=item.order._id%>">
-                                    <select name="status">
-                                      <%for (const option of ['Requested','Approved','Rejected','Completed']){%>
-                                        <option value="<%=option%>" <% if(option == item.status) {%> selected <%} %>>
-                                          <%=option%> 
-                                        </option>
-                                      <% } %>
-                                    </select>
-                                    <button type="submit" class="btn btn-primary">Update</button>
-                                  </form>                                  
+                                  <% if(item.status == 'Completed'){%>
+                                    <span class="<%= item.status %>"><%= item.status %></span>
+                                  <% }else{ %>
+                                    <form action="/admin/returnOrder?_method=PATCH" method="POST">
+                                      <input type="hidden" name="id" value="<%=item.order._id%>">
+                                      <select name="status">
+                                        <%for (const option of ['Requested','Approved','Rejected','Completed']){%>
+                                          <option value="<%=option%>" <% if(option == item.status) {%> selected <%} %>>
+                                            <%=option%> 
+                                          </option>
+                                        <% } %>
+                                      </select>
+                                      <button type="submit" class="btn btn-primary">Update</button>
+                                    </form>
+                                  <% } %>                                  
                                 </td>
                               </tr>
                             <%})%>
