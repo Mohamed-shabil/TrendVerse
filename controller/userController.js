@@ -172,13 +172,13 @@ exports.getProducts = catchAsync(async(req,res)=>{
     const page = parseInt(req.query.page) || 1; 
     const limit = 12;
     const skip = (page - 1) * limit
-    const sort = req.query.sort
+    const sort = parseInt(req.query.sort)
     const { category, minPrice, maxPrice} = req.query;
     const query = req.query.search;
     const filter = {visibility:true}
     const sortFilter = {}
     if(sort){
-        sortFilter.sort = sort
+        sortFilter.price = sort
     }
     if(query){
         filter.$or = [
@@ -198,9 +198,9 @@ exports.getProducts = catchAsync(async(req,res)=>{
     if(maxPrice){
         filter.price.$lte = maxPrice;
     }
-    
+    console.log(sortFilter);
     const products = await Products.find(filter).skip(skip).limit(limit).sort(sortFilter);
-    const totalDocs = products.length
+    const totalDocs = await Products.countDocuments();
     const categories = await Category.find();
     const totalPages= totalDocs/limit
     res.render('./users/products',{

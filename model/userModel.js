@@ -64,6 +64,7 @@ const userSchema = new mongoose.Schema({
             OrderId:String
         }]
     },
+    usedCoupons:[{type:String}],
     varified: {
         type:Boolean,
         default:false

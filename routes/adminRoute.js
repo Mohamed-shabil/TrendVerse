@@ -85,6 +85,13 @@ router.route('/coupons')
 router.route('/coupons/addCoupon')
       .get(couponController.getAddCoupon)
       .post(couponController.createCoupon)
+      
+router.route('/coupons/deleteCoupon/:id')
+      .delete(couponController.deleteCoupon);
+
+router.route('/coupons/editCoupon/:code')
+      .get(couponController.getEditCoupon)
+      .put(couponController.editCoupon)
 
 router.route('/stockAlert')
       .get(adminController.getStockAlert)

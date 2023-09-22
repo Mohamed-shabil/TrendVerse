@@ -96,9 +96,20 @@
               </div>
             </section>
           </div>
-
+        
           <div class="col-lg-5 col-md-6">
+            
             <div class="checkout__order">
+              <form id="applyCoupon" class="input-group mb-3">
+                <input type="text" name="code" class="form-control" id="couponCodeInput" placeholder="Enter coupon code">
+                <div class="input-group-append">
+                  <button class="btn apply_coupon" type="submit" id="applyCouponButton">
+                    Apply Coupon
+                  </button>
+                </div>
+              </form>
+              <p id="couponNotifier"></p>
+              
               <h4 class="order__title">Your order</h4>
               <div class="checkout__order__products">
                 Product <span>Total</span>
@@ -112,14 +123,16 @@
                 </li>
                 <%})%>
               </ul>
-              <div class="wallet d-flex justify-content-between">
-                Wallet Balance : <b id="walletBalance">₹ <%=user.wallet.balance %></b>
-              </div>
-              <form id="wallet">
-                <input type="hidden" name="balance" value="<%=user.wallet.balance%>">
-                <input type="hidden" name="totalAmount" value="<%=user.totalCartValue%>">
-                <button type="submit" class="Apply_wallet mt-3 mb-3">Apply Wallet</button>
-              </form>
+              <% if(user.wallet.balance){%>
+                <div class="wallet d-flex justify-content-between">
+                  Wallet Balance : <b id="walletBalance">₹ <%=user.wallet.balance %></b>
+                </div>
+                <form id="wallet">
+                  <input type="hidden" name="balance" value="<%=user.wallet.balance%>">
+                  <input type="hidden" id="totalAmount" name="totalAmount" value="<%=user.totalCartValue%>">
+                  <button type="submit" class="Apply_wallet mt-3 mb-3">Apply Wallet</button>
+                </form>
+              <% } %>
               <ul id="checkoutTotal" class="checkout__total__all">
                 <!-- <li>Subtotal <span>₹<%=user.totalCartValue%></span></li> -->
                 <li>Total <span id="total">₹<%=user.totalCartValue%></span></li>
@@ -134,11 +147,10 @@
               <!-- <form action="/cart/checkout" method="post"> -->
               <form id="checkout">
                 <div class="form-check">
-                  <% if(errorMessage[0]){%>
-                    <p class="text-danger"><%=errorMessage[0]%></p>
-                  <%}%>
+                  <p><%if(errorMessage[0]){%><%=errorMessage[0]%><% }else if(successMessage[0]){%><%=successMessage[0]%><%}%></p>
                   <input type="hidden" id="walletUsed" name="walletUsed" value="false" />
                   <input type="hidden" id="payableAmount" name="payableAmount" value="<%=user.totalCartValue%>" />
+                  <input type="hidden" id="couponUsed" name="couponUsed">
                   <input type="hidden" id="currentWalletBalance" name="currentWalletBalance" value="<%=user.wallet.balance%>" />
                   <input
                     class="form-check-input"
@@ -163,18 +175,7 @@
                     Pay Online
                   </label>
                 </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    value="Wallet"
-                    name="paymentMethod"
-                    id="flexRadioDefault1"
-                  />
-                  <label class="form-check-label" for="flexRadioDefault1">
-                    Use Wallet balance
-                  </label>
-                </div>
+                
                 <button id="checkoutBtn" type="submit" class="site-btn">PLACE ORDER</button>
               </form>
             </div>
@@ -191,6 +192,58 @@
 <script>
 
   $(document).ready(function(){
+    var payableAmount = document.getElementById('payableAmount');
+    var total = document.getElementById('total')
+    
+    $('#applyCoupon').submit(function(e){
+      e.preventDefault();
+      var CouponDataArray = $(this).serializeArray();
+      let couponData ={}
+      $.each(CouponDataArray,function(index, field) {
+      couponData[field.name] = field.value;
+    }); 
+    couponData.orderTotal = payableAmount.value
+    console.log(couponData)
+      $.ajax({
+        type: "POST",
+        url:'/cart/checkout/applyCoupon',
+        data:couponData,
+        success: function(res){
+          console.log(res)
+          if(res.status == 'success'){
+            console.log('working')
+            let discount = parseInt(res.data.discount);
+            let amount = parseInt(payableAmount.value)
+            console.log(amount)
+            payableAmount.value = amount - discount;
+            total.textContent = '₹'+(amount - discount);
+            let walletTotalAmount = document.getElementById('totalAmount')
+            if(walletTotalAmount){
+              walletTotalAmount.value = (amount - discount);
+            }
+            document.getElementById('couponUsed').value = couponData.code
+            const element = document.querySelector('.coupenAdded')
+            console.log('element:',element)
+            if(!element){
+              var listItem = document.createElement('li')
+              listItem.classList.add('coupenAdded')
+              listItem.innerHTML = `Coupon applied<span>- ₹${discount}</span>`;
+              document.getElementById('checkoutTotal').appendChild(listItem);
+              document.getElementById('couponNotifier').classList.add('text-success')
+              document.getElementById('couponNotifier').textContent = 'Coupon Applied';
+            }
+          }else{
+            document.getElementById('couponNotifier').classList.add('text-danger')
+            document.getElementById('couponNotifier').textContent = res.error;
+          }
+        },
+        error:function(err){
+          console.log(err);
+        }
+      })
+    })
+
+
 
     $('#wallet').submit(function(e) {
       e.preventDefault();
@@ -200,15 +253,21 @@
         url:'/cart/checkout',
         data:walletData,
         success: function(res) {
+      
           console.log(res.data)
-          document.getElementById('total').textContent = '₹ '+res.data.totalAmount
+          total.textContent = '₹ '+res.data.totalAmount
           document.getElementById('walletBalance').textContent = '₹ '+res.data.balance
           document.getElementById('walletUsed').value = true;
-          document.getElementById('payableAmount').value = res.data.totalAmount;
+          payableAmount.value= res.data.totalAmount;
           document.getElementById('currentWalletBalance').value = res.data.balance;
-          var listItem = document.createElement('li');
-          listItem.innerHTML = `Wallet applied<span>- ₹${res.data.discounted}</span>`;
-          document.getElementById('checkoutTotal').appendChild(listItem);
+          const element = document.querySelector('.walletAdded')
+          console.log(element)
+          if(!element){
+            var walletItem = document.createElement('li')
+            walletItem.classList.add('walletAdded')
+            walletItem.innerHTML = `Wallet applied<span>- ₹${res.data.discounted}</span>`;
+            document.getElementById('checkoutTotal').appendChild(walletItem);
+          }
         },
         error:function(err){
             console.log(err);

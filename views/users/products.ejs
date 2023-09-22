@@ -105,10 +105,8 @@
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="shop__product__option__right">
                                     <p>Sort by Price:</p>
-                                    <select>
-                                        <option name="sort" value="-price">Low to High</option>
-                                        <option name="sort" value="price">High To Low</option>
-                                    </select>
+                                    <a href="/shop?sort=-1"><button class="sort_btn"><i class="bi bi-arrow-up"></i></button></a>
+                                    <a href="/shop?sort=1"><button class="sort_btn"><i class="bi bi-arrow-down"></i></button></a>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +151,15 @@
             </div>
         </div>
     </section>
-
-
+    
+    <script>
+        select = document.getElementById('select')
+        select.addEventListener('change',()=>{
+            let href = window.location.href
+            if(href[href.length-1] == '?'){
+                href += 'sort'+select.value;
+            }
+        })
+    </script>
 
 <%- include('./partials/_footer.ejs') %>

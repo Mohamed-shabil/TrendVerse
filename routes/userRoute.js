@@ -5,6 +5,7 @@ const addressController = require('../controller/addressController');
 const orderController = require('../controller/orderController');
 const returnController = require('../controller/returnController');
 const walletController = require('../controller/walletController');
+const couponController = require('../controller/couponController')
 const middleware = require('../middleware/middleware');
 
 
@@ -43,6 +44,10 @@ router.route('/cart/checkout')
     .get(middleware.isLoggedin,middleware.authChecker,middleware.checkCart,orderController.getCheckout)
     .post(middleware.isLoggedin,middleware.authChecker,orderController.checkout)
     .put(middleware.isLoggedin,middleware.authChecker,orderController.applyWallet)
+
+
+router.route('/cart/checkout/applyCoupon')
+    .post(middleware.isLoggedin,middleware.authChecker,couponController.applyCoupon)
 
 router.route('/verifyPayment')
     .post(middleware.isLoggedin,middleware.authChecker,orderController.verifyPayment)

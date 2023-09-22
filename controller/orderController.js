@@ -49,6 +49,8 @@ exports.applyWallet = catchAsync(async(req,res)=>{
   })
 });
 
+
+
 exports.checkout = catchAsync(async (req,res)=>{
   if(!req.body.paymentMethod){
     req.flash('error','Please choose a payment method');
@@ -74,11 +76,15 @@ exports.checkout = catchAsync(async (req,res)=>{
           message:`Used in Purchase`,
           OrderId:orderId
         })
-
+        if(req.body.couponUsed){
+          user.usedCoupons.push(req.body.couponUsed);
+        }
         user.wallet.balance = currentBalance
         user.cart = [];
         user.totalCartValue = 0;
         await user.save();
+        const pdfBuffer = await easyinvoice.createInvoice(invoiceData);
+        fs.writeFileSync('invoice.pdf', pdfBuffer);
         req.flash('success','Order Placed Successfully')
         return res.status(200).json({
           status:'success',
@@ -125,8 +131,13 @@ exports.checkout = catchAsync(async (req,res)=>{
     });
     user.wallet.balance = currentBalance
     user.cart = [];
+    if(req.body.couponUsed){
+      user.usedCoupons.push(req.body.couponUsed);
+    }
     user.totalCartValue = 0;
     await user.save();
+
+
     req.flash('success','Order Placed Successfully')
     return res.status(201).json({
       status:"success"
@@ -160,7 +171,7 @@ exports.verifyPayment = catchAsync(async (req,res)=>{
     productDetails.save();
   })
     await User.updateOne({_id:req.user._id},{$set:{cart:[],totalCartValue:0}});
-    // const updatedOrder = await Order.findOneAndUpdate({orderId:order.receipt},{$set:{paymentStatus:'Done'}},{new:true});
+    
     res.status(201).json({
       status:'success'
     })
