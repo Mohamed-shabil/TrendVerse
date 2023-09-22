@@ -423,6 +423,15 @@ exports.getSalesReport = catchAsync(async(req,res)=>{
     const status = req.query.status
 
     const dateRangeFilter = {};
+    const currentDate = new Date();
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+
+    if(fromDate > toDate) {
+        req.flash('error','invalid Dates');
+        res.render('./admin/salesReport',{to,from,report:0});
+    }
+    
 
     if (from) {
       dateRangeFilter.orderDate = {

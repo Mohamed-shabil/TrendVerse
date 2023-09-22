@@ -36,14 +36,17 @@
                                                     <td class="quantity__item">
                                                         <form id="decrement_Quantity" action="/cart/<%=item.product._id%>?_method=PATCH" method="post">
                                                             <div class="quantity" >
+                                                                <input type="hidden" name="productId" value="<%=item.product._id%>">
                                                                 <input type="hidden" name="quantityDecrement" value="<%=item.quantity%>">
                                                                 <button type="submit" class="quantity_changer">-</button>
                                                             </div>
                                                         </form>
-                                                        <input type="number" name="quantity" class="quantity_input" disabled value="<%=item.quantity%>">
-                                                        <form action="/cart/<%=item.product._id%>?_method=PATCH" method="post">
+                                                        <input type="number" id="quantity_display" name="quantity" class="quantity_input" disabled value="<%=item.quantity%>">
+                                                        <form id="inc">
+                                                            <input type="hidden" name="productId" value="<%=item.product._id%>">
+                                                            <input type="hidden" name="quantityIncrement"  value="<%=item.quantity%>" >
                                                             <div class="quantity">
-                                                                <button type="submit" name="quantityIncrement" value="<%=item.quantity%>" class="quantity_changer">+</button>
+                                                                <button type="submit"  class="quantity_changer">+</button>
                                                             </div>
                                                         </form>
                                                     </td>
@@ -91,5 +94,27 @@
     </section>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#inc').submit((e)=>{
+            e.preventDefault();
+            var IncArray = $(this).serializeArray();
+            let increment ={}
+            $.each(IncArray,function(index, field) {
+                increment[field.name] = field.value;
+            }); 
+            console.log(increment);
+            $.ajax({
+                type:'PATCH',
+                url:`/cart/${increment.productId}`,
+                data:increment,
+                success:function(res){
+                    document.getElementById('quantity_display').value = res.data.quantity
+                    document.getElementById('cartPrice').textContent = res.data.totalCartValue
+                }
+            })
+        })
+    })
+</script>
 
 <%- include('./partials/_footer') %>

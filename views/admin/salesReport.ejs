@@ -75,7 +75,9 @@
                             </tr>
                           </thead>
                           <tbody>
-                            
+                          <% if(!report){ %>
+                            <h4>Choose Dates</h4>
+                          <% } else{%>
                             <%report.forEach((order)=>{%>
                               <tr>
                                 <td>
@@ -104,6 +106,7 @@
                                 </td>
                               </tr>
                             <%}) %>
+                          <% } %>
                           </tbody>
                         </table>
                       </div>

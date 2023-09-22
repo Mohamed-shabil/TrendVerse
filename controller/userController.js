@@ -204,7 +204,7 @@ exports.getProducts = catchAsync(async(req,res)=>{
     const categories = await Category.find();
     const totalPages= totalDocs/limit
     res.render('./users/products',{
-        products,page,totalPages,categories,query
+        products,page,totalPages,categories,query,url:req.previousUrl
     });
 })
 
@@ -244,7 +244,6 @@ exports.getCart = catchAsync(async (req,res)=>{
     const user = await User.findById(req.user._id).populate('cart.product');
     const cart = user.cart;
     const totalCartValue = user.totalCartValue;
-    console.log(totalCartValue);
     return res.render('./users/cart',{
         cart,totalCartValue
     });
@@ -264,7 +263,6 @@ exports.removeCartItem = catchAsync (async (req,res) => {
 })
 
 exports.updateCartQuantity = catchAsync(async (req, res) => {
-    console.log('req. is getting');
     const product = req.params.id;
     const userId = req.user._id;
     let updateQuantity;
@@ -282,7 +280,6 @@ exports.updateCartQuantity = catchAsync(async (req, res) => {
             updateQuantity = 1;
         }
     }
-    console.log('qunatity', updateQuantity);
 
     const user = await User.findById(userId).populate('cart.product');
     const cartItemIndex = user.cart.findIndex(item => item.product.equals(product));
@@ -297,7 +294,14 @@ exports.updateCartQuantity = catchAsync(async (req, res) => {
 
         await user.save();
     }
-    res.redirect(req.previousUrl);
+   
+    res.status(200).json({
+        status:'success',
+        data:{
+            totalCartValue : user.totalCartValue,
+            quantity : updateQuantity,
+        }
+    })
 });
 
 
