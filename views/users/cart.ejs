@@ -34,23 +34,23 @@
                                                         </div>
                                                     </td>
                                                     <td class="quantity__item">
-                                                        <form id="decrement_Quantity" action="/cart/<%=item.product._id%>?_method=PATCH" method="post">
+                                                        <form id="dec">
                                                             <div class="quantity" >
                                                                 <input type="hidden" name="productId" value="<%=item.product._id%>">
-                                                                <input type="hidden" name="quantityDecrement" value="<%=item.quantity%>">
-                                                                <button type="submit" class="quantity_changer">-</button>
+                                                                <input type="hidden" id="decQuantity_<%=item.product._id%>" name="quantityDecrement" value="<%=item.quantity%>">
+                                                                <button type="button" onclick="decrementQunatity(event,{id:'<%=item.product.id%>'})" class="quantity_changer">-</button>
                                                             </div>
                                                         </form>
-                                                        <input type="number" id="quantity_display" name="quantity" class="quantity_input" disabled value="<%=item.quantity%>">
+                                                        <input type="number" id="quantity_display<%=item.product._id%>" name="quantity" class="quantity_input" disabled value="<%=item.quantity%>">
                                                         <form id="inc">
                                                             <input type="hidden" name="productId" value="<%=item.product._id%>">
-                                                            <input type="hidden" name="quantityIncrement"  value="<%=item.quantity%>" >
+                                                            <input type="hidden" id="incQuantity_<%=item.product._id%>" name="quantityIncrement"  value="<%=item.quantity%>" >
                                                             <div class="quantity">
-                                                                <button type="submit"  class="quantity_changer">+</button>
+                                                                <button type="button" onclick="incrementQuantity(event,{id:'<%=item.product._id%>'})" class="quantity_changer">+</button>
                                                             </div>
                                                         </form>
                                                     </td>
-                                                    <td class="cart__price">₹<%=item.totalAmount%></td>
+                                                    <td id="productTotalPrice_<%=item.product._id%>" class="cart__price">₹<%=item.totalAmount%></td>
                                                     <td class="cart__close">
                                                         <form action="/cart?_method=DELETE" method="post">
                                                             <input type="hidden" name="id" value="<%=item._id%>">
@@ -82,8 +82,7 @@
                         <div class="cart__total">
                             <h6>Cart total</h6>
                             <ul>
-                                <li>Subtotal <span>₹ <%=totalCartValue%></span></li>
-                                <li>Total <span>₹ <%=totalCartValue%></span></li>
+                                <li>Total <span class="cartTotalField" id="cartTotalField">₹ <%=totalCartValue%></span></li>
                             </ul>
                             <a href="/cart/checkout" class="primary-btn">Proceed to checkout</a>
                         </div>
@@ -95,26 +94,64 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#inc').submit((e)=>{
+    // $(document).ready(function() {
+
+        function incrementQuantity(e,data){
             e.preventDefault();
-            var IncArray = $(this).serializeArray();
-            let increment ={}
-            $.each(IncArray,function(index, field) {
-                increment[field.name] = field.value;
-            }); 
-            console.log(increment);
+            data.quantityIncrement= document.getElementById('incQuantity_'+data.id).value
+            console.log(data);
             $.ajax({
                 type:'PATCH',
-                url:`/cart/${increment.productId}`,
-                data:increment,
+                url:`/cart/${data.id}`,
+                data,
                 success:function(res){
-                    document.getElementById('quantity_display').value = res.data.quantity
-                    document.getElementById('cartPrice').textContent = res.data.totalCartValue
+                    console.log(res)
+                    document.getElementById('quantity_display'+data.id).value = res.data.quantity
+                    document.getElementById('productTotalPrice_'+data.id).textContent = res.data.productTotal
+                    document.getElementById('cartTotalField').textContent ='₹ '+ res.data.totalCartValue
+                    document.getElementById('incQuantity_'+data.id).value = res.data.quantity
                 }
             })
-        })
-    })
+        }
+
+
+        function decrementQunatity(e,data){
+            e.preventDefault();
+            console.log(data);
+            data.quantityDecrement= document.getElementById('decQuantity_'+data.id).value
+            $.ajax({
+                type:'PATCH',
+                url:`/cart/${data.id}`,
+                data,
+                success:function(res){
+                    console.log(res)
+                    document.getElementById('quantity_display'+data.id).value = res.data.quantity
+                    document.getElementById('productTotalPrice_'+data.id).textContent = res.data.productTotal
+                    document.getElementById('cartTotalField').textContent = '₹ '+res.data.totalCartValue
+                    document.getElementById('decQuantity_'+data.id).value = res.data.quantity
+                }
+            })
+        }
+
+        // // $('#inc').submit((e)=>{
+        // //     e.preventDefault();
+        // //     var IncArray = $(this).serializeArray();
+        // //     let increment ={}
+        // //     $.each(IncArray,function(index, field) {
+        // //         increment[field.name] = field.value;
+        // //     }); 
+        // //     console.log(increment);
+        // //     $.ajax({
+        // //         type:'PATCH',
+        // //         url:`/cart/${increment.productId}`,
+        // //         data:increment,
+        // //         success:function(res){
+        // //             document.getElementById('quantity_display').value = res.data.quantity
+        // //             document.getElementById('cartPrice').textContent = res.data.totalCartValue
+        // //         }
+        // //     })
+        // })
+    // })
 </script>
 
 <%- include('./partials/_footer') %>

@@ -264,6 +264,7 @@ exports.removeCartItem = catchAsync (async (req,res) => {
 
 exports.updateCartQuantity = catchAsync(async (req, res) => {
     const product = req.params.id;
+    console.log(product)
     const userId = req.user._id;
     let updateQuantity;
     if (req.body.quantityIncrement) {
@@ -273,6 +274,7 @@ exports.updateCartQuantity = catchAsync(async (req, res) => {
             updateQuantity = 1;
         }
     }
+    console.log('upodated Qunatity ',updateQuantity)
     if (req.body.quantityDecrement) {
         updateQuantity = parseInt(req.body.quantityDecrement);
         updateQuantity--;
@@ -282,10 +284,12 @@ exports.updateCartQuantity = catchAsync(async (req, res) => {
     }
 
     const user = await User.findById(userId).populate('cart.product');
+    let productTotal = 0
     const cartItemIndex = user.cart.findIndex(item => item.product.equals(product));
     if (cartItemIndex !== -1) {
         user.cart[cartItemIndex].quantity = updateQuantity;
         user.cart[cartItemIndex].totalAmount = updateQuantity * user.cart[cartItemIndex].product.price;
+        productTotal = user.cart[cartItemIndex].totalAmount;
         let totalCartValue = 0;
         user.cart.forEach(item => {
             totalCartValue += item.totalAmount;
@@ -300,6 +304,7 @@ exports.updateCartQuantity = catchAsync(async (req, res) => {
         data:{
             totalCartValue : user.totalCartValue,
             quantity : updateQuantity,
+            productTotal
         }
     })
 });

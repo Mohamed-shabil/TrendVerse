@@ -98,8 +98,21 @@
           </div>
         
           <div class="col-lg-5 col-md-6">
-            
+            <div class="coupon_board p-4  mt-1 mb-2 rouded" style="background-color: #f2f3ee;">
+              <% if (coupons) {%>
+                <% coupons.forEach((coupon)=>{%>
+                  <div class="col-md-12 p-0 mb-2">
+                    <div class="input-group">
+                        <input id="copyText" type="text" class="form-control" value="<%=coupon.code%>">
+                        <button id="copyButton" class="btn coupon_code"><i class="bi bi-clipboard"></i></button>
+                    </div>
+                    <div ><small>Get <% if(coupon.discountType=='fixed'){ %>Flat ₹<%=coupon.discount%> Off On <% }else{%> Flat <%=coupon.discount%>%  off on<% } %>minimum Spend of ₹ <%=coupon.minimumSpend%></small></div>                                      
+                </div>
+                <%}) %>
+              <% } %>
+            </div>
             <div class="checkout__order">
+              
               <form id="applyCoupon" class="input-group mb-3">
                 <input type="text" name="code" class="form-control" id="couponCodeInput" placeholder="Enter coupon code">
                 <div class="input-group-append">
@@ -108,7 +121,7 @@
                   </button>
                 </div>
               </form>
-              <p id="couponNotifier"></p>
+              <p id="couponNotifier" style="display: none">coupon Applied <span class="close_coupon" onclick="showCoupon()"><i class="bi bi-x"></i></span></p>
               
               <h4 class="order__title">Your order</h4>
               <div class="checkout__order__products">
@@ -145,37 +158,43 @@
               </p>
 
               <!-- <form action="/cart/checkout" method="post"> -->
+                <label>Choose Payment Method :</label>
               <form id="checkout">
-                <div class="form-check">
+                <div class="form-check form-check-inline">
                   <p><%if(errorMessage[0]){%><%=errorMessage[0]%><% }else if(successMessage[0]){%><%=successMessage[0]%><%}%></p>
                   <input type="hidden" id="walletUsed" name="walletUsed" value="false" />
                   <input type="hidden" id="payableAmount" name="payableAmount" value="<%=user.totalCartValue%>" />
                   <input type="hidden" id="couponUsed" name="couponUsed">
                   <input type="hidden" id="currentWalletBalance" name="currentWalletBalance" value="<%=user.wallet.balance%>" />
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    value="COD"
-                    name="paymentMethod"
-                    id="flexRadioDefault1"
-                  />
-                  <label class="form-check-label" for="flexRadioDefault1">
-                    Cash On Delivery
+                  
+                  <label class="mr-2">
+                    <input checked="" class="radio-input" type="radio" name="paymentMethod" value="Online" >
+                    <span class="radio-tile">
+                      <span class="radio-icon">
+                        <i class="bi bi-qr-code-scan" style="font-size:30px;"></i>
+                      </span>
+                      <span class="radio-label"><small>Pay online</small></span>
+                    </span>
                   </label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    value="Online"
-                    name="paymentMethod"
-                    id="flexRadioDefault1"
-                  />
-                  <label class="form-check-label" for="flexRadioDefault1">
-                    Pay Online
+                  <label>
+                    <input class="radio-input" type="radio" name="paymentMethod" value="COD">
+                    <span class="radio-tile">
+                      <span class="radio-icon">
+                        <i class="bi bi-truck" style="font-size:30px"></i>
+                      </span>
+                      <span class="radio-label"><small>COD</small></span>
+                    </span>
                   </label>
-                </div>
-                
+              </div>
+
+
+
+
+
+
+
+
+
                 <button id="checkoutBtn" type="submit" class="site-btn">PLACE ORDER</button>
               </form>
             </div>
@@ -191,6 +210,24 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
 
+  function showCoupon(){
+    
+    window.location.reload();
+
+  }
+
+
+  const copyButton = document.getElementById('copyButton');
+    copyButton.addEventListener('click', function () {
+    const copyText = document.getElementById('copyText');
+    copyText.select();
+    document.execCommand('copy');
+    copyText.setSelectionRange(0, 0);
+    copyButton.innerText = 'Copied!';
+    setTimeout(() => {
+        copyButton.innerHTML = '<i class="bi bi-clipboard"></i>' ;
+    }, 1500); 
+  });
   $(document).ready(function(){
     var payableAmount = document.getElementById('payableAmount');
     var total = document.getElementById('total')
@@ -230,8 +267,11 @@
               listItem.innerHTML = `Coupon applied<span>- ₹${discount}</span>`;
               document.getElementById('checkoutTotal').appendChild(listItem);
               document.getElementById('couponNotifier').classList.add('text-success')
-              document.getElementById('couponNotifier').textContent = 'Coupon Applied';
+              // document.getElementById('couponNotifier').textContent = 'Coupon Applied';
+              document.getElementById('couponNotifier').style.display = 'block'
             }
+            document.getElementById('applyCoupon').style.display = 'none';
+
           }else{
             document.getElementById('couponNotifier').classList.add('text-danger')
             document.getElementById('couponNotifier').textContent = res.error;

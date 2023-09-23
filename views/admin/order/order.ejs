@@ -51,8 +51,9 @@
                         <div class="col-7 d-flex align-items-center w-100">
                           <% if(order.status != 'Delivered'&& order.status != 'Cancel') {%>
                             <%if(order.status != 'Cancel'){%>
-                              <form action="/admin/orders?_method=PATCH" class="d-flex align-items-center justify-content-between" method="POST">
-                                  <select name="status" class="status_order <%=order.status%>" id="floatingSelectGrid">
+                              <form id="<%=order.orderId%>" action="/admin/orders?_method=PATCH" class="d-flex align-items-center justify-content-between" method="POST">
+                                  <!-- id="order_status" -->
+                                <select onchange="statusChange('<%=order.orderId.toString()%>')" name="status" class="status_order <%=order.status%>" >
                                       <%for (const option of ['Pending', 'Processing','Shipped', 'Delivered']){%>
                                         <option value="<%=option%>" <% if(option == order.status) {%> selected <%} %>>
                                           <%=option%> 
@@ -61,7 +62,6 @@
                                   </select>
                                   <input type="hidden" name="orderId" value="<%=order._id%>">
                                   
-                                  <button type="submit" class="status_update btn btn-outline-primary">Update</button>
                               </form>
                             <%}else{%>
                                <p class="Cancel">Order Cancelled</p>
@@ -85,6 +85,10 @@
 
 
 
-
+    <script>
+      function statusChange(id) {
+        document.getElementById(id).submit();
+      }
+    </script>
 
     <%- include('../partials/_footer.ejs') %>

@@ -4,6 +4,7 @@ const Order = require('../model/orderModel');
 const Products = require('../model/productModel');
 const Address = require('../model/addressModel');
 const Return = require('../model/returnModel')
+const Coupon = require('../model/couponModel')
 const crypto = require('crypto')
 const Razorpay = require('razorpay')
 const dotenv = require('dotenv');
@@ -11,9 +12,10 @@ dotenv.config({path:'./config.env'});
 
 
 exports.getCheckout = catchAsync(async (req,res)=>{
+    const coupons = await Coupon.find();
     const user = await User.findOne({_id:req.user._id}).populate(['cart.product','defaultAddress'])
     res.render('./users/checkout',{
-        user
+        user,coupons
     })
 })
 
