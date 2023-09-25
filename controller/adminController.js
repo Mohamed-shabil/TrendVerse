@@ -316,10 +316,11 @@ exports.getEditProduct = catchAsync(async(req,res)=>{
 exports.editProduct = catchAsync(async(req,res)=>{
     console.log(req.body.name);
     const data = {
-        name:req.body.name,
-        description:req.body.description,
-        category: req.body.category,
-        price: req.body.price,
+        name : req.body.name,
+        description : req.body.description,
+        category : req.body.category,
+        price : req.body.price,
+        stock : req.body.stock,
         visibility:true
     } 
     await Product.findOneAndUpdate({_id:req.params.id},data,{new:true})

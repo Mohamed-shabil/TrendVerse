@@ -10,11 +10,18 @@ exports.addToWishlist = catchAsync(async (req,res) => {
     if(existingItem == -1){
         user.wishlist.push({product});
         await user.save();
-    } 
+        return res.status(200).json({
+            status:'success',
+            wishlist : req.user.wishlist,
+            message:'Added to wishlist'
+        })
+    }
+    user.wishlist.splice(existingItem,1);
+    await user.save();
     res.status(200).json({
         status: 'success',
         wishlist : req.user.wishlist,
-        message:'Item Already Exists in wishlist'
+        message:'removed from Wishlist'
     });
 })
 

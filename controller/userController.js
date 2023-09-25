@@ -12,10 +12,41 @@ const sendMail = require('../utils/email');
 
 exports.getHome = catchAsync(async(req,res)=>{
     const banners = await Banner.find();
-    const products = await Products.find({visibility:true}).limit(8).sort()
-    
+    // const products = await Products.find({visibility:true}).limit(8).sort()
+    const products = await Order.aggregate([
+        {
+            $unwind: '$products'
+        },
+        {
+            $group: {
+              _id: '$products.product',
+              totalQuantitySold: { $sum: '$products.quantity' }
+            }
+        },
+        {
+            $lookup: {
+              from: 'products', 
+              localField: '_id',
+              foreignField: '_id',
+              as: 'productInfo'
+            }
+        },
+        {
+            $unwind: '$productInfo'
+        },
+        {
+            $sort: {
+              totalQuantitySold: -1 
+            }
+        },
+        {
+            $limit: 8
+        }
+    ])
+    const newArrivals = await Products.find().sort({_id:-1}).limit(8);
+    console.log(newArrivals)
     return res.render('./users/home',{
-        products,user:req.user,banners
+        products,user:req.user,banners,newArrivals
     });
 })
 

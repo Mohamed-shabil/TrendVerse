@@ -4383,7 +4383,7 @@ input::-webkit-inner-spin-button {
 	background-attachment: fixed;
 	position: fixed;
 	padding: 5px 15px;
-	border-radius: 2px;
+	border-radius: 6px;
 	/* color:#636363; */
 	left: 45%;
 	top: 50%;

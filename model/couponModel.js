@@ -14,7 +14,7 @@ const couponSchema = new mongoose.Schema({
     discount:Number,
     minimumSpend : Number,
     expirationDate: Date
-})
+},{ timestamps: true })
 
 const Coupon = mongoose.model('Coupon',couponSchema);
 

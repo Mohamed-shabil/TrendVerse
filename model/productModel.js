@@ -26,7 +26,7 @@ const productSchema = new mongoose.Schema({
         default:true
     }
     
-})
+},{ timestamps: true })
 
 
 productSchema.pre('save',function(next){

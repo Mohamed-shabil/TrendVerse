@@ -116,7 +116,7 @@
                             <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                                 <div class="product__item">
                                     <div class="product__item__pic set-bg" data-setbg="/products/<%=product.images[0]%>">
-                                        <button onclick="addToCart('<%=product._id%>')" class="label">
+                                        <button onclick="addToWishList('<%=product._id%>')" class="label">
                                             <i class="bi bi-suit-heart-fill"></i>
                                         </button>
                                     </div>
@@ -155,7 +155,7 @@
     <span id="toastMsg" class="alert alert-primary">Added to WishList</span>
 
     <script>
-        function addToCart(id) {
+        function addToWishList(id) {
             $.ajax({
                 type: "PATCH",
                 url:'/wishlist',

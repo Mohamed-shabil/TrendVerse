@@ -82,20 +82,44 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ul class="filter__controls">
-                        <li class="active" data-filter="*">Best Sellers</li>
+                        <li class="active" data-filter="*">Ever Green</li>
                         <li data-filter=".new-arrivals">New Arrivals</li>
-                        <li data-filter=".hot-sales">Hot Sales</li>
+                        <li data-filter=".best-seller">Best Seller</li>
                     </ul>
                 </div>
             </div>
             <div class="row product__filter">
-                <%products.forEach((product)=>{%>
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                        <a href="/shop/<%=product.slug%>">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="/products/<%=product.images[0]%>">
-                                    <span class="label">New</span>
+                <%products.forEach((item)=>{%>
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix best-seller">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="/products/<%=item.productInfo.images[0]%>">
+                                <button id="whishBtn_<%=item.productInfo._id%>" onclick="addToWishList('<%=item.productInfo._id%>')" class="label">
+                                    <i class="bi bi-suit-heart-fill"></i>
+                                </button>
+                            </div>
+                            <a href="/shop/<%=item.productInfo.slug%>">
+                                <div class="product__item__text">
+                                    <h6><%=item.productInfo.name%></h6>
+                                    <form  class="cart_form" action="/cart?_method=PATCH" method="post">
+                                        <h5>₹<%=item.productInfo.price%></h5>
+                                        <input type="hidden" name="id" value="<%=item.productInfo._id%>">
+                                        <button class="cart_button"><img src="/users/img/icon/cart.png" alt="" srcset=""></button>
+                                    </form>
+                                    
                                 </div>
+                            </a>
+                        </div>
+                    </div>
+                <%})%>
+                <% newArrivals.forEach((product)=>{ %>
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="/products/<%=product.images[0]%>">
+                                <button onclick="addToWishList('<%=product._id%>')" class="label">
+                                    <i class="bi bi-suit-heart-fill"></i>
+                                </button>
+                            </div>
+                            <a href="/shop/<%=product.slug%>">
                                 <div class="product__item__text">
                                     <h6><%=product.name%></h6>
                                     <form  class="cart_form" action="/cart?_method=PATCH" method="post">
@@ -103,12 +127,11 @@
                                         <input type="hidden" name="id" value="<%=product._id%>">
                                         <button class="cart_button"><img src="/users/img/icon/cart.png" alt="" srcset=""></button>
                                     </form>
-                                    
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
-                <%})%>
+                <% }) %>
             </div>
         </div>
     </section>
@@ -237,6 +260,26 @@
     <!-- Latest Blog Section End -->
 
     <!-- Footer Section Begin -->
+    <span id="toastMsg" class="alert alert-primary"></span>
 
-
+    <script>
+        function addToWishList(id) {
+            $.ajax({
+                type: "PATCH",
+                url:'/wishlist',
+                data:{
+                    productId:id
+                },
+                success:function(res){
+                    console.log(res);
+                    document.getElementById('toastMsg').textContent = res.message
+                    document.getElementById('toastMsg').style.display = "block";
+                    setTimeout(()=>{
+                        document.getElementById('toastMsg').style.display = 'none'
+                    },2000)
+                }
+            })
+        }
+    </script>
+<%- include('./partials/_footerbar.ejs') %>
 <%- include('./partials/_footer.ejs') %>

@@ -52,7 +52,7 @@ const orderSchema = new mongoose.Schema({
         enum:['Pending','Done'],
         default:'Pending'
     }
-});
+},);
 
 
 const Order = mongoose.model('Order', orderSchema);
