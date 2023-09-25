@@ -64,6 +64,10 @@ router.route('/orders')
 router.route('/orders/:orderId')
       .get(orderController.getOrderDetailsForAdmin)
 
+
+router.route('/order/getInvoice/:orderId')
+      .get(orderController.getInvoice)
+
 router.route('/returnOrder')
       .get(returnController.getAllReturnOrder)
       .patch(returnController.updateStatus)

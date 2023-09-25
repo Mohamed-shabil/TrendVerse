@@ -1393,18 +1393,23 @@ input::-webkit-inner-spin-button {
 
 .product__item__pic .label {
 	
-	font-size: 18px;
-	font-weight: 700;
-	letter-spacing: 2px;
-	text-transform: uppercase;
-	display: inline-block;
-	padding: 4px 15px 2px;
-	
-	position: absolute;
-	left: 0px;
-	top: 10px;
+	font-size: 25px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: inline-block;
+	background-color: transparent;
+    padding: 0px 6px 1px 8px;
+    z-index: 2;
+    outline: none;
+    border: none;
+    position: absolute;
+    left: 7px;
+    top: 13px;
 }
-
+.product__item__pic .label i{
+	color: #c8c8c8;
+}
 /* .product__item__pic .product__hover {
 	position: absolute;
 	right: -200px;
@@ -4360,4 +4365,27 @@ input::-webkit-inner-spin-button {
 	position: absolute;
 	white-space: nowrap;
 	width: 1px;
+  }
+
+  .deleteButton{
+	border: none;
+	outline: none;
+	background-color:transparent;
+  }
+  .deleteButton i{
+	color: #000!important;
+  }
+
+
+  #toastMsg{
+	display: none;
+	/* background-color: #d2d2d2; */
+	background-attachment: fixed;
+	position: fixed;
+	padding: 5px 15px;
+	border-radius: 2px;
+	/* color:#636363; */
+	left: 45%;
+	top: 50%;
+	z-index: 2;
   }

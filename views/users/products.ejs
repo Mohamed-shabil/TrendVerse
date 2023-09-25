@@ -114,12 +114,13 @@
                     <div class="row">
                         <%products.forEach((product)=>{%>
                             <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                                <a href="/shop/<%=product.slug%>">
-                                    <div class="product__item">
-                                        <div class="product__item__pic set-bg" data-setbg="/products/<%=product.images[0]%>">
-                                            <span class="label"><i class="bi bi-heart"></i></span>
-                                            
-                                        </div>
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg" data-setbg="/products/<%=product.images[0]%>">
+                                        <button onclick="addToCart('<%=product._id%>')" class="label">
+                                            <i class="bi bi-suit-heart-fill"></i>
+                                        </button>
+                                    </div>
+                                    <a href="/shop/<%=product.slug%>">
                                         <div class="product__item__text">
                                             <h6><%=product.name%></h6>
                                             <form  class="cart_form" action="/cart?_method=PATCH" method="post">
@@ -128,9 +129,8 @@
                                                 <button class="cart_button"><img src="/users/img/icon/cart.png" alt="cart" srcset=""></button>
                                             </form>
                                         </div>
-                                    
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
                             </div>
                         <%})%>
                     </div>
@@ -151,15 +151,26 @@
             </div>
         </div>
     </section>
-    
+
+    <span id="toastMsg" class="alert alert-primary">Added to WishList</span>
+
     <script>
-        select = document.getElementById('select')
-        select.addEventListener('change',()=>{
-            let href = window.location.href
-            if(href[href.length-1] == '?'){
-                href += 'sort'+select.value;
-            }
-        })
+        function addToCart(id) {
+            $.ajax({
+                type: "PATCH",
+                url:'/wishlist',
+                data:{
+                    productId:id
+                },
+                success:function(res){
+                    console.log(res);
+                    document.getElementById('toastMsg').style.display = "block";
+                    setTimeout(()=>{
+                        document.getElementById('toastMsg').style.display = 'none'
+                    },2000)
+                }
+            })
+        }
     </script>
 
 <%- include('./partials/_footer.ejs') %>

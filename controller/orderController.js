@@ -85,8 +85,6 @@ exports.checkout = catchAsync(async (req,res)=>{
         user.cart = [];
         user.totalCartValue = 0;
         await user.save();
-        const pdfBuffer = await easyinvoice.createInvoice(invoiceData);
-        fs.writeFileSync('invoice.pdf', pdfBuffer);
         req.flash('success','Order Placed Successfully')
         return res.status(200).json({
           status:'success',
@@ -139,6 +137,7 @@ exports.checkout = catchAsync(async (req,res)=>{
     user.totalCartValue = 0;
     await user.save();
 
+    
 
     req.flash('success','Order Placed Successfully')
     return res.status(201).json({
@@ -327,7 +326,7 @@ exports.getOrderDatails = catchAsync(async (req, res) => {
       }
     }
   ]);
-  
+  console.log('ahello',orders);
   res.render('./users/account/orderDetails',{
     orders
   })
@@ -340,3 +339,32 @@ exports.updateOrderStatus = catchAsync(async(req,res) => {
     res.redirect(req.previousUrl);
 })
 
+
+
+exports.getInvoice = catchAsync(async(req,res)=>{
+  console.log(req.params.orderId)
+  const orders = await Order.aggregate([
+      {
+        $match: { orderId:req.params.orderId }
+      },
+      {
+        $lookup: {
+          from: "products", 
+          localField: "products.product", 
+          foreignField: "_id", 
+          as: "products.product" 
+        }
+      },
+      {
+        $lookup: {
+          from: "addresses", 
+          localField: "deliveryAddress", 
+          foreignField: "_id", 
+          as: "deliveryAddress" 
+        }
+      }
+    ]);
+
+    console.log(orders[0])
+  res.render('./users/invoice',{orders});
+})

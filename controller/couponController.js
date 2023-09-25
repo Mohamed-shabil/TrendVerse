@@ -12,7 +12,6 @@ exports.createCoupon = catchAsync(async(req,res) => {
         return res.redirect('/admin/coupons/addCoupon');
     }
     const UpperCode = code.toUpperCase();
-
     console.log(UpperCode);
     const coupon = await Coupon.find({code:UpperCode});
     console.log(coupon)

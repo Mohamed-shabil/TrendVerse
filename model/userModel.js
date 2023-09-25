@@ -64,6 +64,12 @@ const userSchema = new mongoose.Schema({
             OrderId:String
         }]
     },
+    wishlist:[{
+        product:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Product'
+        }
+    }],
     usedCoupons:[{type:String}],
     varified: {
         type:Boolean,

@@ -110,6 +110,7 @@
                     document.getElementById('productTotalPrice_'+data.id).textContent = res.data.productTotal
                     document.getElementById('cartTotalField').textContent ='₹ '+ res.data.totalCartValue
                     document.getElementById('incQuantity_'+data.id).value = res.data.quantity
+                    document.getElementById('decQuantity_'+data.id).value = res.data.quantity
                 }
             })
         }
@@ -129,6 +130,7 @@
                     document.getElementById('productTotalPrice_'+data.id).textContent = res.data.productTotal
                     document.getElementById('cartTotalField').textContent = '₹ '+res.data.totalCartValue
                     document.getElementById('decQuantity_'+data.id).value = res.data.quantity
+                    document.getElementById('incQuantity_'+data.id).value = res.data.quantity
                 }
             })
         }

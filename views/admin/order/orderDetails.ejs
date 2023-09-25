@@ -8,7 +8,8 @@
         <%- include('../partials/_navbar.ejs') %>
         <section>
           <div class="container py-5 mt-5">
-            <span  class="mb-3"><a href="/admin/orders"><i class="bi bi-arrow-left"></i> Go to Orders</a></span>
+            <span  class="mb-3"><a href="/admin/orders"><i class="bi bi-arrow-left"></i> Go to Orders</a></span><br><br>
+            <a href="/admin/order/getInvoice/<%=orders[0].orderId%>"><button class="btn btn-primary">Get invoice</button></a>
           <% orders.forEach((order) => {%>
 
             <div class="row justify-content-center mb-3">

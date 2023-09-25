@@ -186,15 +186,6 @@
                     </span>
                   </label>
               </div>
-
-
-
-
-
-
-
-
-
                 <button id="checkoutBtn" type="submit" class="site-btn">PLACE ORDER</button>
               </form>
             </div>
@@ -273,6 +264,7 @@
             document.getElementById('applyCoupon').style.display = 'none';
 
           }else{
+            document.getElementById('couponNotifier').style.display = 'block'
             document.getElementById('couponNotifier').classList.add('text-danger')
             document.getElementById('couponNotifier').textContent = res.error;
           }

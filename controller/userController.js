@@ -3,6 +3,7 @@ const User = require('../model/userModel');
 const Products = require('../model/productModel');
 const Banner = require('../model/bannerModel')
 const Category = require('../model/categoryModel');
+const Order = require('../model/orderModel')
 const bcrypt = require('bcrypt');
 const randomString = require('randomstring');
 const token = require('../utils/token')
@@ -12,6 +13,7 @@ const sendMail = require('../utils/email');
 exports.getHome = catchAsync(async(req,res)=>{
     const banners = await Banner.find();
     const products = await Products.find({visibility:true}).limit(8).sort()
+    
     return res.render('./users/home',{
         products,user:req.user,banners
     });
@@ -298,7 +300,6 @@ exports.updateCartQuantity = catchAsync(async (req, res) => {
 
         await user.save();
     }
-   
     res.status(200).json({
         status:'success',
         data:{

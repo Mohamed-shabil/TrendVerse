@@ -5,10 +5,9 @@ const addressController = require('../controller/addressController');
 const orderController = require('../controller/orderController');
 const returnController = require('../controller/returnController');
 const walletController = require('../controller/walletController');
+const wishlistController = require('../controller/wishlistController');
 const couponController = require('../controller/couponController')
 const middleware = require('../middleware/middleware');
-
-
 
 router.use(middleware.previousRouteTracker,middleware.authChecker);
 router.get('/',userController.getHome);
@@ -31,6 +30,8 @@ router.route('/shop/:slug')
     .get(userController.getProduct)
     .put(middleware.isLoggedin,userController.addToCart);
 
+
+
 router.route('/cart')
     .get(userController.getCart)
     .patch(userController.addToCart)
@@ -45,7 +46,11 @@ router.route('/cart/checkout')
     .post(middleware.isLoggedin,middleware.authChecker,orderController.checkout)
     .put(middleware.isLoggedin,middleware.authChecker,orderController.applyWallet)
 
-
+router.route('/wishlist')
+    .get(middleware.isLoggedin,middleware.authChecker,wishlistController.getWhishList)
+    .patch(middleware.isLoggedin,middleware.authChecker,wishlistController.addToWishlist)
+    .delete(middleware.isLoggedin,middleware.authChecker,wishlistController.removeFromWishlist);
+    
 router.route('/cart/checkout/applyCoupon')
     .post(middleware.isLoggedin,middleware.authChecker,couponController.applyCoupon)
 
@@ -78,10 +83,14 @@ router.route('/account/orders')
 router.route('/account/orders/:orderId')
     .get(middleware.isLoggedin,middleware.authChecker,orderController.getOrderDatails)
 
+
+router.route('/account/orders/getInvoice/:orderId')
+    .get(middleware.isLoggedin,middleware.authChecker,orderController.getInvoice)
+    
 router.route('/account/address/addAddress')
     .get(middleware.isLoggedin,middleware.authChecker,addressController.getAddAddress)
     .post(middleware.isLoggedin,middleware.authChecker,addressController.AddAddress)
-    
+
 
 router.route('/account/address/editAddress/:id')
     .get(middleware.isLoggedin,middleware.authChecker,addressController.getEditAddress)
