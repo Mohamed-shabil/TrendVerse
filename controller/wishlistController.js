@@ -13,6 +13,7 @@ exports.addToWishlist = catchAsync(async (req,res) => {
         return res.status(200).json({
             status:'success',
             wishlist : req.user.wishlist,
+            operation:'added',
             message:'Added to wishlist'
         })
     }
@@ -21,6 +22,7 @@ exports.addToWishlist = catchAsync(async (req,res) => {
     res.status(200).json({
         status: 'success',
         wishlist : req.user.wishlist,
+        operation:'removed',
         message:'removed from Wishlist'
     });
 })
@@ -29,7 +31,6 @@ exports.removeFromWishlist = catchAsync(async (req,res)=>{
     const product = req.body.productId
     console.log(product)
     const user = await User.find({_id:req.user._id});
-    // console.log(user);
     const deleteItem  = await User.updateOne({_id:req.user._id},{$pull:{wishlist:{product:req.body.productId}}});
     console.log(deleteItem);
     req.flash('error','Item removed from the wishlist');
@@ -39,8 +40,6 @@ exports.removeFromWishlist = catchAsync(async (req,res)=>{
 exports.getWhishList = catchAsync(async (req,res) => {
     const user = await User.findOne({_id:req.user._id}).populate('wishlist.product');
     const wishlist = user.wishlist;
-    // console.log(user.wishlist[0])
-    // console.log(wishlist);
     res.render('./users/wishlist',{wishlist});
 })
 
