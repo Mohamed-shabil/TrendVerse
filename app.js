@@ -52,6 +52,9 @@ app.use(nocache());
 app.use('/',userRoute);
 app.use('/admin',adminRoute);
 
+app.all('*',(req,res)=>{
+  res.render('./users/404Page')
+})
 const port = process.env.PORT || 3000;
 app.listen(port,()=>{
     console.log('listening on port')
