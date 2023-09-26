@@ -6,6 +6,9 @@ const path = require('path');
 const morgan = require('morgan');
 const session = require('express-session');
 const flash = require('connect-flash');
+const rateLimit = require('express-rate-limit');
+const mongoSanitize = require('express-mongo-sanitize');
+const hpp = require('hpp');
 const userRoute = require('./routes/userRoute');
 const methodOverride = require('method-override');
 const adminRoute = require('./routes/adminRoute');
@@ -40,6 +43,28 @@ app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended:true}))
+
+const limiter = rateLimit({
+  max:100,
+  windowMs: 60 * 60 * 1000,
+  message:'Too many Request from this IP , Please Try again in an hour!'
+});
+app.use('/',limiter);
+app.use(mongoSanitize())
+app.use(hpp({
+  whitelist:[
+  'id',
+  'search',
+  'page',
+  'slug',
+  'sort',
+  'minPrice',
+  'maxPrice',
+  'category',
+  'orderId',
+  'code',
+  ]
+}));
 
 app.use(function(req, res, next){
   res.locals.successMessage = req.flash('success');

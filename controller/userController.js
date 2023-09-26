@@ -299,6 +299,7 @@ exports.updateCartQuantity = catchAsync(async (req, res) => {
     const product = req.params.id;
     console.log(product)
     const userId = req.user._id;
+
     let updateQuantity;
     if (req.body.quantityIncrement) {
         updateQuantity = parseInt(req.body.quantityIncrement);
@@ -315,29 +316,44 @@ exports.updateCartQuantity = catchAsync(async (req, res) => {
             updateQuantity = 1;
         }
     }
-
+    
+    const productItem = await Products.findOne({_id:product});
     const user = await User.findById(userId).populate('cart.product');
-    let productTotal = 0
-    const cartItemIndex = user.cart.findIndex(item => item.product.equals(product));
-    if (cartItemIndex !== -1) {
-        user.cart[cartItemIndex].quantity = updateQuantity;
-        user.cart[cartItemIndex].totalAmount = updateQuantity * user.cart[cartItemIndex].product.price;
-        productTotal = user.cart[cartItemIndex].totalAmount;
-        let totalCartValue = 0;
-        user.cart.forEach(item => {
-            totalCartValue += item.totalAmount;
-        });
-        user.totalCartValue = totalCartValue;
 
-        await user.save();
-    }
-    res.status(200).json({
-        status:'success',
-        data:{
-            totalCartValue : user.totalCartValue,
-            quantity : updateQuantity,
-            productTotal
+    if(productItem.stock >= updateQuantity){
+        let productTotal = 0
+        const cartItemIndex = user.cart.findIndex(item => item.product.equals(product));
+        if (cartItemIndex !== -1) {
+            user.cart[cartItemIndex].quantity = updateQuantity;
+            user.cart[cartItemIndex].totalAmount = updateQuantity * user.cart[cartItemIndex].product.price;
+            productTotal = user.cart[cartItemIndex].totalAmount;
+            let totalCartValue = 0;
+            user.cart.forEach(item => {
+                totalCartValue += item.totalAmount;
+            });
+            user.totalCartValue = totalCartValue;
+            await user.save();
         }
+        return res.status(200).json({
+            status:'success',
+            data:{
+                totalCartValue : user.totalCartValue,
+                quantity : updateQuantity,
+                productTotal
+            }
+        })
+    }
+    const data = {
+        totalCartValue : user.totalCartValue,
+        quantity : updateQuantity, 
+    }
+    if(productItem.stock == 0){
+        data.reason = 'this is product is not Available now'
+    }
+
+    return res.status(200).json({
+        status:'fail',
+        
     })
 });
 

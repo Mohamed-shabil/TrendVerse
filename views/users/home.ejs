@@ -94,7 +94,8 @@
                         <div class="product__item">
                             <div class="product__item__pic set-bg" data-setbg="/products/<%=item.productInfo.images[0]%>">
                                 <button id="whishBtn_<%=item.productInfo._id%>" onclick="addToWishList('<%=item.productInfo._id%>')" class="label">
-                                    <i class="bi bi-suit-heart-fill"></i>
+                                    <% const isInWishlist = user.wishlist.some((wish)=> wish.product.toString() === item.productInfo._id.toString())%>
+                                    <i id="heart_<%=item.productInfo._id%>" class="bi bi-suit-heart-fill <%= isInWishlist ? 'text-danger' : ''%>"></i>
                                 </button>
                             </div>
                             <a href="/shop/<%=item.productInfo.slug%>">
@@ -116,7 +117,8 @@
                         <div class="product__item">
                             <div class="product__item__pic set-bg" data-setbg="/products/<%=product.images[0]%>">
                                 <button onclick="addToWishList('<%=product._id%>')" class="label">
-                                    <i class="bi bi-suit-heart-fill"></i>
+                                    <% const isInWishlist = user.wishlist.some((wish)=> wish.product.toString() === product._id.toString())%>
+                                    <i id="heart_<%=product._id%>" class="bi bi-suit-heart-fill <%= isInWishlist ? 'text-danger' : ''%>"></i>
                                 </button>
                             </div>
                             <a href="/shop/<%=product.slug%>">
@@ -274,6 +276,12 @@
                     console.log(res);
                     document.getElementById('toastMsg').textContent = res.message
                     document.getElementById('toastMsg').style.display = "block";
+                    console.log(res)
+                    if(res.operation == 'removed'){
+                        document.getElementById('heart_'+id).classList.remove('text-danger');
+                    }else{
+                        document.getElementById('heart_'+id).classList.add('text-danger');
+                    }
                     setTimeout(()=>{
                         document.getElementById('toastMsg').style.display = 'none'
                     },2000)

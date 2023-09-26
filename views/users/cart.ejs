@@ -32,6 +32,7 @@
                                                             <h6><%=item.product.name%></h6>
                                                             <h5>₹ <%=item.product.price%></h5>
                                                         </div>
+                                                        <span id="cart_error" class="text-danger"></span>
                                                     </td>
                                                     <td class="quantity__item">
                                                         <form id="dec">
@@ -61,7 +62,6 @@
                                         <%})%>
                                     </tbody>
                                 </table>
-                            
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
@@ -91,10 +91,10 @@
             <%}%>
         </div>
     </section>
+    
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
-    // $(document).ready(function() {
 
         function incrementQuantity(e,data){
             e.preventDefault();
@@ -105,12 +105,20 @@
                 url:`/cart/${data.id}`,
                 data,
                 success:function(res){
-                    console.log(res)
-                    document.getElementById('quantity_display'+data.id).value = res.data.quantity
-                    document.getElementById('productTotalPrice_'+data.id).textContent = res.data.productTotal
-                    document.getElementById('cartTotalField').textContent ='₹ '+ res.data.totalCartValue
-                    document.getElementById('incQuantity_'+data.id).value = res.data.quantity
-                    document.getElementById('decQuantity_'+data.id).value = res.data.quantity
+                    if(res.status === 'success'){
+                        console.log(res)
+                        document.getElementById('quantity_display'+data.id).value = res.data.quantity
+                        document.getElementById('productTotalPrice_'+data.id).textContent = res.data.productTotal
+                        document.getElementById('cartTotalField').textContent ='₹ '+ res.data.totalCartValue
+                        document.getElementById('incQuantity_'+data.id).value = res.data.quantity
+                        document.getElementById('decQuantity_'+data.id).value = res.data.quantity
+                    }
+                    else{
+                        console.log(res)
+                        document.getElementById('cart_error').innerText = res.data.reason
+                        document.getElementById('cart_error').style.display = 'block'
+                    }
+                    
                 }
             })
         }
@@ -134,26 +142,6 @@
                 }
             })
         }
-
-        // // $('#inc').submit((e)=>{
-        // //     e.preventDefault();
-        // //     var IncArray = $(this).serializeArray();
-        // //     let increment ={}
-        // //     $.each(IncArray,function(index, field) {
-        // //         increment[field.name] = field.value;
-        // //     }); 
-        // //     console.log(increment);
-        // //     $.ajax({
-        // //         type:'PATCH',
-        // //         url:`/cart/${increment.productId}`,
-        // //         data:increment,
-        // //         success:function(res){
-        // //             document.getElementById('quantity_display').value = res.data.quantity
-        // //             document.getElementById('cartPrice').textContent = res.data.totalCartValue
-        // //         }
-        // //     })
-        // })
-    // })
 </script>
 
 <%- include('./partials/_footer') %>

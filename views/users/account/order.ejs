@@ -71,8 +71,8 @@
           Do you really want to Cancel this Order ? 
         </div>
         <div class="cnfrm_button d-flex align-items-center justify-content-center">
-          <button class="cancel_btn" onclick="hideConfirmationModal()">Cancel</button>
-          <button class="delete_btn" onclick="submitForm()">Delete</button>
+          <button class="cancel_btn" onclick="hideConfirmationModal()">Go Back</button>
+          <button class="delete_btn" onclick="submitForm()">Cancel order</button>
         </div>
       </div>
     </div>
@@ -86,7 +86,6 @@
             setTimeout(()=>{
               errorMessageElement.style.display = 'none';
             }, 4000);
-            
           }
         }
         hideErrorMessage();
