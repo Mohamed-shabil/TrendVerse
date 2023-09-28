@@ -2,7 +2,7 @@ const Banner = require('../model/bannerModel');
 const catchAsync = require('../utils/catchAsync')
 
 exports.getBanner = catchAsync(async(req,res)=>{
-    const banners = await Banner.find();
+    const banners = await Banner.find().sort({createdAt:-1})
     res.render('./admin/banner/banners',{
         banners
     });

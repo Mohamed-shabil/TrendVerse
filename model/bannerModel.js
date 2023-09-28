@@ -8,7 +8,7 @@ const bannerSchema = new mongoose.Schema({
         type : Boolean,
         default : true,
     }
-});
+},{timestamps:true});
 
 const Banner = mongoose.model('Banner', bannerSchema);
 

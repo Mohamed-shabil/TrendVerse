@@ -150,8 +150,9 @@ exports.isLoggedin = async (req,res,next)=>{
   if(!req.user){
     req.flash('error','Please login to continue');
     return res.redirect('/login');
+  }else{
+    next();
   }
-   next();
 }
 
 

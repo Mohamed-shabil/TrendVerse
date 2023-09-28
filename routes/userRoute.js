@@ -33,7 +33,7 @@ router.route('/shop/:slug')
 
 
 router.route('/cart')
-    .get(userController.getCart)
+    .get(middleware.authChecker,middleware.isLoggedin,userController.getCart)
     .patch(userController.addToCart)
     .delete(userController.removeCartItem)
 

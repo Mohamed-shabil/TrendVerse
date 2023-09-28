@@ -37,7 +37,7 @@ const addressSchema = new mongoose.Schema({
     landMark:{
         type:String
     }
-});
+},{timestamps:true});
 
 const Address = mongoose.model('Address', addressSchema);
 

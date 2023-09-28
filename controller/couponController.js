@@ -121,6 +121,6 @@ exports.editCoupon = catchAsync(async(req,res) => {
 
 
 exports.getAllCoupons = catchAsync(async(req,res) => {
-    const coupons = await Coupon.find();
+    const coupons = await Coupon.find().sort({createdAt:-1})
     res.render('./admin/coupon/coupons',{coupons});
 })

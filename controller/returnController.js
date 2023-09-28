@@ -8,7 +8,7 @@ const catchAsync = require('../utils/catchAsync')
 exports.getReturnOrderForm = catchAsync(async(req,res)=>{
     const orderId = req.params.id
     console.log(orderId)
-    const order = await Order.findOne({orderId}).populate('products.product');
+    const order = await Order.findOne({orderId}).populate('products.product').sort({createdAt:-1})
     console.log(order.products)
     res.render('./users/returnOrderForm',{
         order
@@ -62,7 +62,7 @@ exports.updateStatus = catchAsync(async (req,res)=>{
 })
 
 exports.getAllReturnOrder = catchAsync(async (req,res)=>{
-    const returnOrder = await Return.find().populate('order');
+    const returnOrder = await Return.find().populate('order').sort({createdAt:-1});
     
     res.render('./admin/order/returnOrder',{returnOrder})
 })

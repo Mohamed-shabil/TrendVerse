@@ -7,7 +7,7 @@ const token = require('../utils/token')
 
 
 exports.getAddress = async(req,res)=>{
-    const addresses = await Address.find({userId:req.user._id})
+    const addresses = await Address.find({userId:req.user._id}).sort({_id:-1});
     res.render('./users/account/address/address',{
         addresses
     });
