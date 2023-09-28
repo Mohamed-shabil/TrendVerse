@@ -52,9 +52,8 @@ exports.getHome = catchAsync(async(req,res)=>{
 
 
 exports.getLogin = (req,res)=>{
-
     console.log(res.locals.errorMessage)
-    return res.render('./users/Login');
+    return res.render('./users/login');
 }
 
 
