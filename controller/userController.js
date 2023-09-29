@@ -349,10 +349,13 @@ exports.updateCartQuantity = catchAsync(async (req, res) => {
     if(productItem.stock == 0){
         data.reason = 'this is product is not Available now'
     }
-
+    if(productItem.stock < updateQuantity){
+        data.reason = `Only ${productItem.stock} stock is available`
+    }
+    console.log(data);
     return res.status(200).json({
         status:'fail',
-        
+        data
     })
 });
 
