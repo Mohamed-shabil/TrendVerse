@@ -100,11 +100,11 @@
           <div class="col-lg-5 col-md-6">
             <div class="coupon_board p-4  mt-1 mb-2 rouded" style="background-color: #f2f3ee;">
               <% if (coupons) {%>
-                <% coupons.forEach((coupon)=>{%>
-                  <div class="col-md-12 p-0 mb-2">
+                <% coupons.forEach((coupon,index)=>{%>
+                  <div class="col-md-12 p-0 mb-2 coupon-component">
                     <div class="input-group">
                         <input id="copyText" type="text" class="form-control" value="<%=coupon.code%>">
-                        <button id="copyButton" class="btn coupon_code"><i class="bi bi-clipboard"></i></button>
+                        <button id='copyBtn<%=index%>' class="copy-coupon-button btn coupon_code" onclick="copyToClipboard('<%=coupon.code%>','copyBtn<%=index%>')"><i class="bi bi-clipboard"></i></button>
                     </div>
                     <div ><small>Get <% if(coupon.discountType=='fixed'){ %>Flat ₹<%=coupon.discount%> Off On <% }else{%> Flat <%=coupon.discount%>%  off on<% } %>minimum Spend of ₹ <%=coupon.minimumSpend%></small></div>                                      
                 </div>
@@ -202,23 +202,26 @@
 <script>
 
   function showCoupon(){
-    
     window.location.reload();
-
   }
 
 
-  const copyButton = document.getElementById('copyButton');
-    copyButton.addEventListener('click', function () {
-    const copyText = document.getElementById('copyText');
-    copyText.select();
-    document.execCommand('copy');
-    copyText.setSelectionRange(0, 0);
-    copyButton.innerText = 'Copied!';
-    setTimeout(() => {
-        copyButton.innerHTML = '<i class="bi bi-clipboard"></i>' ;
-    }, 1500); 
-  });
+
+  function copyToClipboard(textToCopy,btnId) {
+  const textarea = document.createElement('textarea');
+  textarea.value = textToCopy;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+  document.getElementById(btnId).innerHTML = '<i class="bi bi-clipboard-check-fill"></i>'
+  setInterval(()=>{
+    document.getElementById(btnId).innerHTML = '<i class="bi bi-clipboard"></i>'
+  },1500)
+}
+
+
+
   $(document).ready(function(){
     var payableAmount = document.getElementById('payableAmount');
     var total = document.getElementById('total')

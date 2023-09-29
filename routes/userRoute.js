@@ -34,8 +34,8 @@ router.route('/shop/:slug')
 
 router.route('/cart')
     .get(middleware.authChecker,middleware.isLoggedin,userController.getCart)
-    .patch(userController.addToCart)
-    .delete(userController.removeCartItem)
+    .patch(middleware.authChecker,middleware.isLoggedin,userController.addToCart)
+    .delete(middleware.authChecker,middleware.isLoggedin,userController.removeCartItem)
 
 router.route('/cart/:id')
     .patch(middleware.authChecker,userController.updateCartQuantity);

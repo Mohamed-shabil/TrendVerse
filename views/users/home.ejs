@@ -229,7 +229,7 @@
 
     <script>
         function addToWishList(id) {
-            let userExits = '<%=user%>' ? 1 : 0;
+            let userExits = '<%=user?.name%>' ? 1 : 0;
             if(userExits){
                 $.ajax({
                     type: "PATCH",
