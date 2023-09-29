@@ -5,11 +5,11 @@
       <h3>Welcome to Trendverse</h3>
       <p>Enter your Credintials</p>
       <%if(successMessage[0]){%>
-        <div class="alert alert-info" role="alert">
+        <div class="alert alert-info" style="max-width:300px!important" role="alert">
             <%=successMessage[0]%>
         </div>
       <%}else if(errorMessage[0]){%>
-        <div class="alert alert-danger" role="alert">
+        <div class="alert alert-danger" style="max-width:300px!important" role="alert">
             <%=errorMessage[0]%>
         </div>
       <%}%>
