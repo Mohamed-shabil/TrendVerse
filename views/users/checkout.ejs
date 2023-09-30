@@ -7,16 +7,12 @@
         <div class="row">
           <div class="col-lg-7 col-md-6">
             <div class="row justify-content-center align-items-center g-2">
+              
               <%if(!user.defaultAddress){%>
               <div
-                class="alert alert-danger w-100 d-flex align-items-center justify-content-between"
-                role="alert"
-              >
+                class="alert alert-danger w-100 d-flex align-items-center justify-content-between" role="alert">
                 Please Set a default Address to continue
-
-                <a href="/account/address" class="btn btn-outline-primary"
-                  >Set Address</a
-                >
+                <a href="/account/address" class="btn btn-outline-primary">Set Address</a>
               </div>
               <%}else{%>
               <div class="w-100">
@@ -168,7 +164,7 @@
                   <input type="hidden" id="currentWalletBalance" name="currentWalletBalance" value="<%=user.wallet.balance%>" />
                   
                   <label class="mr-2">
-                    <input checked="" class="radio-input" type="radio" name="paymentMethod" value="Online" >
+                    <input class="radio-input" type="radio" name="paymentMethod" value="Online" >
                     <span class="radio-tile">
                       <span class="radio-icon">
                         <i class="bi bi-qr-code-scan" style="font-size:30px;"></i>
@@ -337,6 +333,9 @@
         url:'/cart/checkout',
         data:formData,
         success:function(order){
+          if(order.status=='fail'){
+            return alert(order.reason);
+          }
           if(order.payment === 'Wallet'){
             return location.href='/account/orders'
           }
@@ -393,9 +392,9 @@
       }
     })
   }
-  let checkoutBtn = document.getElementById('checkoutBtn')
-  checkoutBtn.addEventListener('click',function(){
-    myButton.disabled = true;
-  })
+  // let checkoutBtn = document.getElementById('checkoutBtn')
+  // checkoutBtn.addEventListener('click',function(){
+  //   myButton.disabled = true;
+  // })
 </script>
 <%- include('./partials/_footer') %>

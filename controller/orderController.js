@@ -8,6 +8,7 @@ const Coupon = require('../model/couponModel')
 const crypto = require('crypto')
 const Razorpay = require('razorpay')
 const dotenv = require('dotenv');
+const { log } = require('console');
 dotenv.config({path:'./config.env'});
 
 
@@ -51,12 +52,21 @@ exports.applyWallet = catchAsync(async(req,res)=>{
   })
 });
 
-
-
 exports.checkout = catchAsync(async (req,res)=>{
-  if(!req.body.paymentMethod){
+  console.log(req.user.defaultAddress);
+  if(!req.user.defaultAddress){
+    console.log('iam working')
+    return res.json({
+      status:'fail',
+      reason : 'Please Provide Address'
+    })
+  }
+  if(req.body.paymentMethod===undefined){
     req.flash('error','Please choose a payment method');
-    res.redirect('/cart/checkout')
+    return res.json({
+      status:'fail',
+      reason:'Please Select an Payment Method'
+    })
   }
   const orderId = crypto.randomUUID();
   if(req.body.paymentMethod ==='Online'){

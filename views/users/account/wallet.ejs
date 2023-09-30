@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 mt-4 mb-4 text-center">
-                <h4>Balance : <b>$ <%=wallet.balance%></b></h4>
+                <h4>Balance : <b>₹ <%=wallet.balance%></b></h4>
             </div>
             <div class="col-md-12 d-flex align-items-center justify-content-center">
                 <div class="col-md-6 ">
@@ -16,7 +16,8 @@
                                 <div class="row p-2 border rounded mb-2">
                                     <div class="col-md-8 ">
                                         <span><small>#<%=transaction.OrderId %></small><br></span>
-                                        <span>Refund amount is credit to your wallet</span>
+                                        <span>Refund amount is credit to your wallet <br></span>
+                                        <span><small>On <%=transaction.date%> <%=transaction.timeStamp%></small></span>
                                     </div>
                                     <div class="col-md-4 d-flex flex-column align-items-end justify-content-end">
                                         <span class="p-0 m-0 text-end">

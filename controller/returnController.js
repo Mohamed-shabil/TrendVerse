@@ -43,7 +43,9 @@ exports.updateStatus = catchAsync(async (req,res)=>{
         amount:currentReturn.order.totalPrice,
         operation:'credit',
         message:'Refund Amount of order ' + req.body.id,
-        OrderId : currentReturn.order._id
+        OrderId : currentReturn.order._id,
+        date: new Date(),
+        timeStamp: new Date().toLocaleTimeString()
     }
 
     user.wallet.transactionHistory.push(transaction);

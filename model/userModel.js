@@ -61,7 +61,9 @@ const userSchema = new mongoose.Schema({
                 enums:['credit','debit']
             },
             message:String,
-            OrderId:String
+            OrderId:String,
+            date: Date,
+            timeStamp : String
         }]
     },
     wishlist:[{
