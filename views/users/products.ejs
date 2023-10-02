@@ -1,20 +1,42 @@
 <%- include('./partials/_header.ejs') %>
     <!-- Header Section End -->
     <%- include('./partials/_navbar') %>
+    <!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include jQuery UI CSS and JavaScript -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css">
+
 
     <section class="shop spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
                     <div class="shop__sidebar">
-                        <div class="shop__sidebar__search">
-                            <form action="/shop" method="GET">
-                                <input type="text" name="search" value="<%=query%>" placeholder="Search...">
-                                <button type="submit"><span class="icon_search"></span></button>
-                            </form>
-                        </div>
-                        <div class="shop__sidebar__accordion">
+                        <form id="filter" method="get" action="/shop/" class="shop__sidebar__accordion">
+                            <div class="shop__sidebar__search">
+                                <div>
+                                    <input type="text" name="search" value="<%=query%>" placeholder="Search...">
+                                    <button type="submit"><span class="icon_search"></span></button>
+                                </div>
+                            </div>
+                            
                             <div class="accordion" id="accordionExample">
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseOne">Price Filter</a>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__categories mb-3">
+                                                <input  type="radio"  name="sort" value="1" id=""><span class="ml-3">High to Low</span>
+                                            </div>
+                                            <div class="shop__sidebar__categories">
+                                                <input type="radio" name="sort" value="-1" id=""><span class="ml-3">Price Low to high</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="card">
                                     <div class="card-heading">
                                         <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
@@ -24,7 +46,7 @@
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
                                                     <% categories.forEach((category)=>{ %>
-                                                        <li><a href="/shop?category=<%=category.name%>"><%=category.name%></a></li>
+                                                        <li class="text-capitalize mb-3"><input  name="category" value="<%=category.name%>" type="radio" <%if(filter.category == category.name){%>checked<%}%>><span class="ml-3"><%=category.name%></span></li>
                                                     <% }) %>
                                                 </ul>
                                             </div>
@@ -33,113 +55,61 @@
                                 </div>
                                 <div class="card">
                                     <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseTwo">Branding</a>
+                                        <a data-toggle="collapse" data-target="#collapseTwo">Price Range</a>
                                     </div>
                                     <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
                                         <div class="card-body">
-                                            <div class="shop__sidebar__brand">
-                                                <ul>
-                                                    <li><a href="#">Louis Vuitton</a></li>
-                                                    <li><a href="#">Chanel</a></li>
-                                                    <li><a href="#">Hermes</a></li>
-                                                    <li><a href="#">Gucci</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
-                                    </div>
-                                    <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__price">
-                                                <div class="shop__sidebar__price">
-                                                    <ul>
-                                                        <li><a href="/shop?minPrice=0&maxPrice=500">₹0.00 - ₹500.00</a></li>
-                                                        <li><a href="/shop?minPrice=500&maxPrice=1000">₹500 - ₹1000</a></li>
-                                                        <li><a href="/shop?minPrice=1000&maxPrice=1500">₹1000 - ₹1500</a></li>
-                                                        <li><a href="/shop?minPrice=1500&maxPrice=2000">₹1500 - ₹2000</a></li>
-                                                        <li><a href="/shop?minPrice=2000&maxPrice=2500">₹2000 - ₹2500.00</a></li>
-                                                        <li><a href="/shop?minPrice=2500">₹2500+</a></li>
-                                                    </ul>
+                                            <div class="shop__sidebar__categories">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <input type="number" id="minPrice" class="w-100 price_range rounded border p-2" <%if(filter?.price?.$gte){%>value='<%=filter.price.$gte%>'<%}%> name="minPrice" placeholder="Min">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="number" id="maxPrice" class="w-100 price_range rounded border p-2" <%if(filter?.price?.$lte){%>value='<%=filter.price.$lte%>'<%}%> name="maxPrice" placeholder="Max" >
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            
-                                    
-            
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseSix">Tags</a>
-                                    </div>
-                                    <div id="collapseSix" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__tags">
-                                                <a href="#">Product</a>
-                                                <a href="#">Bags</a>
-                                                <a href="#">Shoes</a>
-                                                <a href="#">Fashio</a>
-                                                <a href="#">Clothing</a>
-                                                <a href="#">Hats</a>
-                                                <a href="#">Accessories</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
+                            <button class="btn btn-primary mt-5 w-100"type="submit">Filter</button>
+                        </form>
                     </div>
                 </div>
                 <div class="col-lg-9">
-                    <div class="shop__product__option">
+                    <% if(!products.length){%>
+                        <h3 class="text-center">No Items Found</h3>
+                    <%}else{%>
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="shop__product__option__left">
-                                    <p>Showing 1–12 of 126 results</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="shop__product__option__right">
-                                    <p>Sort by Price:</p>
-                                    <a href="/shop?sort=-1"><button class="sort_btn"><i class="bi bi-arrow-up"></i></button></a>
-                                    <a href="/shop?sort=1"><button class="sort_btn"><i class="bi bi-arrow-down"></i></button></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <%products.forEach((product)=>{%>
-                            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                                <div class="product__item">
-                                    
-                                    <div class="product__item__pic set-bg" data-setbg="/products/<%=product.images[0]%>">
-                                        <button onclick="addToWishList('<%=product._id%>')" class="label">
-                                            <% if(user) {%>
-                                                <% const isInWishlist = user.wishlist.some((wish)=> wish.product.toString() === product._id.toString())%>
-                                                <i id="heart_<%=product._id%>" class="bi bi-suit-heart-fill <%= isInWishlist ? 'text-danger' : ''%>"></i>
-                                            <%}else{%>
-                                                <i id="heart_<%=product._id%>" class="bi bi-suit-heart-fill"></i>
-                                            <% } %>
-                                        </button>
-                                    </div>
-                                    <a href="/shop/<%=product.slug%>">
-                                        <div class="product__item__text">
-                                            <h6><%=product.name%></h6>
-                                            <form  class="cart_form" action="/cart?_method=PATCH" method="post">
-                                                <h5>₹<%=product.price%></h5>
-                                                <input type="hidden" class="id" name="id" value="<%=product._id%>">
-                                                <button class="cart_button"><img src="/users/img/icon/cart.png" alt="cart" srcset=""></button>
-                                            </form>
+                            <%products.forEach((product)=>{%>
+                                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                                    <div class="product__item">
+                                        <div class="product__item__pic set-bg" data-setbg="/products/<%=product.images[0]%>">
+                                            <button onclick="addToWishList('<%=product._id%>')" class="label">
+                                                <% if(user) {%>
+                                                    <% const isInWishlist = user.wishlist.some((wish)=> wish.product.toString() === product._id.toString())%>
+                                                    <i id="heart_<%=product._id%>" class="bi bi-suit-heart-fill <%= isInWishlist ? 'text-danger' : ''%>"></i>
+                                                <%}else{%>
+                                                    <i id="heart_<%=product._id%>" class="bi bi-suit-heart-fill"></i>
+                                                <% } %>
+                                            </button>
                                         </div>
-                                    </a>
+                                        <a href="/shop/<%=product.slug%>">
+                                            <div class="product__item__text">
+                                                <h6><%=product.name%></h6>
+                                                <form  class="cart_form" action="/cart?_method=PATCH" method="post">
+                                                    <h5>₹<%=product.price%></h5>
+                                                    <input type="hidden" class="id" name="id" value="<%=product._id%>">
+                                                    <button class="cart_button"><img src="/users/img/icon/cart.png" alt="cart" srcset=""></button>
+                                                </form>
+                                            </div>
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                        <%})%>
-                    </div>
+                            <%})%>
+                        </div>
+                    <%}%>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="product__pagination">
@@ -157,45 +127,81 @@
             </div>
         </div>
     </section>
+    <% if(successMessage[0]) {%>
+        <span id="cartMsg" class="alert alert-primary"><%=successMessage[0]%></span>
+    <% }else if(errorMessage[0]) {%>
+        <span id="cartMsg" class="alert alert-primary"><%=errorMessage[0]%></span>
+    <% }%>
 
     <span id="toastMsg" class="alert alert-primary"></span>
 
-    <script>
-        function addToWishList(id) {
-            let userExits = '<%=user?.name%>' ? 1 : 0;
-            if(userExits){
-                $.ajax({
-                    type: "PATCH",
-                    url:'/wishlist',
-                    data:{
-                        productId:id
-                    },
-                    success:function(res){
-                        if(res.status == 'success'){
-                            console.log(res)
-                            document.getElementById('toastMsg').textContent = res.message
-                            document.getElementById('toastMsg').style.display = "block";
-                            console.log(res)
-                            if(res.operation == 'removed'){
-                                document.getElementById('heart_'+id).classList.remove('text-danger');
-                            }else{
-                                document.getElementById('heart_'+id).classList.add('text-danger');
-                            }
-                            setTimeout(()=>{
-                                document.getElementById('toastMsg').style.display = 'none'
-                            },2000)
-                        }else if(res.status == 'fail'){
-                        }
-                    },
-                })
-            }else{
-                document.getElementById('toastMsg').textContent = 'Please login to add Product to wishlist '
-                document.getElementById('toastMsg').style.display = "block";
-                setTimeout(()=>{
-                    document.getElementById('toastMsg').style.display = 'none'
-                },2000)
-            }
+    
+    
+<script>
+    window.addEventListener('beforeunload', function() {
+        localStorage.setItem('scrollPosition', window.scrollY);
+    });
+    window.addEventListener('load', function() {
+        const scrollPosition = localStorage.getItem('scrollPosition');
+        if (scrollPosition !== null) {
+            window.scrollTo(0, parseInt(scrollPosition));
+            localStorage.removeItem('scrollPosition');
         }
-    </script>
+    });
+    const form = document.getElementById('filter');
+    const minPriceInput = document.getElementById('minPrice');
+    const maxPriceInput = document.getElementById('maxPrice');
+    form.addEventListener('submit', function(event) {
+        if (parseFloat(minPriceInput.value) > parseFloat(maxPriceInput.value)) {
+            event.preventDefault();
+            minPriceInput.value= ''
+            maxPriceInput.value= ''
+            alert('Minimum price should be less than or equal to maximum price.');
+        }
+    });
+
+    function addToWishList(id) {
+        let userExits = '<%=user?.name%>' ? 1 : 0;
+        if(userExits){
+            $.ajax({
+                type: "PATCH",
+                url:'/wishlist',
+                data:{
+                    productId:id
+                },
+                success:function(res){
+                    if(res.status == 'success'){
+                        console.log(res)
+                        document.getElementById('toastMsg').textContent = res.message
+                        document.getElementById('toastMsg').style.display = "block";
+                        console.log(res)
+                        if(res.operation == 'removed'){
+                            document.getElementById('heart_'+id).classList.remove('text-danger');
+                        }else{
+                            document.getElementById('heart_'+id).classList.add('text-danger');
+                        }
+                        setTimeout(()=>{
+                            document.getElementById('toastMsg').style.display = 'none'
+                        },2000)
+                    }else if(res.status == 'fail'){
+                    }
+                },
+            })
+        }else{
+            document.getElementById('toastMsg').textContent = 'Please login to add Product to wishlist '
+            document.getElementById('toastMsg').style.display = "block";
+            setTimeout(()=>{
+                document.getElementById('toastMsg').style.display = 'none'
+            },2000)
+        }
+    }
+    if(document.getElementById('cartMsg')){
+        setTimeout(()=>{
+            document.getElementById('cartMsg').style.display = 'none'
+        },2000)
+    }
+
+
+</script>
 
 <%- include('./partials/_footer.ejs') %>

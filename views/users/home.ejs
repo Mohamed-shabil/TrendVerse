@@ -222,12 +222,26 @@
     </section>
     <!-- Instagram Section End -->
 
-    
 
     <!-- Footer Section Begin -->
     <span id="toastMsg" class="alert alert-primary"></span>
+    <% if(successMessage[0]) {%>
+        <span id="cartMsg" class="alert alert-primary"><%=successMessage[0]%></span>
+    <% }%>
 
     <script>
+        window.addEventListener('beforeunload', function() {
+            localStorage.setItem('scrollPosition', window.scrollY);
+        });
+
+        window.addEventListener('load', function() {
+            const scrollPosition = localStorage.getItem('scrollPosition');
+            if (scrollPosition !== null) {
+                window.scrollTo(0, parseInt(scrollPosition));
+                localStorage.removeItem('scrollPosition');
+            }
+        });
+
         function addToWishList(id) {
             let userExits = '<%=user?.name%>' ? 1 : 0;
             if(userExits){
@@ -262,6 +276,10 @@
                 },2000)
             }
         }
+
+        setTimeout(()=>{
+            document.getElementById('cartMsg').style.display = 'none'
+        },2000)
     </script>
 <%- include('./partials/_footerbar.ejs') %>
 <%- include('./partials/_footer.ejs') %>

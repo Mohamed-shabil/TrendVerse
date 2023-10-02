@@ -230,13 +230,13 @@ exports.getProducts = catchAsync(async(req,res)=>{
     if(maxPrice){
         filter.price.$lte = maxPrice;
     }
-    console.log(sortFilter);
+    console.log(filter);
     const products = await Products.find(filter).skip(skip).limit(limit).sort(sortFilter);
-    const totalDocs = await Products.countDocuments();
+    const totalDocs = products.length
     const categories = await Category.find();
     const totalPages= totalDocs/limit
     res.render('./users/products',{
-        products,page,totalPages,categories,query,url:req.previousUrl
+        products,page,totalPages,categories,query,url:req.previousUrl,filter
     });
 })
 
@@ -263,7 +263,7 @@ exports.addToCart = catchAsync(async (req, res) => {
     });
     user.totalCartValue = totalCartValue;
     await user.save();
-
+    req.flash('success','Added to cart')
     return res.redirect(previousPath);
 });
 
@@ -291,6 +291,7 @@ exports.removeCartItem = catchAsync (async (req,res) => {
       user.cart.splice(cartItemIndex, 1);
       await user.save();
     }
+    req.flash('error','item Removed from Cart');
     res.redirect('/cart');
 })
 

@@ -480,18 +480,26 @@ exports.getSalesReport = catchAsync(async(req,res)=>{
 
 exports.downloadSalesReport = catchAsync(async(req,res)=>{
     const data = req.body
-    const dataLength = data.orderDate.length
-    const transformedData = [];
-    for(let i=0; i<dataLength; i++){
-        transformedData.push({
-            orderDate: data.orderDate[i],
-            orderId: data.orderId[i],
-            userEmail:data.userEmail[i],
-            products:data.product[i],
-            quantity:data.quantity[i],
-            paymentMethod:data.paymentMethod[i],
-        })
+    let dataLength =0 
+    let transformedData = [];
+
+    if(Array.isArray(data)){
+        dataLength = data.orderDate.length
+        for(let i=0; i<dataLength; i++){
+            transformedData.push({
+                orderDate: data.orderDate[i],
+                orderId: data.orderId[i],
+                userEmail:data.userEmail[i],
+                products:data.product[i],
+                quantity:data.quantity[i],
+                paymentMethod:data.paymentMethod[i],
+            })
+        }
+    }else{
+        transformedData = data
     }
+
+    console.log(dataLength);
     const fields = ['orderDate',"orderId","userEmail","products","quantity","paymentMethod"]
     const csv = json2csv.parse(transformedData, { fields });
     res.attachment('salesReport.csv');

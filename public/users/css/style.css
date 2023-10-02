@@ -1571,41 +1571,41 @@ input::-webkit-inner-spin-button {
 	margin-bottom: 45px;
 }
 
-.shop__sidebar__search form {
+.shop__sidebar__search div {
 	position: relative;
 }
 
-.shop__sidebar__search form input {
+.shop__sidebar__search div input {
 	width: 100%;
 	font-size: 15px;
-	color: #b7b7b7;
+	color: #424242;
 	padding-left: 20px;
-	border: 1px solid #e5e5e5;
+	border: 1px solid #5c5c5c;
 	height: 42px;
 }
 
-.shop__sidebar__search form input::-webkit-input-placeholder {
+.shop__sidebar__search div input::-webkit-input-placeholder {
 	color: #b7b7b7;
 }
 
-.shop__sidebar__search form input::-moz-placeholder {
+.shop__sidebar__search div input::-moz-placeholder {
 	color: #b7b7b7;
 }
 
-.shop__sidebar__search form input:-ms-input-placeholder {
+.shop__sidebar__search div input:-ms-input-placeholder {
 	color: #b7b7b7;
 }
 
-.shop__sidebar__search form input::-ms-input-placeholder {
+.shop__sidebar__search div input::-ms-input-placeholder {
 	color: #b7b7b7;
 }
 
-.shop__sidebar__search form input::placeholder {
+.shop__sidebar__search div input::placeholder {
 	color: #b7b7b7;
 }
 
-.shop__sidebar__search form button {
-	color: #b7b7b7;
+.shop__sidebar__search div button {
+	color: #6f6f6f;
 	font-size: 15px;
 	border: none;
 	background: transparent;
@@ -4389,6 +4389,15 @@ input::-webkit-inner-spin-button {
 	top: 50%;
 	z-index: 2;
   }
+  #cartMsg{
+	background-attachment: fixed;
+	position: fixed;
+	padding: 5px 15px;
+	border-radius: 6px;
+	left: 45%;
+	top: 50%;
+	z-index: 2;
+  }
   .back-Home{
 	width: 130px;
 	height: 40px;
@@ -4398,3 +4407,4 @@ input::-webkit-inner-spin-button {
 	background-color: #222;
 	color: #fff;
   }
+

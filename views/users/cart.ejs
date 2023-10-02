@@ -72,17 +72,10 @@
                         </div>
                     </div>
                     <div class="col-lg-4">
-                        <div class="cart__discount">
-                            <h6>Discount codes</h6>
-                            <form action="/cart/coupon" method="post">
-                                <input type="text" name="coupon" placeholder="Coupon code">
-                                <button type="submit">Apply</button>
-                            </form>
-                        </div>
                         <div class="cart__total">
-                            <h6>Cart total</h6>
+                            <h6><b>Cart total</b></h6>
                             <ul>
-                                <li>Total <span class="cartTotalField" id="cartTotalField">₹ <%=totalCartValue%></span></li>
+                                <li>Total Amount <span class="cartTotalField" id="cartTotalField">₹ <%=totalCartValue%></span></li>
                             </ul>
                             <a href="/cart/checkout" class="primary-btn">Proceed to checkout</a>
                         </div>
@@ -91,11 +84,27 @@
             <%}%>
         </div>
     </section>
+    <% if(successMessage[0]) {%>
+        <span id="cartMsg" class="alert alert-primary"><%=successMessage[0]%></span>
+    <% }else if(errorMessage[0]) {%>
+        <span id="cartMsg" class="alert alert-primary"><%=errorMessage[0]%></span>
+    <% }%>
     
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
+        window.addEventListener('beforeunload', function() {
+                localStorage.setItem('scrollPosition', window.scrollY);
+        });
 
+        window.addEventListener('load', function() {
+            const scrollPosition = localStorage.getItem('scrollPosition');
+            if (scrollPosition !== null) {
+                window.scrollTo(0, parseInt(scrollPosition));
+                localStorage.removeItem('scrollPosition');
+            }
+        });
+        
         function incrementQuantity(e,data){
             e.preventDefault();
             data.quantityIncrement= document.getElementById('incQuantity_'+data.id).value
@@ -142,6 +151,10 @@
                 }
             })
         }
+
+        setInterval(()=>{
+            document.getElementById('cartMsg').style.display = 'none'
+        },2000)
 </script>
 
 <%- include('./partials/_footer') %>
