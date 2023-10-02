@@ -232,7 +232,12 @@ exports.getProducts = catchAsync(async(req,res)=>{
     }
     console.log(filter);
     const products = await Products.find(filter).skip(skip).limit(limit).sort(sortFilter);
-    const totalDocs = products.length
+    if(filter){
+        totalDocs = products.length
+    }else{
+        totalDoc = await Products.countDocuments();
+        console.log(totalDoc);
+    }
     const categories = await Category.find();
     const totalPages= totalDocs/limit
     res.render('./users/products',{
@@ -247,7 +252,6 @@ exports.addToCart = catchAsync(async (req, res) => {
     const product = await Products.findById(req.body.id);
     const user = await User.findById({ _id: req.user._id }).populate('cart.product');
     const totalAmount = product.price * quantity;
-
     let totalCartValue = 0;
 
     const existingCartItemIndex = user.cart.findIndex(item => item.product.equals(product._id));

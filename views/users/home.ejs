@@ -253,27 +253,34 @@
                     },
                     success:function(res){
                         if(res.status == 'success'){
-                            console.log(res)
-                            document.getElementById('toastMsg').textContent = res.message
-                            document.getElementById('toastMsg').style.display = "block";
-                            console.log(res)
-                            if(res.operation == 'removed'){
-                                document.getElementById('heart_'+id).classList.remove('text-danger');
-                            }else{
-                                document.getElementById('heart_'+id).classList.add('text-danger');
-                            }
-                            setTimeout(()=>{
-                                document.getElementById('toastMsg').style.display = 'none'
-                            },2000)
+                        console.log(res)
+                        console.log(res)
+                        if(res.operation == 'removed'){
+                            document.getElementById('heart_'+id).classList.remove('text-danger');
+                        }else{
+                            document.getElementById('heart_'+id).classList.add('text-danger');
                         }
+                        const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        })
+                        Toast.fire({
+                        icon: 'success',
+                        title: res.message
+                        })
+                    }
                     },
                 })
             }else{
-                document.getElementById('toastMsg').textContent = 'Please login to add Product to wishlist '
-                document.getElementById('toastMsg').style.display = "block";
-                setTimeout(()=>{
-                    document.getElementById('toastMsg').style.display = 'none'
-                },2000)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please Login to use whishlist',
+                
+                })
             }
         }
 

@@ -1,12 +1,6 @@
 <%- include('./partials/_header.ejs') %>
     <!-- Header Section End -->
     <%- include('./partials/_navbar') %>
-    <!-- Include jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Include jQuery UI CSS and JavaScript -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css">
-
 
     <section class="shop spad">
         <div class="container">
@@ -100,8 +94,8 @@
                                                 <h6><%=product.name%></h6>
                                                 <form  class="cart_form" action="/cart?_method=PATCH" method="post">
                                                     <h5>₹<%=product.price%></h5>
-                                                    <input type="hidden" class="id" name="id" value="<%=product._id%>">
-                                                    <button class="cart_button"><img src="/users/img/icon/cart.png" alt="cart" srcset=""></button>
+                                                    <input type="hidden" name="id" value="<%=product._id%>">
+                                                    <button class="cart_button"><img src="/users/img/icon/cart.png" alt="" srcset=""></button>
                                                 </form>
                                             </div>
                                         </a>
@@ -136,7 +130,6 @@
     <span id="toastMsg" class="alert alert-primary"></span>
 
     
-    
 <script>
     window.addEventListener('beforeunload', function() {
         localStorage.setItem('scrollPosition', window.scrollY);
@@ -160,6 +153,10 @@
         }
     });
 
+
+
+
+
     function addToWishList(id) {
         let userExits = '<%=user?.name%>' ? 1 : 0;
         if(userExits){
@@ -172,17 +169,25 @@
                 success:function(res){
                     if(res.status == 'success'){
                         console.log(res)
-                        document.getElementById('toastMsg').textContent = res.message
-                        document.getElementById('toastMsg').style.display = "block";
                         console.log(res)
                         if(res.operation == 'removed'){
                             document.getElementById('heart_'+id).classList.remove('text-danger');
                         }else{
                             document.getElementById('heart_'+id).classList.add('text-danger');
                         }
-                        setTimeout(()=>{
-                            document.getElementById('toastMsg').style.display = 'none'
-                        },2000)
+                        const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    
+                        })
+
+                        Toast.fire({
+                        icon: 'success',
+                        title: res.message
+                        })
                     }else if(res.status == 'fail'){
                     }
                 },
@@ -205,3 +210,4 @@
 </script>
 
 <%- include('./partials/_footer.ejs') %>
+<%- include('./partials/_footerbar.ejs') %>

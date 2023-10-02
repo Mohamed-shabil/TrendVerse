@@ -68,6 +68,7 @@ exports.checkout = catchAsync(async (req,res)=>{
       reason:'Please Select an Payment Method'
     })
   }
+
   const orderId = crypto.randomUUID();
   if(req.body.paymentMethod ==='Online'){
     if(req.body.walletUsed=='true' && req.body.payableAmount == 0){
@@ -103,7 +104,7 @@ exports.checkout = catchAsync(async (req,res)=>{
     }
     console.log(req.body);
     let amountPayable = parseInt(req.body.payableAmount);
-    console.log('amount Payabal :',amountPayable)
+    
     var options = {
       amount: amountPayable * 100,
       currency: "INR",

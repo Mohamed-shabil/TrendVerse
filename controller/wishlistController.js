@@ -31,7 +31,7 @@ exports.addToWishlist = catchAsync(async (req,res) => {
         status: 'success',
         wishlist : req.user.wishlist,
         operation:'removed',
-        message:'removed from Wishlist'
+        message:'Removed from wishlist'
     });
 })
 

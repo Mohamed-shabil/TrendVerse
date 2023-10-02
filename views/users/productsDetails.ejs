@@ -14,6 +14,7 @@
           </div>
         </div>
       </div>
+      <div id="Zoom"></div>
       <div class="row">
         <div class="col-lg-3 col-md-3">
           <ul class="nav nav-tabs" role="tablist">
@@ -40,8 +41,8 @@
             <!-- Data -->
             <%product.images.forEach((image,i) => {%>
             <div class="tab-pane <% if(i==0) {%>active<%}%>" id="tabs-<%=i+1%>" role="tabpanel">
-              <div class="product__details__pic__item">
-                <img src="/products/<%=image%>" alt="" />
+              <div class="product__details__pic__item" data="ProductImage-<%=i+1%>">
+                <img src="/products/<%=image%>" id="ProductImage-<%=i+1%>" alt="" />
               </div>
             </div>
             <%})%>
@@ -96,5 +97,51 @@
 <!-- Shop Details Section End -->
 
 <!-- Related Section Begin -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  // JavaScript for image 
+$(document).ready(()=>{
+  $(".product__details__pic__item").hover(function(){
+    let id = $(this).attr("data");
+    const productImg = document.getElementById(id);
+    const magnifyContainer = document.getElementById('Zoom')
+    magnifyContainer.className = 'magnify-container';
+    productImg.parentElement.appendChild(magnifyContainer);
+    
+    const magnifyGlass = document.createElement('div');
+    magnifyGlass.className = 'magnify-glass';
+    magnifyContainer.appendChild(magnifyGlass);
+    
+    productImg.addEventListener('mousemove', function (e) {
+        const imgRect = productImg.getBoundingClientRect();
+        console.log(imgRect.left)
+        const mouseX = e.clientX - imgRect.left - 100;
+        const mouseY = e.clientY - imgRect.top - 100;
+        
+        const glassSize = 400; // Adjust the size of the magnification glass
+        const zoomFactor = 2; // Adjust the zoom level
+    
+        const bgPosX = (mouseX / productImg.width) * 500;
+        const bgPosY = (mouseY / productImg.height) * 500;
+    
+        magnifyGlass.style.width = glassSize + 'px';
+        magnifyGlass.style.height = glassSize + 'px';
+        magnifyGlass.style.backgroundImage = `url(${productImg.src})`;
+        magnifyGlass.style.backgroundSize = `${productImg.width * zoomFactor}px ${productImg.height * zoomFactor}px`;
+        magnifyGlass.style.backgroundPosition = `-${bgPosX * zoomFactor + glassSize / 2}px -${bgPosY * zoomFactor + glassSize / 2}px`;
+        magnifyGlass.style.display = 'block';
+        magnifyGlass.style.zIndex = '9999'
+        magnifyGlass.style.position = 'absolute';
+        magnifyGlass.style.top = '10%'; 
+        magnifyGlass.style.left = '100%'; 
+    });
+    
+    productImg.addEventListener('mouseleave', function () {
+        magnifyGlass.style.display = 'none';
+    });
+  })
+})
 
+</script>
 <%- include('./partials/_footer.ejs') %>
+
