@@ -8,7 +8,6 @@ const Coupon = require('../model/couponModel')
 const crypto = require('crypto')
 const Razorpay = require('razorpay')
 const dotenv = require('dotenv');
-const { log } = require('console');
 dotenv.config({path:'./config.env'});
 
 
@@ -71,40 +70,8 @@ exports.checkout = catchAsync(async (req,res)=>{
 
   const orderId = crypto.randomUUID();
   if(req.body.paymentMethod ==='Online'){
-    if(req.body.walletUsed=='true' && req.body.payableAmount == 0){
-        const order = await Order.create({
-          orderId,
-          customer:req.user._id,
-          products: req.user.cart,
-          totalPrice : req.body.payableAmount,
-          deliveryAddress:req.user.defaultAddress,
-          paymentMethod: 'Wallet',
-        });
-        const user = await User.findById(req.user._id);
-        const currentBalance = parseInt(req.body.currentWalletBalance)
-        const debitedAmount = parseInt(req.user.wallet.balance) - currentBalance
-        user.wallet.transactionHistory.push({
-          amount:debitedAmount,
-          operation:'debit',
-          message:`Used in Purchase`,
-          OrderId:orderId
-        })
-        if(req.body.couponUsed){
-          user.usedCoupons.push(req.body.couponUsed);
-        }
-        user.wallet.balance = currentBalance
-        user.cart = [];
-        user.totalCartValue = 0;
-        await user.save();
-        req.flash('success','Order Placed Successfully')
-        return res.status(200).json({
-          status:'success',
-          payment:'Wallet'
-        })
-    }
     console.log(req.body);
     let amountPayable = parseInt(req.body.payableAmount);
-    
     var options = {
       amount: amountPayable * 100,
       currency: "INR",
@@ -114,9 +81,41 @@ exports.checkout = catchAsync(async (req,res)=>{
       if(err){
         console.log(err)
       }
-      res.send(order);
+      return res.send(order);
     });
-  }else{
+  }else if(req.body.paymentMethod=='Wallet'){
+    const user = await User.findById(req.user._id);
+    const currentBalance = parseInt(req.body.currentWalletBalance)
+    const debitedAmount = parseInt(req.user.wallet.balance) - currentBalance
+    const order = await Order.create({
+      orderId,
+      customer:req.user._id,
+      products: req.user.cart,
+      totalPrice : req.body.payableAmount,
+      deliveryAddress:req.user.defaultAddress,
+      paymentMethod: 'Wallet',
+    });
+    user.wallet.transactionHistory.push({
+      amount:debitedAmount,
+      operation:'debit',
+      message:`Used in Purchase`,
+      OrderId:orderId
+    })
+    if(req.body.couponUsed){
+      user.usedCoupons.push(req.body.couponUsed);
+    }
+    user.wallet.balance = currentBalance
+    
+    user.cart = [];
+    user.totalCartValue = 0;
+    await user.save();
+    req.flash('success','Order Placed Successfully')
+    return res.status(200).json({
+      status:'success',
+      payment:'Wallet'
+    })  
+  }
+  else{
     console.log("COD")
     const order = await Order.create({
       orderId,

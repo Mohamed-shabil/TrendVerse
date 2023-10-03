@@ -132,7 +132,7 @@
                 </li>
                 <%})%>
               </ul>
-              <% if(user.wallet.balance){%>
+              <% if(user.wallet.balance && user.wallet.balance < user.totalCartValue){%>
                 <div class="wallet d-flex justify-content-between">
                   Wallet Balance : <b id="walletBalance">₹ <%=user.wallet.balance %></b>
                 </div>
@@ -172,13 +172,22 @@
                       <span class="radio-label"><small>Pay online</small></span>
                     </span>
                   </label>
-                  <label>
+                  <label class="mr-2">
                     <input class="radio-input" type="radio" name="paymentMethod" value="COD">
                     <span class="radio-tile">
                       <span class="radio-icon">
                         <i class="bi bi-truck" style="font-size:30px"></i>
                       </span>
                       <span class="radio-label"><small>COD</small></span>
+                    </span>
+                  </label>
+                  <label>
+                    <input class="radio-input" type="radio" name="paymentMethod" value="Wallet">
+                    <span class="radio-tile">
+                      <span class="radio-icon">
+                        <i class="bi bi-wallet2" style="font-size:30px"></i>
+                      </span>
+                      <span class="radio-label"><small>Wallet</small></span>
                     </span>
                   </label>
               </div>
@@ -284,7 +293,6 @@
         url:'/cart/checkout',
         data:walletData,
         success: function(res) {
-      
           console.log(res.data)
           total.textContent = '₹ '+res.data.totalAmount
           document.getElementById('walletBalance').textContent = '₹ '+res.data.balance
@@ -322,10 +330,21 @@
           data:formData,
           success: function(res){
             if(res.status == "success"){
-              location.href = '/account/orders'
+              return Swal.fire({
+                title:'Good Job!',
+                text:'You order has been placed!',
+                icon:'success',
+                confirmButtonColor: '#222',
+                cancelButtonColor: '#222',
+                confirmButtonText: 'Go to Orders'
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                    location.href = '/account/orders'
+                  }
+              })
             }
           },
-          
+
         })
       }else{
         $.ajax({
@@ -334,10 +353,25 @@
         data:formData,
         success:function(order){
           if(order.status=='fail'){
-            return alert(order.reason);
+            return Swal.fire(
+                'Something went wrong!',
+                 order.reason,
+                'fail'
+              )
           }
           if(order.payment === 'Wallet'){
-            return location.href='/account/orders'
+              return Swal.fire({
+                title:'Good Job!',
+                text:'You order has been placed!',
+                icon:'success',
+                confirmButtonColor: '#222',
+                cancelButtonColor: '#222',
+                confirmButtonText: 'Go to Orders'
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                    location.href = '/account/orders'
+                  }
+              })
           }
           var options = {
             "key": "rzp_test_RooEVCj8UbzuAF", 
@@ -386,7 +420,18 @@
       },
       success:function(res) {
         if(res.status == 'success'){
-          location.href = '/account/orders' 
+          return Swal.fire({
+                title:'Good Job!',
+                text:'You order has been placed!',
+                icon:'success',
+                confirmButtonColor: '#222',
+                cancelButtonColor: '#222',
+                confirmButtonText: 'Go to Orders'
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                    location.href = '/account/orders'
+                  }
+              })
         }
         
       }

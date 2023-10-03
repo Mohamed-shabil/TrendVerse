@@ -113,13 +113,13 @@ $(document).ready(()=>{
     magnifyContainer.appendChild(magnifyGlass);
     
     productImg.addEventListener('mousemove', function (e) {
-        const imgRect = productImg.getBoundingClientRect();
+      const imgRect = productImg.getBoundingClientRect();
         console.log(imgRect.left)
         const mouseX = e.clientX - imgRect.left - 100;
         const mouseY = e.clientY - imgRect.top - 100;
         
         const glassSize = 400; // Adjust the size of the magnification glass
-        const zoomFactor = 2; // Adjust the zoom level
+        const zoomFactor = 3; // Adjust the zoom level
     
         const bgPosX = (mouseX / productImg.width) * 500;
         const bgPosY = (mouseY / productImg.height) * 500;
