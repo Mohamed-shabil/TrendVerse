@@ -15,7 +15,9 @@ router.use(middleware.isAdminLoggedIn);
 
 router.get('/',adminController.getDashboard);
 
-router.get('/products',adminController.getProducts)
+router.route('/products')
+      .get(adminController.getProducts)
+
 router.route('/products/addProducts')
       .get(adminController.getAddProducts)
       .post(middleware.uploadProductImages,middleware.resizeProductImages,adminController.addProducts);

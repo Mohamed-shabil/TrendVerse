@@ -174,7 +174,7 @@ exports.isBlocked = catchAsync(async(req, res, next)=>{
     return next();
   }else{
     if(req.user.blocked){
-      res.render('./users/blocked')
+      return res.render('./users/blocked');
     }
   }
   next();

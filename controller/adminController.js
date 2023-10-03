@@ -422,15 +422,14 @@ exports.getSalesReport = catchAsync(async(req,res)=>{
     const to = req.query.to
     const from = req.query.from
     const status = req.query.status
-
     const dateRangeFilter = {};
-    const currentDate = new Date();
     const fromDate = new Date(from);
     const toDate = new Date(to);
 
     if(fromDate > toDate) {
+        console.log('error')
         req.flash('error','invalid Dates');
-        res.render('./admin/salesReport',{to,from,report:0});
+        return res.redirect('/admin/salesReport');
     }
     
 
@@ -473,8 +472,10 @@ exports.getSalesReport = catchAsync(async(req,res)=>{
             $match: dateRangeFilter,
         });
     }
-    
-    let report = await Order.aggregate(pipeline);
+    let report;
+    if(to){
+        report = await Order.aggregate(pipeline);
+    }
     res.render('./admin/salesReport',{report,to,from});
 })
 
@@ -514,5 +515,5 @@ exports.getStockAlert = catchAsync(async(req,res)=>{
 exports.updateVisibility = catchAsync(async (req,res)=>{
     const visibility = /^true$/i.test(req.body.visibility);
     await Product.updateOne({_id:req.params.id},{visibility:visibility});
-    res.redirect('/admin/stockAlert')
+    res.redirect(req.previousUrl)
 })

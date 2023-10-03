@@ -22,14 +22,14 @@ router.route('/login')
     .get(middleware.isAlreadyLoggedIn,userController.getLogin)
     .post(userController.userLogin);
 
-router.use(middleware.isBlocked);   
-
-router.get('/shop',userController.getProducts)
-
-router.route('/shop/:slug')
+    
+    router.get('/shop',userController.getProducts)
+    
+    router.route('/shop/:slug')
     .get(userController.getProduct)
     .put(middleware.isLoggedin,userController.addToCart);
-
+    
+router.use(middleware.isBlocked);
 
 
 router.route('/cart')

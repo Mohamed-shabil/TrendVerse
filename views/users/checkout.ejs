@@ -1,7 +1,7 @@
 <%- include('./partials/_header') %>
 <body>
   <%- include('./partials/_navbar') %>
-  <section class="checkout spad">
+  <section class="checkout spad" style="background-color: #eee;">
     <div class="container">
       <div class="checkout__form">
         <div class="row">
@@ -73,7 +73,7 @@
                             <div
                               class="d-flex flex-row align-items-center mb-1"
                             >
-                              <h4 class="mb-1 me-1">$<%=item.product.price%></h4>
+                              <h4 class="mb-1 me-1">₹ <%=item.product.price%></h4>
                             </div>
                             
                             <div class="d-flex flex-column mt-4">
@@ -91,22 +91,25 @@
                 <%})%>
               </div>
             </section>
+            <div class="coupon_board p-4  mt-1 mb-2 rouded border">
+              <div class="row">
+                <% if (coupons) {%>
+                  <% coupons.forEach((coupon,index)=>{%>
+                    <div class="col-md-6 p-2 mb-2 coupon-component">
+                      <div class="input-group">
+                          <input id="copyText" type="text" class="form-control" value="<%=coupon.code%>">
+                          <button id='copyBtn<%=index%>' class="copy-coupon-button btn coupon_code" onclick="copyToClipboard('<%=coupon.code%>','copyBtn<%=index%>')"><i class="bi bi-clipboard"></i></button>
+                      </div>
+                      <div ><small>Get <% if(coupon.discountType=='fixed'){ %>Flat ₹<%=coupon.discount%> Off On <% }else{%> Flat <%=coupon.discount%>%  off on<% } %>minimum Spend of ₹ <%=coupon.minimumSpend%></small></div>                                      
+                  </div>
+                  <%}) %>
+                <% } %>
+
+              </div>
+            </div>
           </div>
         
           <div class="col-lg-5 col-md-6">
-            <div class="coupon_board p-4  mt-1 mb-2 rouded" style="background-color: #f2f3ee;">
-              <% if (coupons) {%>
-                <% coupons.forEach((coupon,index)=>{%>
-                  <div class="col-md-12 p-0 mb-2 coupon-component">
-                    <div class="input-group">
-                        <input id="copyText" type="text" class="form-control" value="<%=coupon.code%>">
-                        <button id='copyBtn<%=index%>' class="copy-coupon-button btn coupon_code" onclick="copyToClipboard('<%=coupon.code%>','copyBtn<%=index%>')"><i class="bi bi-clipboard"></i></button>
-                    </div>
-                    <div ><small>Get <% if(coupon.discountType=='fixed'){ %>Flat ₹<%=coupon.discount%> Off On <% }else{%> Flat <%=coupon.discount%>%  off on<% } %>minimum Spend of ₹ <%=coupon.minimumSpend%></small></div>                                      
-                </div>
-                <%}) %>
-              <% } %>
-            </div>
             <div class="checkout__order">
               
               <form id="applyCoupon" class="input-group mb-3">
@@ -181,15 +184,17 @@
                       <span class="radio-label"><small>COD</small></span>
                     </span>
                   </label>
-                  <label>
-                    <input class="radio-input" type="radio" name="paymentMethod" value="Wallet">
-                    <span class="radio-tile">
-                      <span class="radio-icon">
-                        <i class="bi bi-wallet2" style="font-size:30px"></i>
+                  <%if(user.wallet.balance && user.wallet.balance > user.totalCartValue){%>
+                    <label>
+                      <input class="radio-input" type="radio" name="paymentMethod" value="Wallet">
+                      <span class="radio-tile">
+                        <span class="radio-icon">
+                          <i class="bi bi-wallet2" style="font-size:30px"></i>
+                        </span>
+                        <span class="radio-label"><small>Wallet</small></span>
                       </span>
-                      <span class="radio-label"><small>Wallet</small></span>
-                    </span>
-                  </label>
+                    </label>
+                  <% } %>
               </div>
                 <button id="checkoutBtn" type="submit" class="site-btn">PLACE ORDER</button>
               </form>
@@ -205,12 +210,9 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
-
   function showCoupon(){
     window.location.reload();
   }
-
-
 
   function copyToClipboard(textToCopy,btnId) {
   const textarea = document.createElement('textarea');
@@ -344,7 +346,6 @@
               })
             }
           },
-
         })
       }else{
         $.ajax({
@@ -437,9 +438,6 @@
       }
     })
   }
-  // let checkoutBtn = document.getElementById('checkoutBtn')
-  // checkoutBtn.addEventListener('click',function(){
-  //   myButton.disabled = true;
-  // })
+  
 </script>
 <%- include('./partials/_footer') %>
