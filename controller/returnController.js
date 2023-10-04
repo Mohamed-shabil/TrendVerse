@@ -65,6 +65,6 @@ exports.updateStatus = catchAsync(async (req,res)=>{
 
 exports.getAllReturnOrder = catchAsync(async (req,res)=>{
     const returnOrder = await Return.find().populate('order').sort({createdAt:-1});
-    
+    console.log(returnOrder);
     res.render('./admin/order/returnOrder',{returnOrder})
 })

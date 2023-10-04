@@ -10,7 +10,7 @@
 
                     <form action="/account/updateProfile?_method=PATCH"  method="post" enctype="multipart/form-data">
                         <div class="mb-3 d-flex align-items-center flex-column justify-content-center">
-                            <img src="/profile/<%=user.profile%>"  id="preview" class="uploading_image" alt="<%=user.name%>">
+                            <img src='<%=user.profile%>'  id="preview" class="uploading_image" alt="<%=user.name%>">
                             <label for="profile_upload" class="Update_pic_btn">Upload Profile</label>
                             <input type="file" accept="image/*" name="profile" onchange="previewImages(event)" id="profile_upload">
                         </div>

@@ -8,12 +8,26 @@ const walletController = require('../controller/walletController');
 const wishlistController = require('../controller/wishlistController');
 const couponController = require('../controller/couponController')
 const middleware = require('../middleware/middleware');
+const passport = require('passport');
+const token = require('../utils/token')
 
 router.use(middleware.previousRouteTracker,middleware.authChecker);
 router.get('/',userController.getHome);
 
 router.get('/signup',middleware.isAlreadyLoggedIn,userController.getSignUp)
 router.post('/signup',middleware.isAlreadyLoggedIn,userController.signup)
+
+
+
+router.get('/oauth/google', passport.authenticate('google', { scope: ['profile','email','phone'] }))
+
+router.get('/oauth/google/trendverse', passport.authenticate('google',{ failureRedirect: '/login' }), (req, res) => {
+    token.createSendToken(req.user,res)
+    res.redirect('/account');
+});
+
+
+
 router.get('/varifyOtp',middleware.isAlreadyLoggedIn,userController.getVarifyOtp);
 router.post('/varifyOtp',middleware.isAlreadyLoggedIn,userController.varifyOtp);
 

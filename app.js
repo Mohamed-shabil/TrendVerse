@@ -13,6 +13,7 @@ const userRoute = require('./routes/userRoute');
 const methodOverride = require('method-override');
 const adminRoute = require('./routes/adminRoute');
 const cookieParser = require('cookie-parser')
+const passport = require('passport')
 const nocache = require('nocache');
 
 
@@ -74,6 +75,8 @@ app.use(function(req, res, next){
   next();
 });
 app.use(nocache());
+app.use(passport.initialize());
+app.use(passport.session());
 app.use('/',userRoute);
 app.use('/admin',adminRoute);
 

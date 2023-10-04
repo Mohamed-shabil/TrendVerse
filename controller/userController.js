@@ -8,7 +8,50 @@ const bcrypt = require('bcrypt');
 const randomString = require('randomstring');
 const token = require('../utils/token')
 const sendMail = require('../utils/email');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const dotenv = require('dotenv');
+const passport = require('passport')
 
+dotenv.config({path:'./config.env'});
+
+passport.use(
+    new GoogleStrategy(
+        {
+
+            clientID: process.env.OAUTH_ID,
+            clientSecret: process.env.OAUTH_SECRET,
+            callbackURL: '/oauth/google/trendverse'
+        },
+        async (accessToken, refreshToken, profile, done) => {
+            console.log(profile)
+            const existingUser = await User.findOne({ email: profile.emails[0].value});
+
+            if (existingUser) {
+                return done(null, existingUser);
+            }
+
+            const newUser = await User.create({
+                name: profile.displayName,
+                email: profile.emails[0].value,
+                profile:profile.photos[0].value,
+                varified:true
+            });
+
+            done(null, newUser);
+        }
+    )
+);
+
+
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser((id, done) => {
+    User.findById(id).then((user) => {
+      done(null, user);
+    });
+  });
 
 exports.getHome = catchAsync(async(req,res)=>{
     const banners = await Banner.find();
@@ -207,7 +250,9 @@ exports.getProducts = catchAsync(async(req,res)=>{
     const sort = parseInt(req.query.sort)
     const { category, minPrice, maxPrice} = req.query;
     const query = req.query.search;
+    
     const filter = {visibility:true}
+
     const sortFilter = {}
     if(sort){
         sortFilter.price = sort
@@ -232,6 +277,7 @@ exports.getProducts = catchAsync(async(req,res)=>{
     }
     console.log(filter);
     const products = await Products.find(filter).skip(skip).limit(limit).sort(sortFilter);
+    console.log(filter)
     if(filter){
         totalDocs = products.length
     }else{

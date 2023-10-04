@@ -11,16 +11,13 @@ const userSchema = new mongoose.Schema({
     },
     phone:{
         type:Number,
-        required: true
     },
     password:{
-        type:String,
-        required:true,
-        
+        type:String,        
     },
     profile:{
         type:String,
-        default:'user.png'
+        default:'/profile/user.png'
     },
     cart: [{
         product:{

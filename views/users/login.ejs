@@ -1,63 +1,64 @@
 <%- include('partials/_header.ejs') %>
-<div class="d-flex row justify-content-center align-items-center w-100 h-100">
-  <div class="col-md-6 text-center ">
-    <div class="container login_part">
-      <h3>Welcome to Trendverse</h3>
-      <p>Enter your Credintials</p>
-      <%if(successMessage[0]){%>
-        <div class="alert alert-info" style="max-width:300px!important" role="alert">
-            <%=successMessage[0]%>
-        </div>
-      <%}else if(errorMessage[0]){%>
-        <div class="alert alert-danger" style="max-width:300px!important" role="alert">
-            <%=errorMessage[0]%>
-        </div>
-      <%}%>
-      <!-- <div class="login__btn">
-        <img src="users/img/icon/GoogleLogin.png" alt="Google logo"  />Login with
-        Google
+
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row border rounded-5 p-3 bg-white shadow box-area">
+       <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style="background: #000;">
+           <div class="featured-image mb-3">
+            <img src="/admin/images/logo.png" class="img-fluid" style="width: 250px;">
+           </div>
+           <p class="text-white fs-2" style="font-family: 'Courier New', Courier, monospace; font-weight: 600;">Be Verified</p>
+           <small class="text-white text-wrap text-center" style="width: 17rem;font-family: 'Courier New', Courier, monospace;">Join experienced Designers on this platform.</small>
+       </div> 
+
+       <div class="col-md-6 right-box">
+          <form action="/login" method="post" class="row align-items-center">
+                <div class="header-text mb-4">
+                     <h2>Hello,Again</h2>
+                     <p>We are happy to have you back.</p>
+                </div>
+                    <%if(successMessage[0]){%>
+                     <div class="alert alert-info w-100" role="alert">
+                         <p class="text-center"><%=successMessage[0]%></p>
+                     </div>
+                   <%}else if(errorMessage[0]){%>
+                     <div class="alert alert-danger w-100" role="alert">
+                        <p class="text-center p-0 m-0"><%=errorMessage[0]%></p>
+                     </div>
+                   <%}%>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control form-control-lg bg-light fs-6" name="email" required placeholder="Email address">
+                </div>
+                <div class="input-group mb-1">
+                    <input type="password" class="form-control form-control-lg bg-light fs-6" name="password" minlength="6" placeholder="Password">
+                </div>
+                <div class="input-group mb-5 d-flex justify-content-between">
+                    <div class="form-check">    
+                    </div>
+                    <div class="forgot">
+                        <small><a href="#">Forgot Password?</a></small>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <button class="btn btn-lg btn-primary w-100 fs-4 ">Login</button>
+                </div>
+                <div class="input-group mb-3">
+                    <a href="/oauth/google" class="w-100 fs-6">
+                      <button class="btn btn-lg btn-light w-100 fs-4 text-dark" type="button">
+                        <img src="/users/img/icon/GoogleLogin.png" style="width:20px " class="me-2 mr-2">
+                        <small class="text-dark">Sign In with Google</small>
+                      </button>
+                    </a>
+                </div>
+                <div class="row">
+                    <small>Don't have account? <a href="/signup">Sign Up</a></small>
+                </div>
+          </form>
+       </div> 
       </div>
-      <div class="login__btn">
-        <img src="users/img/icon/fbLogin.png" alt="Facebook Logo"  />Login with
-        Facebook
-      </div>
-      <div class="or"><p>or</p></div> -->
-    <form action="/login" class="login__form" method="post">
-        <div
-          class="flex-column d-flex align-items-center justify-content-center"
-          >
-
-
-        </div>
-
-        <div class="login__inputs">
-          <input
-            name="email"
-            type="email"
-            class="form-control"
-            required
-            placeholder="Email"
-          />
-
-        </div>
-
-        <div class="login__inputs">
-          <input
-            name="password"
-            type="password"
-            class="form-control"
-            required
-            placeholder="Password"
-          />
-        </div>
-        
-        <div class="login__inputs login_submit">
-            <button class="btn w-100" type="submit">Login</button>
-        </div>
-        <a href="/signup" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Don't have an account? Signup Now</a>
-    </form>
     </div>
-  </div>
-</div>
+</body>
+
+
 
 <%- include('./partials/_footer.ejs') %>

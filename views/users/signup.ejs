@@ -1,94 +1,76 @@
 <%- include('./partials/_header.ejs') %>
 
-<div class="d-flex row justify-content-center align-items-center w-100 h-100">
-    <div class="col-md-6 text-center ">
-      <div class="container login_part">
-        <h3>Welcome to Trendverse</h3>
-        <p>Enter your Credintials</p>
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="row border rounded-5 p-3 bg-white shadow box-area">
+     <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style="background: #000;">
+         <div class="featured-image mb-3">
+          <img src="/admin/images/logo.png" class="img-fluid" style="width: 250px;">
+         </div>
+         <p class="text-white fs-2" style="font-family: 'Courier New', Courier, monospace; font-weight: 600;">Be Verified</p>
+         <small class="text-white text-wrap text-center" style="width: 17rem;font-family: 'Courier New', Courier, monospace;">Join experienced Designers on this platform.</small>
+     </div> 
 
-        <%if(successMessage[0]){%>
-          <div class="alert alert-info" role="alert">
-              <%=successMessage[0]%>
-          </div>
-        <%}else if(errorMessage[0]){%>
-          <div class="alert alert-danger" role="alert">
-              <%=errorMessage[0]%>
-          </div>
-        <%}%>
-        
-        <!-- <div class="login__btn">
-          <img src="users/img/icon/GoogleLogin.png" alt="Google logo"  />Login with
-          Google
-        </div>
+     <div class="col-md-6 right-box">
+        <form action="/signup" method="post" class="row align-items-center">
+              <div class="header-text mb-4">
+                   <h2>Hello,Again</h2>
+                   <p>We are happy to have you back.</p>
+              </div>
+                  <%if(successMessage[0]){%>
+                   <div class="alert alert-info w-100" role="alert">
+                       <p class="text-center"><%=successMessage[0]%></p>
+                   </div>
+                 <%}else if(errorMessage[0]){%>
+                   <div class="alert alert-danger w-100" role="alert">
+                      <p class="text-center p-0 m-0"><%=errorMessage[0]%></p>
+                   </div>
+                 <%}%>
+              <div class="input-group mb-3">
+                  <input type="text" class="form-control form-control-lg bg-light form_data" name="name" required placeholder="Username" value="<%=userData[0] ? userData[0].name:''%>">
+              </div>
+              <div class="input-group mb-3">
+                  <input type="email" class="form-control form-control-lg bg-light form_data" name="email" required placeholder="Email" value="<%= userData[0]?userData[0].email:''%>">
+              </div>
+              <div class="input-group mb-3">
+                  <input type="phone" class="form-control form-control-lg bg-light form_data" name="phone" minlength="10" maxlength="10" placeholder="Phone Number" 
+                  oninput="restrictToNumbers(event)" value="<%=userData[0] ? userData[0].phone :''%>" required>
+              </div>
+              <div class="input-group mb-3">
+                  <input type="password" class="form-control form-control-lg bg-light form_data" name="password" minlength="6" placeholder="Password">
+              </div>
+              <div class="input-group mb-1">
+                <input type="password" class="form-control form-control-lg bg-light form_data" name="ConfirmPassword" minlength="6" placeholder="Password">
+              </div>
 
-        <div class="or"><p>or</p></div> -->
-      <form action="/signup" class="login__form" method="post">
-          <div class="flex-column d-flex align-items-center justify-content-center"></div>
-    
-          <div class="login__inputs">
-            <input
-              name="name"
-              type="text"
-              class="form-control"
-              placeholder="Username"
-              value="<%=userData[0] ? userData[0].name:''%>"
-              required
-            />
-  
-          </div>
-          <div class="login__inputs">
-            <input
-              name="email"
-              type="email"
-              class="form-control "
-              placeholder="Email"
-              value="<%= userData[0]?userData[0].email:''%>"
-              required
-            />
-  
-          </div>
-          <div class="login__inputs">
-            <input
-              name="phone"
-              type="text"
-              class="form-control "
-              minlength="10"
-              placeholder="Phone Number"
-              oninput="restrictToNumbers(event)"
-              value="<%=userData[0] ? userData[0].phone :''%>"
-              required
-            />
-          </div>
-          <div class="login__inputs">
-            <input
-              name="password"
-              type="password"
-              class="form-control "
-              minlength="6"
-              placeholder="Password"
-              value="<%=userData[0]?userData[0].password:''%>"
-              required
-            />
-          </div>
-          <div class="login__inputs">
-            <input
-              name="ConfirmPassword"
-              type="password"
-              minlength="6"
-              class="form-control "
-              placeholder="Confirm password"
-              required
-            />
-          </div>
-          
-          <div class="login__inputs login_submit">
-              <button class="btn w-100">Login</button>
-          </div>
-        
-      </form>
-      </div>
+              <div class="input-group mb-2 d-flex justify-content-between">
+                  <div class="form-check">
+                  </div>
+                  <div class="forgot">
+                      <small><a href="#">Forgot Password?</a></small>
+                  </div>
+              </div>
+              <div class="input-group mb-3">
+                  <button class="btn btn-lg btn-primary w-100 fs-4">Signup</button>
+              </div>
+              <div class="w-100">
+                <p class="text-center">Or</p>
+              </div>
+              <div class="input-group mb-3 border rounded">
+                  <a href="/oauth/google" class="w-100 fs-6">
+                    <button class="btn btn-lg btn-light w-100 fs-4 text-dark" type="button">
+                      <img src="/users/img/icon/GoogleLogin.png" style="width:20px " class="me-2 mr-2">
+                      <small class="text-dark">Signup with Google</small>
+                    </button>
+                  </a>
+              </div>
+              <div class="row">
+                  <small>Already have an account? <a href="/login">Login</a></small>
+              </div>
+        </form>
+     </div> 
     </div>
   </div>
+</body>
 
   <script>
     function restrictToNumbers(event) {

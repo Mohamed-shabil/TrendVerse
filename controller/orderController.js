@@ -7,6 +7,7 @@ const Return = require('../model/returnModel')
 const Coupon = require('../model/couponModel')
 const crypto = require('crypto')
 const Razorpay = require('razorpay')
+const sendMail =  require('../utils/email');
 const dotenv = require('dotenv');
 dotenv.config({path:'./config.env'});
 
@@ -346,7 +347,30 @@ exports.getOrderDatails = catchAsync(async (req, res) => {
 exports.updateOrderStatus = catchAsync(async(req,res) => {
     const status = req.body.status;
     const orderId = req.body.orderId
+    if(status == 'Cancel'){
+      const user = await User.findOne({_id:req.user._id})
+      const order = await Order.findById(orderId);
+      console.log(order)
+      const transaction ={
+        amount:order.totalPrice,
+        operation:'credit',
+        message:'Refund Amount of order ' + req.body.orderId,
+        OrderId : orderId,
+        date: new Date(),
+        timeStamp: new Date().toLocaleTimeString()
+      }
+      user.wallet.transactionHistory.push(transaction);
+      const options = {
+        from:process.env.EMAIL,
+        to:user.email,
+        subject: 'Refund amount has been Credited!',
+        html:`<h3 style="color:red;">Your Amount of order cancelled lately added to you TrendVerse Wallet ₹${order.totalPrice}/-</h3><br>
+        <p style="color:grey;">Check your account profile of ${user.email} and verify!</p><br><i>Enjoy you future journey with <b style="color:red;">TrendVerse</b></i>`
+      }
+      sendMail(options);
+    }
     const updated = await Order.findByIdAndUpdate(orderId,{$set:{status:status}});
+
     res.redirect(req.previousUrl);
 })
 
