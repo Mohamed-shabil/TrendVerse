@@ -12,8 +12,13 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const dotenv = require('dotenv');
 const passport = require('passport')
 const crypto = require('crypto');
+const twilio = require('twilio');
+
 
 dotenv.config({path:'./config.env'});
+const accountSid = process.env.TWILIO_SID; 
+const authToken = process.env.TWILIO_TOKEN;
+const client = new twilio(accountSid, authToken); 
 
 passport.use(
     new GoogleStrategy(
@@ -165,14 +170,23 @@ exports.signup = catchAsync( async (req,res)=>{
         password : pass,
         otp:otp,
     })
-    
-    const options = {
-        from:process.env.EMAIL,
-        to:req.body.email,
-        subject: 'Trendverse varification OTP',
-        html:`<center> <h2>Varify Your Email </h2> <br> <h5>OTP :${otp} </h5><br><p>This otp is only valid for 5 minutes only</p></center>`
+    if(req.body.otpMethod == 'sms'){
+        client.messages.create({
+            body: `Your OTP for verification is : ${otp} . Please Enter this OTP to verify your account. Do not share this OTP with anyone for security reasons. Thank you for using our service`,
+            to: `+91${data.phone}`, 
+            from: process.env.TWILIO_NO 
+        })
+        .then((message) => console.log(message.sid));
     }
-    await sendMail(options);
+    if(req.body.otpMethod == 'email'){
+        const options = {
+            from:process.env.EMAIL,
+            to:req.body.email,
+            subject: 'Trendverse varification OTP',
+            html:`<center> <h2>Varify Your Email </h2> <br> <h5>OTP :${otp} </h5><br><p>This otp is only valid for 5 minutes only</p></center>`
+        }
+        await sendMail(options);
+    }
     res.redirect('/varifyOtp')
 })
 

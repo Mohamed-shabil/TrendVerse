@@ -12,9 +12,9 @@
 
      <div class="col-md-6 right-box">
         <form action="/signup" method="post" class="row align-items-center">
-              <div class="header-text mb-4">
-                   <h2>Hello,Again</h2>
-                   <p>We are happy to have you back.</p>
+              <div class="header-text mb-2">
+                   <h2>Hello,</h2>
+                   <p>Welcome to Trendsverse.</p>
               </div>
                   <%if(successMessage[0]){%>
                    <div class="alert alert-info w-100" role="alert">
@@ -26,38 +26,60 @@
                    </div>
                  <%}%>
               <div class="input-group mb-3">
-                  <input type="text" class="form-control form-control-lg bg-light form_data" name="name" required placeholder="Username" value="<%=userData[0] ? userData[0].name:''%>">
+                  <input type="text" class="form-control bg-light form_data" name="name" required placeholder="Username" value="<%=userData[0] ? userData[0].name:''%>">
               </div>
               <div class="input-group mb-3">
-                  <input type="email" class="form-control form-control-lg bg-light form_data" name="email" required placeholder="Email" value="<%= userData[0]?userData[0].email:''%>">
+                  <input type="email" class="form-control bg-light form_data" name="email" required placeholder="Email" value="<%= userData[0]?userData[0].email:''%>">
               </div>
               <div class="input-group mb-3">
-                  <input type="phone" class="form-control form-control-lg bg-light form_data" name="phone" minlength="10" maxlength="10" placeholder="Phone Number" 
+                  <input type="phone" class="form-control bg-light form_data" name="phone" minlength="10" maxlength="10" placeholder="Phone Number" 
                   oninput="restrictToNumbers(event)" value="<%=userData[0] ? userData[0].phone :''%>" required>
               </div>
               <div class="input-group mb-3">
-                  <input type="password" class="form-control form-control-lg bg-light form_data" name="password" minlength="6" placeholder="Password">
+                  <input type="password" class="form-control bg-light form_data" name="password" minlength="6" placeholder="Password">
               </div>
               <div class="input-group mb-1">
-                <input type="password" class="form-control form-control-lg bg-light form_data" name="ConfirmPassword" minlength="6" placeholder="Password">
+                <input type="password" class="form-control bg-light form_data" name="ConfirmPassword" minlength="6" placeholder="Password">
               </div>
 
               <div class="input-group mb-2 d-flex justify-content-between">
                   <div class="form-check">
                   </div>
                   <div class="forgot">
-                      <small><a href="#">Forgot Password?</a></small>
+                      <small><a href="/forgotPassword">Forgot Password?</a></small>
                   </div>
               </div>
               <div class="input-group mb-3">
-                  <button class="btn btn-lg btn-primary w-100 fs-4">Signup</button>
+                  <button class="btn btn-primary w-100 fs-4">Signup</button>
               </div>
+
+              <div class="d-flex align-items-center justify-content-center w-100">
+                <label class="m-2">
+                  <input class="radio-input" required type="radio" name="otpMethod" value="sms" >
+                  <span class="radio-tile">
+                    <span class="radio-icon">
+                      <i class="bi bi-chat-left-dots"  style="font-size:30px;"></i>
+                    </span>
+                    <span class="radio-label"><small>SMS</small></span>
+                  </span>
+                </label>
+                <label class="m-2">
+                  <input class="radio-input" required type="radio" name="otpMethod" value="email">
+                  <span class="radio-tile">
+                    <span class="radio-icon">
+                      <i class="bi bi-envelope" style="font-size:30px"></i>
+                    </span>
+                    <span class="radio-label"><small>Email</small></span>
+                  </span>
+                </label>
+              </div>
+              
               <div class="w-100">
                 <p class="text-center">Or</p>
               </div>
               <div class="input-group mb-3 border rounded">
                   <a href="/oauth/google" class="w-100 fs-6">
-                    <button class="btn btn-lg btn-light w-100 fs-4 text-dark" type="button">
+                    <button class="btn  btn-light w-100 fs-4 text-dark" type="button">
                       <img src="/users/img/icon/GoogleLogin.png" style="width:20px " class="me-2 mr-2">
                       <small class="text-dark">Signup with Google</small>
                     </button>
