@@ -1,0 +1,54 @@
+<%- include('./partials/_header',) %>
+<body>
+    <div class="container w-100 h-100 d-flex align-items-center justify-content-center">
+        <div class="col-md-4 rounded shadow-lg">
+            <div class="title p-3 ">
+                <div>
+                    <h3 class="mb-3">Reset Password</h3>
+                    <p>Enter your email address and we'll send you an email with instructions to reset your password.</p>
+                    <div class="d-flex align-items-center justify-content-center mb-4 p-0">
+                        <input type="email" id="resetEmail" placeholder="Email" class="mt-1 w-100 p-2 rounded border border-secondary" >
+                    </div>
+                    <button id="resetMailBtn" type="submit" class="btn w-100 login_submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const resetBtn = document.getElementById('resetMailBtn');
+        resetBtn.addEventListener('click', () =>{
+            const emailInput = document.getElementById('resetEmail');
+            const email = emailInput.value
+            console.log('clicked')
+            $.ajax({
+                type: 'POST',
+                url:'/forgotPassword',
+                data:{
+                    email
+                },
+                success:function(res){
+                    if(res.status == 'fail'){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: res.message,
+                        })
+                    }
+                    if(res.status == 'success'){
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title:'Success',
+                            text: res.message,
+                            showConfirmButton:false,
+                            showCloseButton: false,
+                        })
+                        emailInput.disabled = true
+                        resetBtn.disabled = true
+                    }
+                }
+            })
+        })
+    </script>
+<%- include('./partials/_footer.ejs') %>

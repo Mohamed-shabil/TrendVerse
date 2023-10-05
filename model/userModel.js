@@ -77,6 +77,12 @@ const userSchema = new mongoose.Schema({
     blocked:{
         type:Boolean,
         default:false
+    },
+    resetPasswordToken: {
+        type:String
+    },
+    resetPasswordExpires:{
+        type:Date,
     }
 })
 

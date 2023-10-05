@@ -11,6 +11,7 @@ const sendMail = require('../utils/email');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const dotenv = require('dotenv');
 const passport = require('passport')
+const crypto = require('crypto');
 
 dotenv.config({path:'./config.env'});
 
@@ -107,19 +108,16 @@ exports.userLogin = catchAsync( async (req,res)=>{
     
     if(!currentUser){
         req.flash('error','invalid password or email')
-        res.locals.errorMessage = req.flash('error');
         res.render('./users/login');
     }else{
         const isMatch = await bcrypt.compare(password,currentUser.password);
 
         if(!isMatch){
             req.flash('error','invalid password or email')
-            res.locals.errorMessage = req.flash('error');
             return res.render('./users/login');
         }
         if(!currentUser.varified){
             req.flash('error','your email is not varified')
-            res.locals.errorMessage = req.flash('error');
             return res.redirect('/varitfyOtp');
         }
         currentUser.password = undefined;
@@ -182,11 +180,6 @@ exports.getVarifyOtp =(req,res)=>{
     res.render('./users/validateOtp')
 }
 
-
-
-
-
-
 exports.varifyOtp = catchAsync(async(req,res)=>{
     const otp = req.body.otp
     const user = await User.findOne({otp});
@@ -210,6 +203,7 @@ exports.getUpdatePassword = (req,res)=>{
     res.render('./users/account/changePassword');
 }
 
+
 exports.updatePassword = catchAsync(async(req,res)=>{
     const oldPassword = req.body.oldPassword;
     const newPassword = req.body.newPassword;
@@ -232,7 +226,84 @@ exports.logout = catchAsync(async (req, res, next )=>{
     res.redirect('/')
 })
 
+exports.getForgotPassword = catchAsync(async (req, res,)=>{
+    res.render('./users/forgot');
+})
 
+exports.forgotPassword = catchAsync(async (req, res, next)=>{
+    const {email} = req.body;
+    console.log(email)
+    const user = await User.findOne({email});
+    if(!user){
+        return res.status(200).json({
+            status:'fail',
+            message:'No user found on this email'
+        });
+    }
+    const token = await crypto.randomBytes(20).toString('hex');
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 3600000
+    await user.save();
+    console.log(user)
+    console.log('token aftrer saving',token);
+    const resetLink = process.env.RESET_LINK + token
+    console.log('linkl is : ',resetLink);
+    const options = {
+        from:process.env.EMAIL,
+        to: user.email,
+        subject: 'Trendverse Passsword Reset Link',
+        html:`
+        <center><h1>TrendVerse</h1></center>
+        You are receiving this because you (or someone else) have requested the reset of the password for your account.
+        Please click on the following Button, into your browser to complete the process.
+        If you did not request this, please ignore this email and your password will remain unchanged.<br>
+        <a href='${resetLink}'>${resetLink}</a>
+        `
+    }
+    await sendMail(options);
+    return res.json({
+        status:'success',
+        message:'Password reset instructions sent to your email , Please check it out and follow the instructions'
+    })
+})
+
+exports.getResetPassword = catchAsync(async (req,res)=>{
+    const {token} = req.params
+    console.log(token)
+    const user = await User.findOne({
+        resetPasswordToken : token,
+        resetPasswordExpires : {$gt:Date.now()},
+    })
+    console.log(user)
+    if(!user){
+        return res.render('./users/invalidToken');
+    }
+    return res.render('./users/resetPassword',{token:req.params.token});
+})
+
+exports.resetPassword = catchAsync(async(req,res)=>{
+    const {token} = req.params
+    const {password} = req.body
+    const {passwordConfirm} = req.body
+    if(password!=passwordConfirm){
+        req.flash('error','Passwords are not matching, try  again!');
+        res.redirect('/resetPassword/'+token);
+    }
+    const user = await User.findOne({
+        resetPasswordToken : token,
+        resetPasswordExpires : {$gt:Date.now()},
+    })
+    console.log(user);
+    if(!user){
+        return res.render('./user/invalidToken');
+    }
+    const hashedPassword = await bcrypt.hash(password,10);
+    user.password = hashedPassword
+    user.resetPasswordExpires = undefined;
+    user.resetPasswordToken = undefined;
+    user.save();
+    return res.redirect('/login');
+})
 
 
 exports.getProduct = catchAsync(async(req,res)=>{

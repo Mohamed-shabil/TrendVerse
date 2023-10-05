@@ -37,14 +37,19 @@ router.route('/login')
     .post(userController.userLogin);
 
     
-    router.get('/shop',userController.getProducts)
-    
-    router.route('/shop/:slug')
+router.get('/shop',userController.getProducts)
+router.route('/shop/:slug')
     .get(userController.getProduct)
     .put(middleware.isLoggedin,userController.addToCart);
     
 router.use(middleware.isBlocked);
 
+router.route('/forgotPassword')
+    .get(middleware.isAlreadyLoggedIn,userController.getForgotPassword)
+    .post(middleware.isAlreadyLoggedIn,userController.forgotPassword)
+router.route('/resetPassword/:token')
+    .get(middleware.isAlreadyLoggedIn,userController.getResetPassword)
+    .post(middleware.isAlreadyLoggedIn,userController.resetPassword)
 
 router.route('/cart')
     .get(middleware.authChecker,middleware.isLoggedin,userController.getCart)
