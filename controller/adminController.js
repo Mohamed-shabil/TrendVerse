@@ -9,14 +9,9 @@ const token = require('../utils/token');
 const slugify = require('slugify')
 const json2csv = require('json2csv');
 const fs = require('fs')
-
-
 exports.getLogin = (req,res) =>{
     res.render('./admin/login')
 }
-
-
-
 exports.login = catchAsync(async (req,res)=>{
     const { password , name} = req.body
     const admin = await Admin.findOne({name});
@@ -294,7 +289,8 @@ exports.addProducts = catchAsync(async(req,res) =>{
         price,
         stock,
         images,
-        category
+        category,
+        originalPrice:price
     })
     if(!product){
         req.flash('error','Something went Wrong try again')
@@ -314,13 +310,13 @@ exports.getEditProduct = catchAsync(async(req,res)=>{
 })
 
 exports.editProduct = catchAsync(async(req,res)=>{
-    console.log(req.body.name);
     const data = {
         name : req.body.name,
         description : req.body.description,
         category : req.body.category,
         price : req.body.price,
         stock : req.body.stock,
+        originalPrice: req.body.price,
         visibility:true
     } 
     await Product.findOneAndUpdate({_id:req.params.id},data,{new:true})

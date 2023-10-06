@@ -1,0 +1,96 @@
+<%- include('../partials/_header.ejs') %>
+<body>
+  <div class="container-scroller">
+    <%- include('../partials/_sidebar.ejs') %>                       
+      <div class="container-fluid page-body-wrapper">
+        <%- include('../partials/_navbar.ejs') %>
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="page-header">
+              <h3 class="page-title"> Add Coupon </h3>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+                </ol>
+              </nav>
+            </div>
+
+            <!-- Adding Form  -->
+            <div class="row align-items-center justify-content-center">
+              <%if(successMessage[0]){%>
+                <div id="error-message" class="alert alert-info col-8" role="alert">
+                    <%=successMessage[0]%>
+                </div>
+              <%}else if(errorMessage[0]){%>
+                <div id="error-message" class="alert alert-danger col-8" role="alert">
+                    <%=errorMessage[0]%>
+                </div>
+              <%}%> 
+              <div class="col-8  grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <form  class="forms-sample" method="POST" action="/admin/offers/addOffer">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputName1">Offer Title</label>
+                                <input type="text" name="title" value="<%=offer.title%>" minlength="4" required class="form-control" id="exampleInputName1" placeholder="Offer Title">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputName1">Discount Percentage</label><br>
+                                <input type="text" name="discountPercentage" value="<%=offer.discountPercentage%>" maxLength="3" required class="form-control" id="exampleInputName1" placeholder="Discount Percentage">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="exampleInputName1">Description </label><br>
+                                <textarea name="description" class="w-100"  cols="30" rows="10" style="background-color:#2a3038"><%=offer.description%></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputName1">Start Date</label>
+                                <input type="date" name="startDate" value="<%=offer.startDate%>" required class="form-control" id="exampleInputName1" placeholder="Expiration Date">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputName1">End Date</label>
+                                <input type="date" name="endDate" value='<%=offer.endDate%>' required class="form-control" id="exampleInputName1" placeholder="Expiration Date">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputName1">Offer Type</label>
+                                <select name="type" class="w-100" style="height: 34px;">
+                                    <%const option of [product,category]{%>
+                                        <option value="<%=option%>"><%=option%> Offer</option>
+                                    <%}%>
+                                </select>
+                            </div>
+                        </div>
+                      
+                      <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      function hideErrorMessage() {
+        var errorMessageElement = document.getElementById('error-message');
+        if (errorMessageElement) {
+          setTimeout(()=>{
+            errorMessageElement.style.display = 'none';
+          }, 4000);
+          
+        }
+      }
+      hideErrorMessage();
+    
+    </script>
+    <%- include('../partials/_footer.ejs') %>
