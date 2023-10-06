@@ -349,13 +349,17 @@ exports.addProductImage = catchAsync(async (req,res)=>{
 })
 
 exports.deleteProduct = catchAsync(async(req,res)=>{
-    await Product.deleteOne({_id:req.params.id}).then(()=>{
-        req.flash('success','Product deleted successfully')
-        return res.redirect('/admin/products');
-    }).catch((err)=>{
+
+    const deletedProduct = await Product.findOneAndDelete({_id:req.params.id},)
+    if(!deletedProduct){
         req.flash('error','something went wrong')
         return res.redirect('/admin/products');
-    })
+    }
+    const category = await Category.findOne({name:deletedProduct.name})
+    const isExist = category.products.findIndex((item)=> item.equals(deletedProduct._id));
+    if(isExist!=-1){
+        category.products.splice(isExist,1);
+    }
 })
 
 exports.getAddCategory = (req,res)=>{
