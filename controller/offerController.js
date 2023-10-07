@@ -15,8 +15,8 @@ exports.getAddOffers = (req,res)=>{
 }
 
 exports.createOffer = catchAsync(async(req,res)=>{
-    const { title,description,discountPercentage,startDate,endDate} = req.body
-
+    const { title,description,discountPercentage,startDate,endDate,type} = req.body
+    console.log('hello,,,,,,,,,'+type)
     if(new Date(startDate) >= new Date(endDate)){
         req.flash('error','Invalid Dates')
         console.log('dateErrro')
@@ -27,13 +27,14 @@ exports.createOffer = catchAsync(async(req,res)=>{
         description,
         startDate,
         endDate,
+        type,
         discountPercentage
     })
     console.log(newOffer)
-    res.redirect('/admin/offers/addOffer');
+    res.redirect('/admin/offers');
 })
 
-exports.applyOffer = catchAsync(async(req,res)=>{
+exports.applyOfferToProduct = catchAsync(async(req,res)=>{
     const {product , offerId} = req.body
     const [offer,offerAppliedProduct] = await Promise.all([
         Offer.findById({_id:offerId}),
@@ -52,19 +53,20 @@ exports.applyOffer = catchAsync(async(req,res)=>{
 
 exports.deleteOffer = catchAsync(async (req,res)=>{
     const offerId = req.params.id
-    const offer = await Offer.deleteOne(offerId);
+    const offer = await Offer.deleteOne({_id:offerId});
     if(!offer){
         req.flash('error','something went wrong')
         return res.redirect('/admin/offers');
     }
     req.flash('success','successfully deleted')
-    res.redirect('./admin/offers');
+    res.redirect('/admin/offers');
 })
 
 exports.getEditOffer = catchAsync(async(req,res)=>{
-    const offerId = req.params.Id
-    const offer = await Offer.findById(offerId);
-    console.log('from edit offer',+offer)
+    const offerId = req.params.id
+    console.log(offerId);
+    const offer = await Offer.findById({_id:offerId}).sort({createdAt:1});
+    console.log(offer)
     res.render('./admin/offer/editOffer',{offer});
 })
 
@@ -75,6 +77,7 @@ exports.editOffer = catchAsync( async (req,res)=>{
         endDate:req.body.endDate,
         title:req.body.title,
         description : req.body.description,
+        type:req.body.type,
         discountPercentage:req.body.discountPercentage
     }
     console.log(data)

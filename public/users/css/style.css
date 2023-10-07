@@ -4438,3 +4438,12 @@ input::-webkit-inner-spin-button {
         padding: 20px;
      }
 }
+.discount_label{
+	position: relative;
+	top: 15px;
+	left: 150px;
+	background-color: #fff;
+	padding: 3px 5px;
+	z-index: 3;
+	font-size: 12px;
+}

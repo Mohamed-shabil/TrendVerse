@@ -94,7 +94,9 @@ router.route('/offers/addOffer')
 router.route('/offers/editOffer/:id')
       .get(offerController.getEditOffer)
       .post(offerController.editOffer);
-      
+
+router.route('/offers/deleteOffer/:id')
+      .delete(offerController.deleteOffer)
 router.route('/coupons')
       .get(couponController.getAllCoupons)
 

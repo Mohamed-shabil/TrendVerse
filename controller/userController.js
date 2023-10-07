@@ -342,26 +342,26 @@ exports.getProducts = catchAsync(async(req,res)=>{
     if(sort){
         sortFilter.price = sort
     }
-    if(query){
+    if(query && query.length){
         filter.$or = [
             { title: { $regex: query, $options: 'i' } },
             { description: { $regex: query, $options: 'i' } }
         ]
     }
-    if(category){
+    if(category && category.length){
         filter.category = category
     }
     if(minPrice||maxPrice){
         filter.price = {}
     }
-    if(minPrice){
+    if(minPrice && minPrice.length){
         filter.price.$gte = minPrice
     }
-    if(maxPrice){
+    if(maxPrice && maxPrice.length){
         filter.price.$lte = maxPrice;
     }
     console.log(filter);
-    const products = await Products.find(filter).skip(skip).limit(limit).sort(sortFilter);
+    const products = await Products.find(filter).populate('').skip(skip).limit(limit).sort(sortFilter);
     console.log(filter)
     if(filter){
         totalDocs = products.length

@@ -5,6 +5,10 @@ const offerSchema = new mongoose.Schema({
     discountPercentage: Number,
     startDate: Date,
     endDate: Date,
+    type:{
+      type:String,
+      enum:['product','category']
+    },
     applicableProducts: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product',
@@ -13,7 +17,7 @@ const offerSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
     }],
-});
+},{timestamps:true});
 
 const Offer = mongoose.model('offer', offerSchema);
 

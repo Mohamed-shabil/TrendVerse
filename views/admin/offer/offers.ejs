@@ -10,7 +10,7 @@
                         <h3 class="page-title"> Basic Tables </h3>
                     </div>
                     <div class="container">
-                        <a href="/admin/coupons/addCoupon">
+                        <a href="/admin/offers/addOffer">
                             <button type="button" class="btn btn-primary">Add Offers<i class="bi bi-tag"></i></button>
                         </a>
                         <% if(!offers.length){%>
@@ -22,7 +22,7 @@
                                         <span class="text-center">Offer Name : <%= offer.title%></span>                                    
                                     </div>
                                     <div class="col-md-3 text-center flex-column d-flex align-items-center justify-content-center">
-                                        <span>Offer Type : <%= offer.type%> </span>
+                                        <span>Offer Type : <%=offer.type%> </span>
                                         <span>Discount Percentage : <%= offer.discountPercentage%>%<br></span>
                                     </div>
                                     <div class="col-md-4 text-center d-flex align-items-center justify-content-center">
@@ -31,7 +31,7 @@
                                     </div>
                                     <div class="col-md-2 text-center d-flex align-items-center justify-content-around">
                                         <span><a href="/admin/offers/editOffer/<%=offer._id%>"><i class="bi bi-pencil"></i></a></span>
-                                        <form action="/admin/coupons/deleteoffer/<%=offer._id%>?_method=DELETE" method="post">
+                                        <form action="/admin/offers/deleteoffer/<%=offer._id%>?_method=DELETE" method="post">
                                             <button class="delete_button_coupon" type="submit" ><i class="bi bi-trash3"></i></button>
                                         </form>
                                     </div>

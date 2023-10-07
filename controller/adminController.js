@@ -4,11 +4,14 @@ const Product = require('../model/productModel');
 const Category = require('../model/categoryModel');
 const User = require('../model/userModel')
 const Order = require('../model/orderModel')
+const Offer = require('../model/offerModel')
 const bcrypt = require('bcrypt');
 const token = require('../utils/token');
 const slugify = require('slugify')
 const json2csv = require('json2csv');
-const fs = require('fs')
+const applyOffers = require('../utils/applyOffer');
+const fs = require('fs');
+const { log } = require('console');
 exports.getLogin = (req,res) =>{
     res.render('./admin/login')
 }
@@ -275,9 +278,12 @@ exports.getProducts = catchAsync( async (req,res) =>{
 });
 
 exports.getAddProducts = catchAsync(async (req,res) =>{
-    const categories = await Category.find()
+    const [categories, offers] = await Promise.all([
+        Category.find(),
+        Offer.find({type:'product'})
+    ])
     res.render('./admin/addProducts',{
-        categories
+        categories,offers
     });
 })
 
@@ -290,7 +296,6 @@ exports.addProducts = catchAsync(async(req,res) =>{
         stock,
         images,
         category,
-        originalPrice:price
     })
     if(!product){
         req.flash('error','Something went Wrong try again')
@@ -304,9 +309,12 @@ exports.addProducts = catchAsync(async(req,res) =>{
 })
 
 exports.getEditProduct = catchAsync(async(req,res)=>{
-    const product = await Product.findOne({_id:req.params.id})
-    const categories = await Category.find();
-    res.render('./admin/editProduct',{categories,product});
+    const [product , categories , offers ] = await Promise.all([
+        Product.findOne({_id:req.params.id}),
+        Category.find(),
+        Offer.find(),
+    ])
+    res.render('./admin/editProduct',{categories,product,offers});
 })
 
 exports.editProduct = catchAsync(async(req,res)=>{
@@ -316,13 +324,17 @@ exports.editProduct = catchAsync(async(req,res)=>{
         category : req.body.category,
         price : req.body.price,
         stock : req.body.stock,
-        originalPrice: req.body.price,
         visibility:true
-    } 
+    }
     await Product.findOneAndUpdate({_id:req.params.id},data,{new:true})
+    if(req.body.offer){
+        applyOffers.applyProductOffers(req.body.offer,req.params.id)
+    }
     req.flash('success','Product updated successfully')
     res.redirect('/admin/products');
 })
+
+
 
 exports.deleteProductImage = catchAsync(async (req,res)=>{
     console.log('params works')
@@ -336,7 +348,6 @@ exports.deleteProductImage = catchAsync(async (req,res)=>{
 
 exports.addProductImage = catchAsync(async (req,res)=>{
     console.log(req.body.images);
-    
     const addImage = await Product.findOneAndUpdate({_id:req.params.id},{$push:{images:{$each:req.body.images}}},{new:true});
     if(addImage){
         req.flash('success','Image deleted successfully')

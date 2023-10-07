@@ -24,6 +24,10 @@ const productSchema = new mongoose.Schema({
         type:Number,
         required:true,
     },
+    offer:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Offer'
+    },
     slug: String,
     images:[String],
     category:String,

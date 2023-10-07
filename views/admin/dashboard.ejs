@@ -330,7 +330,7 @@
                                 <a href="/admin/orders/<%=order.orderId%>" class="fs-1"><i class="bi bi-arrow-bar-right"></i></a>
                               </td>
                               <td>
-                                <span class="pl-2"><%=order.productsInfo[0].name %></span>
+                                <span class="pl-2"><%=order.productsInfo[0]?.name %></span>
                               </td>
                               <td><small><%=order.orderId%></small></td>
                               <td><%=order.products[0].quantity%></td>

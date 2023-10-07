@@ -30,7 +30,7 @@
               <div class="col-8  grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <form  class="forms-sample" method="POST" action="/admin/offers/addOffer">
+                    <form  class="forms-sample" method="POST" action="/admin/offers/editOffer/<%=offer._id%>">
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="exampleInputName1">Offer Title</label>
@@ -44,7 +44,7 @@
                         <div class="row">
                             <div class="form-group col-md-12">
                                 <label for="exampleInputName1">Description </label><br>
-                                <textarea name="description" class="w-100"  cols="30" rows="10" style="background-color:#2a3038"><%=offer.description%></textarea>
+                                <textarea name="description" class="w-100"  cols="30" rows="10" style="background-color:#2a3038;color:#fff"><%=offer.description%></textarea>
                             </div>
                         </div>
                         <div class="row">
@@ -54,16 +54,16 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="exampleInputName1">End Date</label>
-                                <input type="date" name="endDate" value='<%=offer.endDate%>' required class="form-control" id="exampleInputName1" placeholder="Expiration Date">
+                                <input type="date" name="endDate" value='<%=offer.endDate.toDateString()%>' required class="form-control" id="exampleInputName1" placeholder="Expiration Date">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="exampleInputName1">Offer Type</label>
                                 <select name="type" class="w-100" style="height: 34px;">
-                                    <%const option of [product,category]{%>
-                                        <option value="<%=option%>"><%=option%> Offer</option>
-                                    <%}%>
+                                  <% for(const options of ['product','category']){%>
+                                    <option value="<%=options%>" <%if(options == offer.type){%>select<%}%>><%=options%></option>
+                                  <%}%>
                                 </select>
                             </div>
                         </div>

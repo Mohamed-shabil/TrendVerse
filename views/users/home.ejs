@@ -133,7 +133,12 @@
                                 <div class="product__item__text">
                                     <h6><%=product.name%></h6>
                                     <form  class="cart_form" action="/cart?_method=PATCH" method="post">
-                                        <h5>₹<%=product.price%></h5>
+                                        <span class="d-flex align-items-center justify-content-center">
+                                            <h5>₹<%=product.price%></h5>
+                                            <% if(product.originalPrice){ %>
+                                                <p class="p-0 pl-1 m-0 text-decoration-line-through" style="text-decoration: line-through; color: rgba(255, 79, 79, 0.805);">₹<%=product.originalPrice %></p>
+                                            <% } %>
+                                        </span>
                                         <input type="hidden" name="id" value="<%=product._id%>">
                                         <button class="cart_button"><img src="/users/img/icon/cart.png" alt="" srcset=""></button>
                                     </form>
