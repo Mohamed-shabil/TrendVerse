@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const offerSchema = new mongoose.Schema({
     title: String,
     description: String,
@@ -19,6 +20,5 @@ const offerSchema = new mongoose.Schema({
     }],
 },{timestamps:true});
 
-const Offer = mongoose.model('offer', offerSchema);
-
+const Offer = mongoose.model('Offer', offerSchema);
 module.exports = Offer;

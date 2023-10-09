@@ -88,7 +88,9 @@
                                                     <i id="heart_<%=product._id%>" class="bi bi-suit-heart-fill"></i>
                                                 <% } %>
                                             </button>
-                                            <span class="discount_label">-10%</span>
+                                            <%if(product.offer){%>
+                                                <span class="discount_label">-<%=product.offer.discountPercentage%>%</span>
+                                            <% } %>
                                         </div>
                                         <a href="/shop/<%=product.slug%>">
                                             <div class="product__item__text">

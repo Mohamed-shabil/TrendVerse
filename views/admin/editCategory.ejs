@@ -50,7 +50,7 @@
                         <label>File upload</label>
                         <input type="file" class="file-upload-default">
                         <div class="input-group col-xs-12">
-                          <input type="file" accept="image/*" value=<%=category.image%> required multiple name="photo" onchange="previewImages(event);" class="form-control file-upload-info" placeholder="Upload Image">
+                          <input type="file" accept="image/*" value=<%=category.image%>  multiple name="photo" onchange="previewImages(event);" class="form-control file-upload-info" placeholder="Upload Image">
                           <span class="input-group-append">
                             <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                           </span>
@@ -59,6 +59,16 @@
                       <div class="col-2" height="100px" width="100px">
                         <img id="preview">
                       </div>
+
+                      <div class="form-group mt-4">
+                        <label>Add offer to this product :</label>
+                        <select class="form-control" name="offer" class="w-100" style="height: 35px; color: rgb(202, 199, 199);">
+                          <%for(const offer of offers){%>
+                            <option value="<%=offer._id%>" style="color: white!important;"><%=offer.title%></option>
+                          <%}%>
+                        </select>
+                      </div>
+
                       <button type="submit" class="btn btn-primary mr-2">Update</button>
                     </form>
                   </div>

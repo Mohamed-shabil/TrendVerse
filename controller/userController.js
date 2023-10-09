@@ -4,6 +4,7 @@ const Products = require('../model/productModel');
 const Banner = require('../model/bannerModel')
 const Category = require('../model/categoryModel');
 const Order = require('../model/orderModel')
+const Offer = require('../model/offerModel')
 const bcrypt = require('bcrypt');
 const randomString = require('randomstring');
 const token = require('../utils/token')
@@ -323,6 +324,7 @@ exports.resetPassword = catchAsync(async(req,res)=>{
 exports.getProduct = catchAsync(async(req,res)=>{
     const user = req.user;
     const product = await Products.findOne({slug:req.params.slug,visibility:true});
+    
     res.render('./users/productsDetails',{
         product,user
     });
@@ -360,14 +362,15 @@ exports.getProducts = catchAsync(async(req,res)=>{
     if(maxPrice && maxPrice.length){
         filter.price.$lte = maxPrice;
     }
-    console.log(filter);
-    const products = await Products.find(filter).populate('').skip(skip).limit(limit).sort(sortFilter);
+    const products = await Products.find(filter).populate('offer').skip(skip).limit(limit).sort(sortFilter);
+    console.log(products[0]);
     console.log(filter)
-    if(filter){
+    let totalDocs;
+    if(Object.keys(filter).length>1){
         totalDocs = products.length
     }else{
-        totalDoc = await Products.countDocuments();
-        console.log(totalDoc);
+        totalDocs = await Products.countDocuments();
+        console.log(totalDocs);
     }
     const categories = await Category.find();
     const totalPages= totalDocs/limit
@@ -396,7 +399,7 @@ exports.addToCart = catchAsync(async (req, res) => {
     user.cart.forEach(item => {
         totalCartValue += item.totalAmount;
     });
-    user.totalCartValue = totalCartValue;
+    user.totalCartValue = totalCartValue;  
     await user.save();
     req.flash('success','Added to cart')
     return res.redirect(previousPath);

@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
         type:String,
         default:'/profile/user.png'
     },
+    
     cart: [{
         product:{
             type:mongoose.Schema.Types.ObjectId,

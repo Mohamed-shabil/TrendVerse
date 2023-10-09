@@ -297,6 +297,10 @@ exports.addProducts = catchAsync(async(req,res) =>{
         images,
         category,
     })
+    if(req.body.offer.length<1){
+        product.offer = null
+        await product.save();
+    }
     if(!product){
         req.flash('error','Something went Wrong try again')
         return res.redirect('/admin/products/addProducts');
@@ -366,6 +370,7 @@ exports.deleteProduct = catchAsync(async(req,res)=>{
     const isExist = category.products.findIndex((item)=> item.equals(deletedProduct._id));
     if(isExist!=-1){
         category.products.splice(isExist,1);
+        await category.save()
     }
 })
 
@@ -395,15 +400,18 @@ exports.getCategory = catchAsync(async(req,res)=>{
 })
 exports.getEditCategory = catchAsync(async(req,res)=>{
     const category = await Category.findOne({_id: req.params.id});
-    res.render('./admin/editCategory',{category});
+    const offers = await Offer.find();
+    res.render('./admin/editCategory',{category,offers});
 })
 
 exports.editCategory = catchAsync(async(req,res)=>{
     const name= req.body.name.toLowerCase();
     console.log(name);
     const photo= req.body.photo
-
     await Category.updateOne({_id:req.params.id},{name,image:photo});
+    if(req.body.offer){
+        applyOffers.applyCategoryOffers(req.body.offer,req.params.id);
+    }
     req.flash('success','Category Added successfully')
     res.redirect("/admin/category");
 })

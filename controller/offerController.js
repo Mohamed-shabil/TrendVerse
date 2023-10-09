@@ -1,8 +1,9 @@
 const catchAsync = require('../utils/catchAsync');
-const Product = require('../model/productModel')
+const Product = require('../model/productModel');
 const Category = require('../model/categoryModel');
 const Offer = require('../model/offerModel');
-const { updateOne } = require('../model/adminModel');
+const applyOffer = require('../utils/applyOffer');
+const cron = require('node-cron');
 
 exports.getOffers = catchAsync(async (req,res)=>{
     const offers = await Offer.find();
@@ -34,22 +35,7 @@ exports.createOffer = catchAsync(async(req,res)=>{
     res.redirect('/admin/offers');
 })
 
-exports.applyOfferToProduct = catchAsync(async(req,res)=>{
-    const {product , offerId} = req.body
-    const [offer,offerAppliedProduct] = await Promise.all([
-        Offer.findById({_id:offerId}),
-        Product.findById({_id:product}),
-    ])
-    if(offer && offerAppliedProduct){
-        const discountAmount = (offerAppliedProduct.price * office.discountPercentage)/100;
-        offerAppliedProduct.discountPrice = discountAmount
-        offerAppliedProduct.price = discountAmount;
-        offerAppliedProduct.save();
-        offer.applicableProducts.push(offerAppliedProduct._id);
-    }
-    req.flash('success','Offer applied ')
-    res.render('/offers');
-});
+
 
 exports.deleteOffer = catchAsync(async (req,res)=>{
     const offerId = req.params.id
@@ -72,6 +58,7 @@ exports.getEditOffer = catchAsync(async(req,res)=>{
 
 exports.editOffer = catchAsync( async (req,res)=>{
     const offerId = req.params.Id
+    console.log(req.body.startDate,req.body.endDate)
     const data ={
         startDate : req.body.startDate,
         endDate:req.body.endDate,
@@ -80,8 +67,10 @@ exports.editOffer = catchAsync( async (req,res)=>{
         type:req.body.type,
         discountPercentage:req.body.discountPercentage
     }
-    console.log(data)
+    // console.log(data)
     await Offer.updateOne({_id:offerId},data);
     req.flash('success','Offer Updated');
     res.redirect('/admin/offers');
 })
+
+// cron.schedule('* * * * *', applyOffer.scheduleOfferExpirations);
