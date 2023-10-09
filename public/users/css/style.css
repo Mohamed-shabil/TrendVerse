@@ -4447,3 +4447,12 @@ input::-webkit-inner-spin-button {
 	z-index: 3;
 	font-size: 12px;
 }
+.discount_label_home{
+	position: relative;
+    top: 15px;
+    left: 225px;
+    background-color: #fff;
+    padding: 3px 5px;
+    z-index: 3;
+    font-size: 12px;
+}

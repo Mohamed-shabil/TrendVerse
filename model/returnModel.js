@@ -10,6 +10,7 @@ const returnSchema = new mongoose.Schema({
         ref:'User',
     },
     reason:String,
+    message:String,
     description:String,
     status:{
         type:String,

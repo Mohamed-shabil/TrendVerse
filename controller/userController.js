@@ -93,7 +93,7 @@ exports.getHome = catchAsync(async(req,res)=>{
             $limit: 8
         }
     ])
-    const newArrivals = await Products.find().sort({_id:-1}).limit(8);
+    const newArrivals = await Products.find().populate('offer').sort({_id:-1}).limit(8);
     console.log(newArrivals)
     return res.render('./users/home',{
         products,user:req.user,banners,newArrivals

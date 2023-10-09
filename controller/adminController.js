@@ -288,7 +288,7 @@ exports.getAddProducts = catchAsync(async (req,res) =>{
 })
 
 exports.addProducts = catchAsync(async(req,res) =>{
-    const {name,description,price,stock,images,category} = req.body;
+    const {name,description,price,stock,images,category,offer} = req.body;
     const product = await Product.create({
         name,
         description,
@@ -296,11 +296,8 @@ exports.addProducts = catchAsync(async(req,res) =>{
         stock,
         images,
         category,
+        offer
     })
-    if(req.body.offer.length<1){
-        product.offer = null
-        await product.save();
-    }
     if(!product){
         req.flash('error','Something went Wrong try again')
         return res.redirect('/admin/products/addProducts');
@@ -328,12 +325,10 @@ exports.editProduct = catchAsync(async(req,res)=>{
         category : req.body.category,
         price : req.body.price,
         stock : req.body.stock,
+        offer:req.body.offer,
         visibility:true
     }
     await Product.findOneAndUpdate({_id:req.params.id},data,{new:true})
-    if(req.body.offer){
-        applyOffers.applyProductOffers(req.body.offer,req.params.id)
-    }
     req.flash('success','Product updated successfully')
     res.redirect('/admin/products');
 })
@@ -391,7 +386,7 @@ exports.addCategory = catchAsync(async(req,res)=>{
         image:photo
     })
     req.flash('success','Category Added successfully')
-    res.redirect("/admin/category/addCategory");
+    res.redirect("/admin/category");
 })
 
 exports.getCategory = catchAsync(async(req,res)=>{
@@ -444,8 +439,9 @@ exports.getSalesReport = catchAsync(async(req,res)=>{
     const dateRangeFilter = {};
     const fromDate = new Date(from);
     const toDate = new Date(to);
+    const currentDate = new Date();
 
-    if(fromDate > toDate) {
+    if(fromDate > toDate && fromDate > currentDate ) {
         console.log('error')
         req.flash('error','invalid Dates');
         return res.redirect('/admin/salesReport');
@@ -495,6 +491,7 @@ exports.getSalesReport = catchAsync(async(req,res)=>{
     if(to){
         report = await Order.aggregate(pipeline);
     }
+    // console.log(report[0].productInfo.name);
     res.render('./admin/salesReport',{report,to,from});
 })
 
@@ -504,7 +501,7 @@ exports.downloadSalesReport = catchAsync(async(req,res)=>{
     let transformedData = [];
 
     if(Array.isArray(data)){
-        dataLength = data.orderDate.length
+        dataLength = data.orderId.length
         for(let i=0; i<dataLength; i++){
             transformedData.push({
                 orderDate: data.orderDate[i],
@@ -513,6 +510,7 @@ exports.downloadSalesReport = catchAsync(async(req,res)=>{
                 products:data.product[i],
                 quantity:data.quantity[i],
                 paymentMethod:data.paymentMethod[i],
+                amount:data.amount[i]
             })
         }
     }else{
@@ -520,14 +518,14 @@ exports.downloadSalesReport = catchAsync(async(req,res)=>{
     }
 
     console.log(dataLength);
-    const fields = ['orderDate',"orderId","userEmail","products","quantity","paymentMethod"]
+    const fields = ['orderDate',"orderId","userEmail","products","quantity","paymentMethod",'amount']
     const csv = json2csv.parse(transformedData, { fields });
     res.attachment('salesReport.csv');
     res.status(200).send(csv);
 })
 
 exports.getStockAlert = catchAsync(async(req,res)=>{
-    const products = await Product.find({stock:{$lte:50}});
+    const products = await Product.find({stock:{$lte:5}});
     res.render('./admin/stockAlert',{products})
 })
 

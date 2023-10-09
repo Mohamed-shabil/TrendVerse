@@ -36,10 +36,10 @@
                   oninput="restrictToNumbers(event)" value="<%=userData[0] ? userData[0].phone :''%>" required>
               </div>
               <div class="input-group mb-3">
-                  <input type="password" class="form-control bg-light form_data" name="password" minlength="6" placeholder="Password">
+                  <input type="password" class="form-control bg-light form_data" name="password"  pattern="^(?=.*\d)(?=.*[A-Z]).{6,}$" title="Must be 6 characters Long , Atleast One Capital Letter , Must Contain Numbers" placeholder="Password">
               </div>
               <div class="input-group mb-1">
-                <input type="password" class="form-control bg-light form_data" name="ConfirmPassword" minlength="6" placeholder="Password">
+                <input type="password" class="form-control bg-light form_data" name="ConfirmPassword" pattern="^(?=.*\d)(?=.*[A-Z]).{6,}$" title="Must be 6 characters Long , Atleast One Capital Letter , Must Contain Numbers" placeholder="Confirm Password">
               </div>
 
               <div class="input-group mb-2 d-flex justify-content-between">
@@ -49,7 +49,7 @@
                       <small><a href="/forgotPassword">Forgot Password?</a></small>
                   </div>
               </div>
-        
+              <label>Choose OTP Method :</label>
               <div class="d-flex align-items-center justify-content-center w-100">
                 <label class="m-2">
                   <input class="radio-input" required type="radio" name="otpMethod" value="sms" >

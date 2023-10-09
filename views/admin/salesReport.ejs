@@ -37,15 +37,6 @@
                         <div class="input-group col-md-4 mb-3">
                           <input type="date"  value="<%=to%>" name="to" class="form-control">
                         </div>
-                        <div class="input-group col-md-4 mb-3">
-                          <select name="status" class="form-select" aria-label="Default select example">
-                            <option selected>All</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Processing">Processing</option>
-                            <option value="Shipped">Shipped</option>
-                            <option value="Delivered">Delivered</option>
-                          </select>
-                        </div>
                         <div class="col-md-6">
                           <button class="btn btn-primary">Get Report</button>
                         </div>
@@ -89,12 +80,12 @@
                                   <small><%=order.orderId%></small>
                                 </td>
                                 <td>
-                                  <input type="hidden" name="userEmail" value="<%=order.customer[0].email%>">
-                                  <%=order.customer[0].email%>
+                                  <input type="hidden" name="userEmail" value="<%=order.customer[0]?.email%>">
+                                  <%=order.customer[0]?.email%>
                                 </td>
                                 <td>
-                                  <input type="hidden" name="product" value="<%=order.productsInfo[0].name%>">
-                                  <%=order.productsInfo[0].name%>
+                                  <input type="hidden" name="product" value="<%order.productsInfo[0]?.name%>">
+                                  <%order.productsInfo[0]?.name%>
                                 </td>
                                 <td>
                                   <input type="hidden" name="quantity" value="<%=order.products.quantity%>">
@@ -103,6 +94,10 @@
                                 <td>
                                   <input type="hidden" name="paymentMethod" value="<%=order.paymentMethod%>">
                                   <%=order.paymentMethod%>
+                                </td>
+                                <td>
+                                  <input type="hidden" name="amount" value="<%=order.totalPrice%>">
+                                  <%=order.totalPrice%>
                                 </td>
                               </tr>
                             <%}) %>

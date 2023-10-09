@@ -55,7 +55,7 @@ exports.resizeCategoryImage = catchAsync(async(req, res, next)=>{
   if(!req.file) return next();
   req.file.originalname = `category-${Date.now()}.png`;
   
-  req.body.profile = req.file.originalname
+  req.body.photo = req.file.originalname
  await sharp(req.file.buffer)
   .resize(500,500)
   .toFormat('png')

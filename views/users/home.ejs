@@ -106,7 +106,12 @@
                                 <div class="product__item__text">
                                     <h6><%=item.productInfo.name%></h6>
                                     <form  class="cart_form" action="/cart?_method=PATCH" method="post">
-                                        <h5>₹<%=item.productInfo.price%></h5>
+                                        <span class="d-flex align-items-center justify-content-center">
+                                            <h5>₹<%=item.productInfo.price%></h5>
+                                            <% if(item.productInfo.originalPrice){ %>
+                                                <p class="p-0 pl-1 m-0 text-decoration-line-through" style="text-decoration: line-through; color: rgba(255, 79, 79, 0.805);">₹<%=item.productInfo.originalPrice %></p>
+                                            <% } %>
+                                        </span>
                                         <input type="hidden" name="id" value="<%=item.productInfo._id%>">
                                         <button class="cart_button"><img src="/users/img/icon/cart.png" alt="" srcset=""></button>
                                     </form>
@@ -152,83 +157,7 @@
     </section>
     <!-- Product Section End -->
 
-    <!-- Categories Section Begin -->
-    <section class="categories spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="categories__text">
-                        <h2>Clothings Hot <br /> <span>Shoe Collection</span> <br /> Accessories</h2>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="categories__hot__deal">
-                        <img src="users/img/product-sale.png" alt="">
-                        <div class="hot__deal__sticker">
-                            <span>Sale Of</span>
-                            <h5>$29.99</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1">
-                    <div class="categories__deal__countdown">
-                        <span>Deal Of The Week</span>
-                        <h2>Multi-pocket Chest Bag Black</h2>
-                        <div class="categories__deal__countdown__timer" id="countdown">
-                            <div class="cd-item">
-                                <span>3</span>
-                                <p>Days</p>
-                            </div>
-                            <div class="cd-item">
-                                <span>1</span>
-                                <p>Hours</p>
-                            </div>
-                            <div class="cd-item">
-                                <span>50</span>
-                                <p>Minutes</p>
-                            </div>
-                            <div class="cd-item">
-                                <span>18</span>
-                                <p>Seconds</p>
-                            </div>
-                        </div>
-                        <a href="#" class="primary-btn">Shop now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Categories Section End -->
-
-    <!-- Instagram Section Begin -->
-    <section class="instagram spad mb-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="instagram__pic">
-                        <div class="instagram__pic__item set-bg" data-setbg="users/img/instagram/instagram-1.jpg"></div>
-                        <div class="instagram__pic__item set-bg" data-setbg="users/img/instagram/instagram-2.jpg"></div>
-                        <div class="instagram__pic__item set-bg" data-setbg="users/img/instagram/instagram-3.jpg"></div>
-                        <div class="instagram__pic__item set-bg" data-setbg="users/img/instagram/instagram-4.jpg"></div>
-                        <div class="instagram__pic__item set-bg" data-setbg="users/img/instagram/instagram-5.jpg"></div>
-                        <div class="instagram__pic__item set-bg" data-setbg="users/img/instagram/instagram-6.jpg"></div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="instagram__text">
-                        <h2>Instagram</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.</p>
-                        <h3>#trendverse</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Instagram Section End -->
-
-
-    <!-- Footer Section Begin -->
+    
     <span id="toastMsg" class="alert alert-primary"></span>
     <% if(successMessage[0]) {%>
         <span id="cartMsg" class="alert alert-primary"><%=successMessage[0]%></span>

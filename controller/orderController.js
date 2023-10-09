@@ -13,7 +13,8 @@ dotenv.config({path:'./config.env'});
 
 
 exports.getCheckout = catchAsync(async (req,res)=>{
-    const coupons = await Coupon.find();
+    const currentDate = new Date()
+    const coupons = await Coupon.find({expirationDate:{$gte:currentDate}});
     const user = await User.findOne({_id:req.user._id}).populate(['cart.product','defaultAddress'])
     res.render('./users/checkout',{
         user,coupons

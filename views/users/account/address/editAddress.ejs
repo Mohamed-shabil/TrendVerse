@@ -11,17 +11,17 @@
                 </div>
                 <div class="col addAddress_input">
                   <label>Phone</label>
-                  <input type="text" class="form-control" value="<%=address.phone%>" name="phone" placeholder="Phone number" aria-label="Last name">
+                  <input type="text" class="form-control" minlength="6" oninput="restrictToNumbers(event)" maxlength="10"pattern=".{10}" title="Phone Number must be 10 numbers long" value="<%=address.phone%>" name="phone" placeholder="Phone number" aria-label="Last name">
                 </div>
             </div>
             <div class="row">
                 <div class="col addAddress_input">
                   <label>Pincode</label>
-                  <input type="text" class="form-control" value="<%=address.pincode%>" name="pincode" placeholder="pincode" aria-label="First name">
+                  <input type="text" class="form-control" oninput="restrictToNumbers(event)" maxlength="6" pattern=".{6}" title="Picode must be 6 numbers long" value="<%=address.pincode%>" name="pincode" placeholder="pincode" aria-label="First name">
                 </div>
                 <div class="col addAddress_input">
                   <label>Alternative Number</label>
-                  <input type="text" class="form-control" value="<%=address.alternativePhoneNumber%>" name="altNo" placeholder="alternative phone" aria-label="First name">
+                  <input type="text" class="form-control" minlength="6" oninput="restrictToNumbers(event)" maxlength="10"pattern=".{10}" title="Phone Number must be 10 numbers long" value="<%=address.alternativePhoneNumber%>" name="altNo" placeholder="alternative phone" aria-label="First name">
                 </div>
             </div>
             <div class="row">
@@ -45,4 +45,13 @@
             </div>
         </form>
     </div>
+
+    <script>
+      function restrictToNumbers(event) {
+      const input = event.target;
+      const currentValue = input.value;
+      const newValue = currentValue.replace(/[^0-9]/g, '');
+      input.value = newValue;
+    }
+    </script>
 <%- include('../../partials/_footer') %>

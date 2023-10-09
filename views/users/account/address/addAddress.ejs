@@ -12,17 +12,17 @@
             </div>
             <div class="col-md-6 addAddress_input">
               <label>Phone</label>
-              <input type="text" minlength="10" required class="form-control" name="phone" placeholder="Phone number" aria-label="Last name">
+              <input type="text" oninput="restrictToNumbers(event)" maxlength="10" pattern=".{10}" title="Exactly 10 characters required" required class="form-control" name="phone" placeholder="Phone number" aria-label="Last name">
             </div>
         </div>
         <div class="row">
             <div class="col-md-6 addAddress_input">
               <label>Pincode</label>
-              <input type="text" minlength="6" required class="form-control" name="pincode" placeholder="Pincode" aria-label="First name">
+              <input type="text" minlength="6" oninput="restrictToNumbers(event)" maxlength="6"pattern=".{6}" title="Picode must be 6 numbers long" required class="form-control" name="pincode" placeholder="Pincode" aria-label="First name">
             </div>
             <div class="col-md-6 addAddress_input">
               <label>Alternative Number</label>
-              <input type="text" minlength="10" required class="form-control" name="altNo" placeholder="Alternative Phone" aria-label="First name">
+              <input type="text" oninput="restrictToNumbers(event)" maxlength="10" minlength="10" required class="form-control" name="altNo" placeholder="Alternative Phone" aria-label="First name">
             </div>
         </div>
         <div class="row">
@@ -48,4 +48,12 @@
         </div>
         </form>
     </div>
+    <script>
+      function restrictToNumbers(event) {
+      const input = event.target;
+      const currentValue = input.value;
+      const newValue = currentValue.replace(/[^0-9]/g, '');
+      input.value = newValue;
+    }
+    </script>
 <%- include('../../partials/_footer') %>

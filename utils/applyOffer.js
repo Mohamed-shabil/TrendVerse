@@ -55,3 +55,20 @@ exports.scheduleOfferExpirations = async () => {
       await Offer.findByIdAndRemove(offer._id);
     }
 };
+
+exports.scheduleOfferStart = async () => {
+    const now = new Date();
+    const startedOffers = await Offer.find({ startDate: { $lt: now } });
+    for (const offer of startedOffers) {
+      const productsToUpdate = await Product.find({ offer: offer._id });
+      for (const product of productsToUpdate) {
+        const discountAmount = Math.floor((product.price * offer.discountPercentage)/100);
+        product.discountPrice = product.price - discountAmount
+        product.originalPrice = product.price
+        product.price = product.discountPrice
+        product.offer = offer._id
+        await product.save();
+        console.log('done');
+      }
+    }
+};

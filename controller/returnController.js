@@ -16,14 +16,15 @@ exports.getReturnOrderForm = catchAsync(async(req,res)=>{
 })
 
 exports.createReturn = catchAsync(async(req,res)=>{
-    const {order, reason} = req.body
+    const {order, reason,message} = req.body
     console.log(req.body)
     const user = req.user._id
     await Order.findOneAndUpdate({_id:order},{status:'Return'});
     const newReturn = await Return.create({
         order,
         user,
-        reason
+        reason,
+        message
     })
 
     res.redirect('/account/orders')

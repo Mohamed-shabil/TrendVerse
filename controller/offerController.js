@@ -16,8 +16,7 @@ exports.getAddOffers = (req,res)=>{
 }
 
 exports.createOffer = catchAsync(async(req,res)=>{
-    const { title,description,discountPercentage,startDate,endDate,type} = req.body
-    console.log('hello,,,,,,,,,'+type)
+    const { title,description,discountPercentage,startDate,endDate} = req.body
     if(new Date(startDate) >= new Date(endDate)){
         req.flash('error','Invalid Dates')
         console.log('dateErrro')
@@ -28,7 +27,6 @@ exports.createOffer = catchAsync(async(req,res)=>{
         description,
         startDate,
         endDate,
-        type,
         discountPercentage
     })
     console.log(newOffer)
@@ -58,13 +56,17 @@ exports.getEditOffer = catchAsync(async(req,res)=>{
 
 exports.editOffer = catchAsync( async (req,res)=>{
     const offerId = req.params.Id
-    console.log(req.body.startDate,req.body.endDate)
+    const startDate = req.body.startDate
+    const endDate = req.body.endDate
+    if(new Date(startDate) >= new Date(endDate)){
+        req.flash('error','Invalid Dates')
+        return res.redirect('/offers/addOffer')
+    }
     const data ={
         startDate : req.body.startDate,
         endDate:req.body.endDate,
         title:req.body.title,
         description : req.body.description,
-        type:req.body.type,
         discountPercentage:req.body.discountPercentage
     }
     // console.log(data)
@@ -73,4 +75,5 @@ exports.editOffer = catchAsync( async (req,res)=>{
     res.redirect('/admin/offers');
 })
 
-// cron.schedule('* * * * *', applyOffer.scheduleOfferExpirations);
+cron.schedule('* * * * *', applyOffer.scheduleOfferExpirations);
+cron.schedule('* * * * *', applyOffer.scheduleOfferStart);
