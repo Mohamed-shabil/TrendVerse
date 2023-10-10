@@ -325,8 +325,10 @@ exports.editProduct = catchAsync(async(req,res)=>{
         category : req.body.category,
         price : req.body.price,
         stock : req.body.stock,
-        offer:req.body.offer,
         visibility:true
+    }
+    if(req.body.offer.length){
+        data.offer = req.body.offer
     }
     await Product.findOneAndUpdate({_id:req.params.id},data,{new:true})
     req.flash('success','Product updated successfully')
