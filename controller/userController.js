@@ -27,7 +27,7 @@ passport.use(
 
             clientID: process.env.OAUTH_ID,
             clientSecret: process.env.OAUTH_SECRET,
-            callbackURL: '/oauth/google/trendverse'
+            callbackURL: process.env.CALLBACK_URL
         },
         async (accessToken, refreshToken, profile, done) => {
             console.log(profile)
