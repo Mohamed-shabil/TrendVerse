@@ -1,9 +1,10 @@
 <%- include('../partials/_header',) %>
 <body>
     <%- include('../partials/_navbar', {user}) %>
+    <%- include('../partials/_sidebar',) %>
     <section class="account__container w-100 h-100 py-5">
     <div class="container">
-        <div class="col-12">
+        <div class="col-12 ">
             <%if(successMessage[0]){%>
             <div id="error-message" class="alert alert-info col-8" role="alert">
                 <%=successMessage[0]%>
@@ -62,7 +63,9 @@
         </div>
     </div>
 </section>
-
+</div>
+</div>
+</div>
 <div id="overlay"></div>
 
     <div id="confirmationModal" class="custonm_modal col-md-3 bg-white">

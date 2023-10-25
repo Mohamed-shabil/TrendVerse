@@ -59,6 +59,8 @@ router.route('/cart')
 router.route('/cart/:id')
     .patch(middleware.authChecker,userController.updateCartQuantity);
 
+router.route('/referals')
+    .get(middleware.authChecker,userController.getMyReferal)
 
 router.route('/cart/checkout')
     .get(middleware.isLoggedin,middleware.authChecker,middleware.checkCart,orderController.getCheckout)

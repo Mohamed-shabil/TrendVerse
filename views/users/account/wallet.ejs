@@ -1,6 +1,7 @@
 <%- include('./../partials/_header') %>
     <body>
     <%- include('./../partials/_navbar',) %>
+    <%- include('../partials/_sidebar',) %>
     <div class="container">
         <div class="row">
             <div class="col-md-12 mt-4 mb-4 text-center">
@@ -16,7 +17,7 @@
                                 <div class="row p-2 border rounded mb-2">
                                     <div class="col-md-8 ">
                                         <span><small>#<%=transaction.OrderId %></small><br></span>
-                                        <span>Refund amount is credit to your wallet <br></span>
+                                        <span><%=transaction.message%> <br></span>
                                         <span><small>On <%=transaction.date%> <%=transaction.timeStamp%></small></span>
                                     </div>
                                     <div class="col-md-4 d-flex flex-column align-items-end justify-content-end">
@@ -35,5 +36,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    </div>
+    </div>
     </div>
 <%- include('./../partials/_footer',) %>

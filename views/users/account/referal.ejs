@@ -1,0 +1,49 @@
+<%- include('../partials/_header') %>
+    <body>
+    <%- include('../partials/_navbar',) %>
+    <%- include('../partials/_sidebar',) %>
+    <div class="referal-container">
+        <div class="referal-card">
+            <div class="referal-image">
+                <img src="./users/img/referal.jpg" alt="">
+            </div>
+            <div class="content">
+                <h3 class="text-center text-black">Refer & Earn</h3>
+                <p>Welcome to our Referral Program!, we value our loyal customers and
+                     believe that the best way to grow our community is through the 
+                     support of our existing customers. That's why we've created our
+                     referral program, designed to reward you for spreading the word 
+                     about our products and services
+                </p>
+            </div>
+            <div class="share_btn">
+                <h3 class="text-center" id="referalCode"><%=user.referalCode%></h3>
+                <p class="p-0 m-0 text-center"><small>Click to copy & share to your friends</small></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const code = document.getElementById('referalCode');
+        code.addEventListener('click',()=>{
+            const tempTextArea = document.createElement('textarea')
+            tempTextArea.value = code.innerHTML;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                
+            })
+            Toast.fire({
+                icon: 'success',
+                title: 'Referal Code Copied'
+            })
+        })
+    </script>
+<%- include('../partials/_footer',) %>

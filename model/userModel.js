@@ -84,7 +84,8 @@ const userSchema = new mongoose.Schema({
     },
     resetPasswordExpires:{
         type:Date,
-    }
+    },
+    referalCode:String
 })
 
 const User = mongoose.model('User',userSchema);

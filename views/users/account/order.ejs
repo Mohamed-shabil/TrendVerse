@@ -1,8 +1,10 @@
 <%- include('../partials/_header') %>
     <body>
     <%- include('../partials/_navbar',) %>
-    <section style="background-color: #eee;">
-      <div class="container py-5">
+  
+    <%- include('../partials/_sidebar',) %>
+    <section >
+      <div class="container ">
         <h2 class="text-center mt-4 mb-4">My Orders</h2>
       
 
@@ -11,7 +13,6 @@
               <div class="col-md-4 p-2">
                 <p class="text-center fs-6"><small>#<%=order.orderId%></small></p>
                 <h4 class="text-center">₹<%=order.totalPrice%></h4>
-
               </div>
               <div class="col-md-4 p-2 d-flex align-items-center">
                 <ul class="product_list">
@@ -54,7 +55,8 @@
         <% }) %>
       </div>
     </section>
-  
+  </div>
+</div>
 
     <div id="overlay"></div>
 
@@ -75,7 +77,9 @@
         </div>
       </div>
     </div>
-
+  </div>
+  
+  </div>
 
 
     <script>

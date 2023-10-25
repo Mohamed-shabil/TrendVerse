@@ -139,13 +139,27 @@ exports.getSignUp = (req,res)=>{
     res.render('./users/signup')
 }
 
+const generateCode = ()=>{
+    const code = randomString.generate({
+        length:6
+    })
+    return User.findOne({referalCode : code})
+        .then(isCodeExist => {
+            if(isCodeExist){
+                return generateCode(); 
+            }
+            return code
+        })
+}
+
 exports.signup = catchAsync( async (req,res)=>{
     const oldUser = await User.findOne({email:req.body.email});
     const userdata = {
         name : req.body.name,
         email: req.body.email,
         phone: req.body.phone,
-        password : req.body.password
+        password : req.body.password,
+        referalCode:req.body?.referal
     }
     if(oldUser){
         req.flash('error','User already exists, please login')
@@ -163,18 +177,47 @@ exports.signup = catchAsync( async (req,res)=>{
         length:4,
         charset:'numeric',
     })
-
-    const data = await User.create({
+    const referal = await generateCode();
+    const user = await User.create({
         name : req.body.name,
         email: req.body.email,
         phone: req.body.phone,
         password : pass,
         otp:otp,
+        referalCode:referal
     })
+    if(req.body.referalCode||req.params.referalCode){
+        const referalCode = req.body.referalCode;
+        const referedUser = await User.findOne({referalCode:referalCode})
+        if(referedUser){
+            referedUser.wallet.balance += 50;
+            const transaction = {
+                amount:50,
+                operation:'credit',
+                message:"You've earned a 50 rupees reward for referring a friend",
+                date: new Date(),
+                timeStamp: new Date().toLocaleTimeString()
+            }
+            referedUser.wallet.transactionHistory.push(transaction);
+            user.wallet.balance += 50;
+            user.wallet.transactionHistory.push({
+                amount: 50,
+                operation:'credit',
+                message:"Welcome bonus for using referral code",
+                date: new Date(),
+                timeStamp: new Date().toLocaleTimeString()
+            })
+
+            await Promise.all([
+                user.save(),
+                referedUser.save()
+            ])
+        }
+    }
     if(req.body.otpMethod == 'sms'){
         client.messages.create({
             body: `Your OTP for verification is : ${otp} . Please Enter this OTP to verify your account. Do not share this OTP with anyone for security reasons. Thank you for using our service`,
-            to: `+91${data.phone}`, 
+            to: `+91${user.phone}`, 
             from: process.env.TWILIO_NO 
         })
         .then((message) => console.log(message.sid));
@@ -282,6 +325,9 @@ exports.forgotPassword = catchAsync(async (req, res, next)=>{
     })
 })
 
+exports.getMyReferal = catchAsync(async (req,res)=>{
+    res.render('./users/account/referal')
+})
 exports.getResetPassword = catchAsync(async (req,res)=>{
     const {token} = req.params
     console.log(token)
