@@ -2,7 +2,7 @@
 <!-- Header Section End -->
 <%- include('./partials/_navbar') %>
 <!-- Shop Details Section Begin -->
-<section class="shop-details">
+<section class="shop-details ">
   <div class="product__details__pic">
     <div class="container">
       <div class="row">
@@ -51,7 +51,7 @@
       </div>
     </div>
   </div>
-  <div class="product__details__content">
+  <div class="product__details__content ">
     <div class="container">
       <div class="row d-flex justify-content-center">
         <div class="col-lg-8">
@@ -74,7 +74,7 @@
                 <div class="product__details__cart__option">
                     <div class="quantity">
                         <div class="pro-qty">
-                            <input type="number" value="1" name="quantity" />
+                            <input type="number" min="1" value="1" name="quantity" />
                         </div>
                         <input type="hidden" name="id" value=<%=product._id%>>
                     </div>
@@ -83,7 +83,7 @@
                 <div class="product__details__btns__option">
                     <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
                 </div>
-                <div class="product__details__last__option">
+                <div class="product__details__last__option mb-5">
                     <h5><span>Guaranteed Safe Checkout</span></h5>
                     <img src="/users/img/shop-details/details-payment.png" alt="" />
                 </div>

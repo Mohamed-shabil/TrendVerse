@@ -5,54 +5,61 @@
     <%- include('../partials/_sidebar',) %>
     <section >
       <div class="container ">
-        <h2 class="text-center mt-4 mb-4">My Orders</h2>
-      
+        <h2 class="text-center mt-4 mb-4"><%= orders.length?"My orders" : "No orders"%> </h2>
 
-        <% orders.forEach((order) => {%>
-          <div class="row mb-2 bg-white rounded p-2">
-              <div class="col-md-4 p-2">
-                <p class="text-center fs-6"><small>#<%=order.orderId%></small></p>
-                <h4 class="text-center">₹<%=order.totalPrice%></h4>
-              </div>
-              <div class="col-md-4 p-2 d-flex align-items-center">
-                <ul class="product_list">
-                  <%order.products.product.forEach((product) => {%>
-                        <li>- <%=product.name%></li>
-                    <% }) %>
-                </ul>
-              </div>
-              <div class="col-md-3 p-2">
-                <div class="row">
-                  <div class="col-6">
-                    <p><%=order.orderDate.toDateString() %></p>
-                    <span class="<%=order.status %> mb-5"><%=order.status%></span>
-                    <p>Payment :<%=order.paymentMethod %></p>
-                  </div>
-                  <div class="col-6 d-flex align-items-center justify-content-between">
-                    <% if(order.status != 'Delivered'&& order.status != 'Cancel' && order.status!= 'Return') {%>
-                      <form id="cancel_order_form" action="/account/orders?_method=PATCH" method="post">
-                        <div class="d-flex flex-column ">
-                          <input type="hidden" value="Cancel" name="status" />
-                          <input type="hidden" value="<%=order._id%>" name="orderId"/>
-                          <button class="cancel_order" onclick="showConfirmationModal()" type="button">Cancel Order</button>
-                        </div>
-                      </form>
-                    <%}else if(order.status == 'Delivered'){%>
-                      <a href="/account/orders/returnOrderForm/<%=order.orderId%>" class="return_order" >Return Order</a>
-                    <%}else if(order.status == 'Return'){%>
-                      <%const returnIndex = returns.findIndex(item => item.order.equals(order._id))%>
-                      <%if(returnIndex != -1){%>
-                        <span class="<%=returns[returnIndex].status%>"><small><%=returns[returnIndex].status%></small></span>
-                      <%}%>
-                    <% } %>
+        <%if(orders.length > 0){%>
+          <% orders.forEach((order) => {%>
+            <div class="row mb-2 bg-white rounded p-2 orders-card">
+                <div class="col-md-4 p-2">
+                  <p class="text-center fs-6"><small>#<%=order.orderId%></small></p>
+                  <h4 class="text-center">₹<%=order.totalPrice%></h4>
+                </div>
+                <div class="col-md-4 p-2 d-flex align-items-center">
+                  <ul class="product_list">
+                    <%order.products.product.forEach((product) => {%>
+                          <li>- <%=product.name%></li>
+                      <% }) %>
+                  </ul>
+                </div>
+                <div class="col-md-3 p-2">
+                  <div class="row">
+                    <div class="col-6">
+                      <p><%=order.orderDate.toDateString() %></p>
+                      <span class="<%=order.status %> mb-5"><%=order.status%></span>
+                      <p>Payment :<%=order.paymentMethod %></p>
+                    </div>
+                    <div class="col-6 d-flex align-items-center justify-content-between">
+                      <% if(order.status != 'Delivered'&& order.status != 'Cancel' && order.status!= 'Return') {%>
+                        <form id="cancel_order_form" action="/account/orders?_method=PATCH" method="post">
+                          <div class="d-flex flex-column ">
+                            <input type="hidden" value="Cancel" name="status" />
+                            <input type="hidden" value="<%=order._id%>" name="orderId"/>
+                            <button class="cancel_order" onclick="showConfirmationModal()" type="button">Cancel Order</button>
+                          </div>
+                        </form>
+                      <%}else if(order.status == 'Delivered'){%>
+                        <a href="/account/orders/returnOrderForm/<%=order.orderId%>" class="return_order" >Return Order</a>
+                      <%}else if(order.status == 'Return'){%>
+                        <%const returnIndex = returns.findIndex(item => item.order.equals(order._id))%>
+                        <%if(returnIndex != -1){%>
+                          <span class="<%=returns[returnIndex].status%>"><small><%=returns[returnIndex].status%></small></span>
+                        <%}%>
+                      <% } %>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-md-1 d-flex align-items-center justify-content-center">
-                <a href="/account/orders/<%=order.orderId%>"><i class="bi bi-chevron-double-right"></i></a>
-              </div>
+                <div class="col-md-1 d-flex align-items-center justify-content-center">
+                  <a href="/account/orders/<%=order.orderId%>"><i class="bi bi-chevron-double-right"></i></a>
+                </div>
+            </div>
+          <% }) %>
+        <%}else{%>
+          <div class="row  d-flex flex-column align-items-center justify-content-center">
+            <div class="col-md-6">
+              <img src="/users/img/no-order.png" alt="" srcset="">
+            </div>
           </div>
-        <% }) %>
+        <%}%>
       </div>
     </section>
   </div>

@@ -39,6 +39,7 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
+                                                    <li class="text-capitalize mb-3"><input  name="category" value="all" type="radio" ><span class="ml-3">all</span></li>
                                                     <% categories.forEach((category)=>{ %>
                                                         <li class="text-capitalize mb-3"><input  name="category" value="<%=category.name%>" type="radio" <%if(filter.category == category.name){%>checked<%}%>><span class="ml-3"><%=category.name%></span></li>
                                                     <% }) %>
@@ -139,16 +140,6 @@
 
     
 <script>
-    window.addEventListener('beforeunload', function() {
-        localStorage.setItem('scrollPosition', window.scrollY);
-    });
-    window.addEventListener('load', function() {
-        const scrollPosition = localStorage.getItem('scrollPosition');
-        if (scrollPosition !== null) {
-            window.scrollTo(0, parseInt(scrollPosition));
-            localStorage.removeItem('scrollPosition');
-        }
-    });
     const form = document.getElementById('filter');
     const minPriceInput = document.getElementById('minPrice');
     const maxPriceInput = document.getElementById('maxPrice');

@@ -25,7 +25,7 @@ exports.AddAddress = catchAsync( async (req,res)=>{
         pincode: req.body.pincode,
         city:req.body.city,
         locality:req.body.locality,
-        phone:req.user.phone,
+        phone:req.body.phone,
         alternativePhoneNumber:req.body.altNo,
         landMark:req.body.landMark
     })

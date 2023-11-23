@@ -1,0 +1,425 @@
+[33mcommit 9ff222285ef8a3fc02822cf85fc86d3710093485[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Wed Oct 25 21:26:52 2023 +0530
+
+    Implement - Referal , account page style
+
+[33mcommit c2821cb97fbc880dca6fa6e9906ae23daebb1982[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Tue Oct 10 11:02:02 2023 +0530
+
+    fix bug - empty string on offer Field
+
+[33mcommit 28c26600719b911d46ae6277c9edc7875dfcbb68[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Tue Oct 10 10:41:43 2023 +0530
+
+    fix error - google auth url redirect
+
+[33mcommit 2cd7ff5138aa916fc7631aa782c761434e344703[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Mon Oct 9 21:42:42 2023 +0530
+
+    fix bug - validation bugs , styles fix, scheduler
+
+[33mcommit 191630fcf1f53deb4bf412cf09b42fdc98b42ac7[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Mon Oct 9 18:50:20 2023 +0530
+
+    implement - Automatic Price chanage when offer expire
+
+[33mcommit ef477e834674df9016d9b52cc47a9bcd00b45f3d[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Sat Oct 7 14:00:57 2023 +0530
+
+    Implement - Offer ( offer for products )
+
+[33mcommit 8a1b1a2ecd71dd8e2b1e899c94d74ddf0121606b[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Fri Oct 6 22:00:32 2023 +0530
+
+    Implement - offers (not Completed)
+
+[33mcommit f26ffa12d6319b392f5f5cd8c9ea503c9bb88874[m[33m ([m[1;32mmobileOtp[m[33m)[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Fri Oct 6 11:38:07 2023 +0530
+
+    fix bug - storing product id in category even after the product deleted
+
+[33mcommit 17b7115886d8c37b40d5afb2f027e2c4e2bb3e2e[m[33m ([m[1;31morigin/mobileOtp[m[33m)[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Oct 5 21:58:05 2023 +0530
+
+    Implemet - Mobile otp
+
+[33mcommit 581c36129ea29c2f2b201ba9156c816436ccfe70[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Oct 5 16:00:00 2023 +0530
+
+    Implement - forgot Password
+
+[33mcommit 59399d2f4d639314651dc44f9191b0bd528d41a4[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Wed Oct 4 21:15:36 2023 +0530
+
+    implement - Oauth Google, Login/signup page StyleChanged
+
+[33mcommit cd9ddcfc245bae7afe55c4358691ce11e743f5c8[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Tue Oct 3 15:55:06 2023 +0530
+
+    Implement - Wallet Button as a payment option
+
+[33mcommit 040920de71e55c29b33b6897ca360f3eddebdfd8[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Tue Oct 3 12:57:27 2023 +0530
+
+    fix bug - On wallet purchase amount become zero
+
+[33mcommit c86e8de47f1d3af81dd802ac136132b51da39a3c[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Mon Oct 2 21:04:32 2023 +0530
+
+    Implement - Product Image Magnification
+
+[33mcommit 8f475d3a955c10d21520e525ea42e1bb114c2d7d[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Mon Oct 2 15:13:11 2023 +0530
+
+    Implement - Interconnected Filtering
+
+[33mcommit d2f462debbe2a1e19da8d93566e3f46db107b3ce[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Sat Sep 30 13:44:02 2023 +0530
+
+    Implement - timeStamp in wallet , Dollar symbol to Rupee
+
+[33mcommit 0473d1e203132f117fba400bc5cc382635b237e8[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Fri Sep 29 19:23:41 2023 +0530
+
+    style fix - Stock alert message to user on cart
+
+[33mcommit d0c4dcfdb34684cb2ecea0b152b65b1d3a3f2938[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Fri Sep 29 15:42:35 2023 +0530
+
+    fix Error - add to cart without login
+
+[33mcommit 37907105207edf5bb731e234b076cf49917177a4[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Fri Sep 29 11:23:44 2023 +0530
+
+    fix Bug - Adding product to wishlist without login
+
+[33mcommit 08c6600cdaea5cad55d8843aae38aa7afa856c42[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Sep 28 20:20:55 2023 +0530
+
+    style fix - wishList variable error
+
+[33mcommit eef28f4665a02dfad0d27dd009f38a7a1d8bfd4c[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Sep 28 20:08:56 2023 +0530
+
+    style fix - removed relable product section
+
+[33mcommit b26b7c9f1b3da8de03d69aba1dbd45bf8f831a9d[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Sep 28 20:06:52 2023 +0530
+
+    fix error - product page whishList variable error
+
+[33mcommit 18ce212a3e7783f4a75e8124931a8153b454d774[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Sep 28 20:01:01 2023 +0530
+
+    fix errro - login page wrong path
+
+[33mcommit 514ca642c78b98e0e209e2db4c0739dea84827bb[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Sep 28 19:52:59 2023 +0530
+
+    style fix - logo changed , wishlist variable bug fix
+
+[33mcommit 96d967e3c946f6494a665314dd7ac3d9a0f520f0[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Tue Sep 26 12:16:01 2023 +0530
+
+    Implement - Data Sanitization, Parameter Polution , req rate limit
+
+[33mcommit d9b76d8bab48e3d5e94a1d1201f824f232c5f49f[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Mon Sep 25 21:19:17 2023 +0530
+
+    Style fix - wishlist add / remove notification
+
+[33mcommit ec248867074af6bc81225fc4b4abde52cf460e8c[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Mon Sep 25 20:14:43 2023 +0530
+
+    Implement - whishlist notification Status change
+
+[33mcommit c9f954b569aa41fe3b7c5e919726a062bc789e47[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Mon Sep 25 17:38:17 2023 +0530
+
+    Implement - 404 page
+
+[33mcommit bc60cc793638d39150c3944f9db951485c76cd80[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Mon Sep 25 17:10:39 2023 +0530
+
+    Implement - Wishlist
+
+[33mcommit f63435ae159768942be33ddee646b8f805ccb8b1[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Sat Sep 23 12:02:41 2023 +0530
+
+    implement - Cart Update Without reload , coupon Apply & remove , showing Coupon in Checkout, fix Style - Payment methods
+
+[33mcommit 10be851c211ac4efbe3352032259a68fc5c4d090[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Fri Sep 22 23:46:21 2023 +0530
+
+    fix bug - Sales Report invalid Dates
+
+[33mcommit c917bed304635a4e542d43d5d2069e5c0f46a2ee[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Fri Sep 22 21:33:32 2023 +0530
+
+    implement - Coupon Apply , Product Sort - price low to high , hight to low
+
+[33mcommit 992bff4e527d445f6248cbd835c2bae6b42af1a9[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Sep 21 22:03:17 2023 +0530
+
+    Implement - Coupon Controllers - Create , delete , edit
+
+[33mcommit 23554c3586588f4458c2aaac80c7168baa3043b4[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Sep 21 17:41:15 2023 +0530
+
+    implement - Wallet
+
+[33mcommit 7f2edd1ff34391c1155198d896fabdde3e9de959[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Wed Sep 20 12:37:02 2023 +0530
+
+    Implement - Return Flow
+
+[33mcommit fa1506df31ec0847bd07bcad6ecff40e8da3e5e2[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Mon Sep 18 13:35:27 2023 +0530
+
+    implement - Stock management
+
+[33mcommit 1e12c1e994e051493557c6545112cdb65e45b35f[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Sat Sep 16 12:52:49 2023 +0530
+
+    fix bug - placing order even if the payment failed
+
+[33mcommit a40996300673d568423a9df07ca7536acc4f178d[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Fri Sep 15 22:07:34 2023 +0530
+
+    Implement - Sales Report Page , SalesReport csv
+
+[33mcommit 44f7edd667cb5f56719147a977a8131e75e3d828[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Fri Sep 15 10:21:21 2023 +0530
+
+    implment - Dashboard Data
+
+[33mcommit 94eaea6bff7175b5a5f879f01d46d2094883759e[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Sep 14 23:37:57 2023 +0530
+
+    fix bug - Total Cart value Miscalculation
+
+[33mcommit bf610b416738b2e71d98e77b2ca5c985a9462091[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Sep 14 13:26:33 2023 +0530
+
+    Implement - Raxorpay Payment , admin OrderPage, DashBoard
+
+[33mcommit ed827da999ea5e82e209ca394b12ffc7f672db7f[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Tue Sep 12 11:38:31 2023 +0530
+
+    Implement - Banner Add , edit , Delete
+
+[33mcommit d45c4efdcb3fc7ded054c8388f59537e8e54ef50[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Mon Sep 11 21:56:50 2023 +0530
+
+    Implement - Banner Controllers
+
+[33mcommit 81058e75593e348c260fc2f3fec2126889ed4e29[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Mon Sep 11 20:01:14 2023 +0530
+
+    implement - Orders and Order Details
+
+[33mcommit 1492bbadcebd39bf6c140e50d6aebabdfd117a45[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Mon Sep 11 10:59:28 2023 +0530
+
+    Implement - Search feature
+
+[33mcommit 5da52633a75ae7d5dc09d382433d1cd94e05ecc4[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Sun Sep 10 18:12:47 2023 +0530
+
+    implement - filter Logic
+
+[33mcommit 3afce61569020ab5ab82eec897cd813b7661695c[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Sat Sep 9 22:29:27 2023 +0530
+
+    implement - slug
+
+[33mcommit e913ecd19ae7ae2b8c01095b374ca17d53ea98f3[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Sat Sep 9 21:28:46 2023 +0530
+
+    implement - Pagination Shop Page
+
+[33mcommit 9a05642ea3c00eb78ff505975a53d2b1cd6ef546[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Sep 7 20:52:13 2023 +0530
+
+    fix bug - replaced cart Quantity input to inc/dec button
+
+[33mcommit e6ae7f06c008d5fad1b307c339cdec43b0fbe5ff[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Sep 7 18:42:11 2023 +0530
+
+    fix bug - if same products added to cart twice taken as two diffrent items instead of increamenting quantity
+
+[33mcommit 2d3d3d049e5acbe564d3b10b55e2594546de7f4c[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Sep 7 18:28:02 2023 +0530
+
+    fix bug - duplicate Category, some Ui changes
+
+[33mcommit 85ecdc78aa51a0adc992726507bb3f26189b9545[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Wed Sep 6 22:01:27 2023 +0530
+
+    Implement - Cancel Order, Orders page
+
+[33mcommit 7ccd353a82907e9e90c3187ac5d4a1476fc86cc6[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Wed Sep 6 13:39:38 2023 +0530
+
+    implement - Profile Updation
+
+[33mcommit 39672c38ac1f4090cf1fbe78cc03c943046c6413[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Tue Sep 5 22:03:42 2023 +0530
+
+    implement - order, cash on delivery, set default address, order status
+
+[33mcommit dc1a66fa9352005e320de47c071f350fb21af7df[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Mon Sep 4 12:19:51 2023 +0530
+
+    implement - address add , delete , edit
+
+[33mcommit de681642f4ab1441ffe8636a7d2a17e29a8867e4[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Sat Sep 2 13:03:52 2023 +0530
+
+    implement - showing cartTotalValue in the header if user loggedin
+
+[33mcommit cd4ad95015ea5efbb561293a286a83693b344954[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Sat Sep 2 11:45:05 2023 +0530
+
+    Implement - cart add , delete , quantity Update
+
+[33mcommit 80cfc19c95962f0515fd3962ea51fab49e02319e[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Fri Sep 1 20:41:47 2023 +0530
+
+    fix bug - after add to cart redirecting to product page, implement - totalCartValue
+
+[33mcommit 1065f9c70a6ca816e1e27e24bc80fcd3e67f92a1[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Fri Sep 1 18:04:04 2023 +0530
+
+    implement - remove from cart
+
+[33mcommit a483c2831b03de52fbde2f64fc912f7f19654dbb[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Fri Sep 1 14:42:29 2023 +0530
+
+    implement - cart add , authChecker Middleware
+
+[33mcommit 5aeb774bd49f6d625fa2ed312c2962637ddc811b[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Wed Aug 30 21:59:41 2023 +0530
+
+    fix bug - delete products images seperately , add products images seperately (not complete)
+
+[33mcommit 68c34d0e849c5f3fafb02fdfd0bf74c30a272bde[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Wed Aug 30 19:49:41 2023 +0530
+
+    fix bug - returning data with signup page if any error on signup
+
+[33mcommit 17c9c4112da3c9ddd5a5c735c5a4b3ed69d4aaad[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Wed Aug 30 10:17:12 2023 +0530
+
+    implement - User block / unblock Feature
+
+[33mcommit 16377e3028beddd2fccb56657700139cb4b22ba6[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Sun Aug 27 22:21:19 2023 +0530
+
+    implement - Jwt authentication
+
+[33mcommit 313b9d2e4d62fe98dc9302ab8b5e3d1be2c6ea9d[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Sat Aug 26 22:58:31 2023 +0530
+
+    implement - Product Management , Category Management , User Management not Completed
+
+[33mcommit 40458945a040b567d08ddf37442841a45399126d[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Aug 24 10:38:31 2023 +0530
+
+    fix bug - unhashed password in admin
+
+[33mcommit a42e3d5156a2d1b4063ea70e087b6dcc407cd9fe[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Thu Aug 24 10:30:49 2023 +0530
+
+    implement - seed Admin
+
+[33mcommit 1ccd249423efb2b6bc7ce01e982f16db69b6eec8[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Wed Aug 23 21:59:47 2023 +0530
+
+    implement admin login, seedAdmin implemention not completed
+
+[33mcommit 18477ce2dbee2b3b7ab18ae5e997add59d3e33ca[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Wed Aug 23 19:51:34 2023 +0530
+
+    implement - sigup, otp validation, login
+
+[33mcommit 6584950aae283b1f34b5eeba8602fe2443f2e351[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Tue Aug 22 21:53:14 2023 +0530
+
+    Forget - to add options of nodemailer
+
+[33mcommit aa629a3a40b226ee8340a8c393067780a5a4ef2b[m
+Author: Mohamed Shabil <mohamedshabil231@gmail.com>
+Date:   Tue Aug 22 21:44:57 2023 +0530
+
+    implement - nodemailer, signup not completed
